@@ -1,0 +1,74 @@
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { withRouter, NavLink, Route, Switch } from 'react-router-dom'
+import AboutUs from '../AboutUs/'
+import './homeLayout.less'
+import LoginForm from '../LoginForm/'
+import RegistrationForm from '../RegistrationForm'
+
+import { Layout, Menu, Breadcrumb, Button } from 'antd';
+
+import { changeSelectedKeysByPath, navMenuClick } from '../../actions/homeLayoutActions'
+
+import { _NavMenus } from './_NavMenus'
+
+const {
+    Header, Footer, Sider, Content,
+} = Layout;
+
+
+class HomeLayout extends Component {
+
+    componentDidMount = () => {
+        const runningPath = this.props.location.pathname
+        this.props.dispatch( changeSelectedKeysByPath(runningPath) )
+    }
+
+    render() {
+        
+        const { dispatch } = this.props
+
+        return (
+            <div id="home-layout">
+                <Layout>
+                    <Header style={{ textAlign: 'right' }}>
+                        <div className="logo" />
+                        <_NavMenus {...this.props}/>
+                    </Header>
+
+
+                    <Content style={{ padding: '0 50px' }}>
+                        <Breadcrumb style={{ margin: '16px 0' }}>
+                            <Breadcrumb.Item>Home</Breadcrumb.Item>
+                            <Breadcrumb.Item>List</Breadcrumb.Item>
+                            <Breadcrumb.Item>App</Breadcrumb.Item>
+                        </Breadcrumb>
+                        <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
+
+                            <Switch>
+                                <Route exact path="/" render={() => <h1>Home Page</h1>} />
+                                <Route path="/about-us" render={() => <h1>About Us</h1>} />
+                                <Route path="/contact-us" render={() => <h1>Contact Us</h1>} />
+                                <Route path="/login" component={LoginForm} />
+                                <Route path="/signup" component={RegistrationForm} />
+                                <Route render={() => <h1>Not Found Home Page</h1>} />
+                            </Switch>
+                        </div>
+                    </Content>
+
+
+                    <Footer style={{ textAlign: 'center' }}>
+                        wedevs Limited©2019 Created by Shams Sadek
+                    </Footer>
+                </Layout>
+            </div>
+        )
+    }
+}
+
+
+const mapStateToProps = state => ({
+    homeLayout: state.homeLayoutReducer
+})
+
+export default withRouter(connect(mapStateToProps)(HomeLayout))

@@ -1,8 +1,8 @@
 import { ADD_USER, REMOVE_USER, LOGGED_IN } from '../actions/userActions'
 
 const initialState = {
-    loggedIn: false,
-    logStatus: 'Log In',
+    loggedIn: true,
+    logStatus: 'Log Out',
     userList: [
         {
             name: 'Shams Sadek',
