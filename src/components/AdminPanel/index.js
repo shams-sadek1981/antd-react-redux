@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter, NavLink, Route, Switch } from 'react-router-dom'
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import AboutUs from '../AboutUs/'
+import User from '../User'
 import './adminPanel.less'
 
 const {
@@ -69,7 +70,7 @@ class AdminPanel extends Component {
                         >
                             <Switch>
                                 <Route exact path={`${path}`} render={() => <h2>Dashboard</h2>} />
-                                <Route path={`${path}/users`} render={() => <h2>Users</h2>} />
+                                <Route path={`${path}/users`} component={User} />
                                 <Route path={`${path}/customer`} render={() => <h2>Customers</h2>} />
                                 <Route render={() => <h2>Not Found Admin Panel child component</h2>} />
                             </Switch>

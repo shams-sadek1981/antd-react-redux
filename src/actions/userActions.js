@@ -1,65 +1,126 @@
+import {
+    notification
+} from 'antd';
+
+import { get, post, deleteMethod } from '../functions'
+
 //-- Define action names
 export const ADD_USER = "ADD_USER"
 export const REMOVE_USER = "REMOVE_USER"
 export const UPDATE_USER = "UPDATE_USER"
 export const LOGGED_IN = "LOGGED_IN"
+export const LOAD_USER = "LOAD_USER"
+export const CHANGE_DEFAULT_ACTIVE_KEY = "CHANGE_DEFAULT_ACTIVE_KEY"
+
+const openNotificationWithIcon = (type, message, description) => {
+    notification[type]({
+        message: message,
+        description: description
+    });
+};
 
 export const changeLoggedIn = () => {
     return (dispatch, getState) => {
 
         const userInfo = getState().userReducer
-        const loggedIn = ! userInfo.loggedIn
+        const loggedIn = !userInfo.loggedIn
         let logStatus = 'Log In'
         if (loggedIn) {
             logStatus = 'Log Out'
         }
 
-        let userList = [
-            {
-                name: 'Saidul Islam',
-                age: 22
-            },
-            {
-                name: 'Farazi',
-                age: 29
-            },
-        ]
-        
         dispatch({
             type: LOGGED_IN,
             payload: {
                 loggedIn,
                 logStatus,
-                userList
             }
         })
     }
 }
 
-export const addUser = (evt, userInfo) => {
-    evt.preventDefault()
+export const addUser = (values) => {
+
     return (dispatch, getState) => {
 
-        console.log(evt)
+        let { userList } = getState().userReducer
 
+        post('/users/signup', values)
+            .then(data => {
+                
+                userList.push(data.user)
+
+                dispatch({
+                    type: ADD_USER,
+                    payload: {
+                        userList
+                    }
+                })
+                
+                //-- change default active key
+                dispatch(changeDefaultActiveKey('1'))
+
+
+            })
+            .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the user'))
+    }
+}
+
+export const changeDefaultActiveKey = (keyNo) => {
+
+    return (dispatch, getState) => {
         dispatch({
-            type: ADD_USER,
+            type: CHANGE_DEFAULT_ACTIVE_KEY,
             payload: {
-                userList: userInfo
+                defaultActiveKey: keyNo
             }
         })
 
     }
 }
 
-export const removeUser = (userName) => {
+export const removeUser = (id) => {
+
     return (dispatch, getState) => {
-        dispatch({
-            type: REMOVE_USER,
-            payload: {
-                userName: userName
+        
+        let { userList } = getState().userReducer
+        
+        deleteMethod('/users/delete/' + id)
+            .then( data => {
+        
+                const newUserList = userList.filter( item => item._id != id)
+
+                dispatch({
+                    type: REMOVE_USER,
+                    payload: {
+                        userList: newUserList
+                    }
+                })
+            })
+    }
+}
+
+
+export const loadUser = () => {
+    return (dispatch, getState) => {
+
+        const users = getState().userReducer
+
+        if (users.userList.length > 0) return;
+
+        const userList = get('/users/list')
+
+        userList.then(data => {
+            if (data.result) {
+                dispatch({
+                    type: LOAD_USER,
+                    payload: {
+                        userList: data.result
+                    }
+                })
             }
         })
+
     }
 }
 

@@ -5,7 +5,7 @@ import {
     Form, Icon, Input, Button, Checkbox, Row, Col, notification
 } from 'antd';
 
-import { get, post } from '../../functions'
+import { get, post, postWithoutToken } from '../../functions'
 import Cookies from 'universal-cookie';
 
 //-- initialize cookies
@@ -51,7 +51,7 @@ class LoginForm extends React.Component {
                 }
 
                 //-- check user info
-                post('/users/login', userInfo)
+                postWithoutToken('/users/login', userInfo)
                     .then(data => {
                         
                         //-- manage cookie

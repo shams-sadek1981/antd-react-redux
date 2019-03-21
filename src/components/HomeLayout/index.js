@@ -10,22 +10,33 @@ import { Layout, Menu, Breadcrumb, Button } from 'antd';
 
 import { changeSelectedKeysByPath, navMenuClick } from '../../actions/homeLayoutActions'
 
+import { addNewCustomer } from '../../actions/customerActions'
+
 import { _NavMenus } from './_NavMenus'
+import { _Breadcrumb } from './_Breadcrumb'
 
 const {
     Header, Footer, Sider, Content,
 } = Layout;
 
 
+const breadcrumbNameMap = {
+    '/apps': 'Application List',
+    '/apps/1': 'Application1',
+    '/apps/2': 'Application2',
+    '/apps/1/detail': 'Detail',
+    '/apps/2/detail': 'Detail',
+};
+
 class HomeLayout extends Component {
 
     componentDidMount = () => {
         const runningPath = this.props.location.pathname
-        this.props.dispatch( changeSelectedKeysByPath(runningPath) )
+        this.props.dispatch(changeSelectedKeysByPath(runningPath))
     }
 
     render() {
-        
+
         const { dispatch } = this.props
 
         return (
@@ -33,16 +44,13 @@ class HomeLayout extends Component {
                 <Layout>
                     <Header style={{ textAlign: 'right' }}>
                         <div className="logo" />
-                        <_NavMenus {...this.props}/>
+                        <_NavMenus {...this.props} />
                     </Header>
 
-
+                    <_Breadcrumb {...this.props} />
                     <Content style={{ padding: '0 50px' }}>
-                        <Breadcrumb style={{ margin: '16px 0' }}>
-                            <Breadcrumb.Item>Home</Breadcrumb.Item>
-                            <Breadcrumb.Item>List</Breadcrumb.Item>
-                            <Breadcrumb.Item>App</Breadcrumb.Item>
-                        </Breadcrumb>
+
+                    <Button onClick={ () => this.props.dispatch(addNewCustomer('Ashik Uddin'))}>Click Here</Button>
                         <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
 
                             <Switch>
@@ -54,6 +62,17 @@ class HomeLayout extends Component {
                                 <Route render={() => <h1>Not Found Home Page</h1>} />
                             </Switch>
                         </div>
+
+                        {
+                            this.props.customer.list.map( (item, index) => {
+                                return (
+                                    <div key={index}>{item}</div>
+                                )
+                            })
+                        }
+
+
+                        
                     </Content>
 
 
@@ -68,7 +87,8 @@ class HomeLayout extends Component {
 
 
 const mapStateToProps = state => ({
-    homeLayout: state.homeLayoutReducer
+    homeLayout: state.homeLayoutReducer,
+    customer: state.customerReducer
 })
 
 export default withRouter(connect(mapStateToProps)(HomeLayout))

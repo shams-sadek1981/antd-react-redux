@@ -1,5 +1,6 @@
 //-- Define action names
 export const CHANGE_SELECTED_KEYS = "CHANGE_SELECTED_KEYS"
+export const CHANGE_BREADCRUMB = "CHANGE_BREADCRUMB"
 
 export const changeLoggedIn = (selectedKeys) => {
     return (dispatch, getState) => {
@@ -13,6 +14,26 @@ export const changeLoggedIn = (selectedKeys) => {
     }
 }
 
+export const changeBreadcrumb = () => {
+    return (dispatch, getState) => {
+
+        const homeLayout = getState().homeLayoutReducer
+
+        const selectedKey = homeLayout.selectedKeys[0]
+
+        const findMenu = homeLayout.menus.find( item => item.keyNo == selectedKey)
+
+        const breadcrumb = findMenu.breadcrumb
+
+        dispatch({
+            type: CHANGE_BREADCRUMB,
+            payload: {
+                selectedBreadcrumb: breadcrumb 
+            }
+        })
+    }
+}
+
 export const navMenuClick = (selectedKeys) => {
     return (dispatch, getState) => {
         dispatch({
@@ -21,6 +42,8 @@ export const navMenuClick = (selectedKeys) => {
                 selectedKeys: [selectedKeys.toString()]
             }
         })
+
+        dispatch( changeBreadcrumb() )
     }
 }
 export const changeSelectedKeysByPath = (pathName) => {
@@ -35,5 +58,9 @@ export const changeSelectedKeysByPath = (pathName) => {
                 selectedKeys: [findPath.keyNo.toString()]
             }
         })
+
+        //-- chenage breadcrumb
+        dispatch( changeBreadcrumb() )
+
     }
 }
