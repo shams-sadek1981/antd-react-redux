@@ -3,7 +3,7 @@ import {
     Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete,
 } from 'antd';
 
-import { addUser } from '../../actions/userActions';
+import { saveUser } from '../../actions/userActions';
 
 const { Option } = Select;
 
@@ -38,7 +38,7 @@ export const _AddUser = (props) => {
     //-- Handle Submit
     const handleSubmit = (evt) => {
         evt.preventDefault()
-        props.dispatch(addUser(props.form.getFieldsValue()))
+        props.dispatch(saveUser(props.form.getFieldsValue()))
     }
 
     return (

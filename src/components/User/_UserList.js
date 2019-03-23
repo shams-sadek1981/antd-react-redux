@@ -1,11 +1,13 @@
 import React, { Fragment } from 'react'
 
-import { Table, Divider, Tag } from 'antd';
+import { Table, Divider, Tag, Icon } from 'antd';
 
-import { removeUser } from '../../actions/userActions';
+import { removeUser, editUser } from '../../actions/userActions';
 
 
 export const _UserList = (props) => {
+
+    const { dispatch } = props
 
     const columns = [
         {
@@ -24,7 +26,16 @@ export const _UserList = (props) => {
             key: 'action',
             render: (text, record) => (
                 <span>
-                    <a onClick={() => props.dispatch(removeUser(record._id))} href="javascript:;">Delete</a>
+                    <a onClick={() => dispatch(editUser(record._id))} href="javascript:;">
+                        <Icon type="edit" theme="twoTone" />
+                    </a>
+
+                    <Divider type="vertical" />
+
+                    <a onClick={() => dispatch(removeUser(record._id))} href="javascript:;">
+                        <Icon type="delete" theme="twoTone" />
+                    </a>
+                    
                 </span>
             ),
         }

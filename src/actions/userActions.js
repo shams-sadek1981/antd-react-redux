@@ -2,15 +2,18 @@ import {
     notification
 } from 'antd';
 
-import { get, post, deleteMethod } from '../functions'
+import { get, post, put, deleteMethod } from '../functions'
 
 //-- Define action names
 export const ADD_USER = "ADD_USER"
 export const REMOVE_USER = "REMOVE_USER"
-export const UPDATE_USER = "UPDATE_USER"
 export const LOGGED_IN = "LOGGED_IN"
 export const LOAD_USER = "LOAD_USER"
 export const CHANGE_DEFAULT_ACTIVE_KEY = "CHANGE_DEFAULT_ACTIVE_KEY"
+export const TOGGLE_USER_MODAL_VISIBLE = "TOGGLE_USER_MODAL_VISIBLE"
+export const EDIT_USER = "EDIT_USER"
+export const UPDATE_USER = "UPDATE_USER"
+export const ADD_NEW_USER = "ADD_NEW_USER"
 
 const openNotificationWithIcon = (type, message, description) => {
     notification[type]({
@@ -18,6 +21,41 @@ const openNotificationWithIcon = (type, message, description) => {
         description: description
     });
 };
+
+
+export const handleSubmit = (values) => {
+    return (dispatch, getState) => {
+
+        const { modal } = getState().userReducer
+        const { okText } = modal
+
+        if (okText == "Create") {
+            //-- Create New User
+            dispatch(saveUser(values))
+        } else {
+            //-- Update user
+            dispatch(updateUser(values))
+        }
+    }
+}
+
+
+export const toggleModalVisible = () => {
+    return (dispatch, getState) => {
+
+        const { modal } = getState().userReducer
+
+        dispatch({
+            type: TOGGLE_USER_MODAL_VISIBLE,
+            payload: {
+                modal: {
+                    ...modal,
+                    modalVisible: !modal.modalVisible
+                }
+            }
+        })
+    }
+}
 
 export const changeLoggedIn = () => {
     return (dispatch, getState) => {
@@ -39,7 +77,113 @@ export const changeLoggedIn = () => {
     }
 }
 
-export const addUser = (values) => {
+
+
+/**
+ * ------------------------------------------------------------------------------------------------------
+ * Edit User
+ * ------------------------------------------------------------------------------------------------------
+ */
+export const editUser = (id) => {
+    return (dispatch, getState) => {
+
+        const { userList, modal } = getState().userReducer
+
+        const findUser = userList.find(item => item._id == id)
+
+        dispatch({
+            type: EDIT_USER,
+            payload: {
+                modal: {
+                    ...modal,
+                    modalTitle: 'Edit user',
+                    okText: 'Update',
+                    userEditInfo: findUser
+                }
+            }
+        })
+
+        dispatch(toggleModalVisible())
+    }
+}
+
+//-- Update User
+export const updateUser = (values) => {
+    return (dispatch, getState) => {
+
+        const { modal, userList } = getState().userReducer
+
+        const { _id } = modal.userEditInfo
+
+        put('/users/update/' + _id, values)
+            .then( data => {
+
+                // let newUserList = userList.filter( item => item._id != _id)
+                // newUserList.push(data)
+
+                // newUserList.sort(function(a,b){return a.name > b.name});
+
+                // const findUser = userList.find( item => item._id == _id)
+                const findIndex = userList.findIndex( item => item._id == _id)
+
+                console.log(data)
+                let newUserList = [
+                    ...userList.slice(0,findIndex),
+                    ...userList.splice(findIndex,1, data),
+                    ...userList.slice(findIndex+1)
+                ]
+                
+
+                //-- Step-1
+                dispatch({
+                    type: UPDATE_USER,
+                    payload: {
+                        userList: newUserList,
+                    }
+                })
+
+                //-- Step-2
+                dispatch(toggleModalVisible())
+            })
+    }
+}
+
+
+/**
+ * ------------------------------------------------------------------------------------------------------
+ * New User
+ * ------------------------------------------------------------------------------------------------------
+ */
+
+export const addNewUser = () => {
+    return (dispatch, getState) => {
+
+        const { modal } = getState().userReducer
+
+        const userEditInfo = {
+            name: '',
+            email: '',
+            password: '',
+            mobile: '',
+        }
+
+        dispatch({
+            type: ADD_NEW_USER,
+            payload: {
+                modal: {
+                    ...modal,
+                    modalTitle: 'Create a new user',
+                    okText: 'Create',
+                    userEditInfo
+                }
+            }
+        })
+
+        dispatch(toggleModalVisible())
+    }
+}
+
+export const saveUser = (values) => {
 
     return (dispatch, getState) => {
 
@@ -47,7 +191,7 @@ export const addUser = (values) => {
 
         post('/users/signup', values)
             .then(data => {
-                
+
                 userList.push(data.user)
 
                 dispatch({
@@ -56,10 +200,11 @@ export const addUser = (values) => {
                         userList
                     }
                 })
-                
+
                 //-- change default active key
                 dispatch(changeDefaultActiveKey('1'))
 
+                dispatch(toggleModalVisible())
 
             })
             .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the user'))
@@ -82,13 +227,13 @@ export const changeDefaultActiveKey = (keyNo) => {
 export const removeUser = (id) => {
 
     return (dispatch, getState) => {
-        
+
         let { userList } = getState().userReducer
-        
+
         deleteMethod('/users/delete/' + id)
-            .then( data => {
-        
-                const newUserList = userList.filter( item => item._id != id)
+            .then(data => {
+
+                const newUserList = userList.filter(item => item._id != id)
 
                 dispatch({
                     type: REMOVE_USER,
@@ -123,15 +268,3 @@ export const loadUser = () => {
 
     }
 }
-
-// export const updateUser = (findUser, updateUser) => {
-//     return ( dispatch, getState ) => {
-
-//         dispatch({
-//             type: UPDATE_USER,
-//             payload: {
-//                 find
-//             }
-//         })
-//     }
-// }
