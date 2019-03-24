@@ -118,21 +118,13 @@ export const updateUser = (values) => {
         put('/users/update/' + _id, values)
             .then( data => {
 
-                // let newUserList = userList.filter( item => item._id != _id)
-                // newUserList.push(data)
-
-                // newUserList.sort(function(a,b){return a.name > b.name});
-
-                // const findUser = userList.find( item => item._id == _id)
                 const findIndex = userList.findIndex( item => item._id == _id)
 
-                console.log(data)
                 let newUserList = [
                     ...userList.slice(0,findIndex),
-                    ...userList.splice(findIndex,1, data),
+                    data,
                     ...userList.slice(findIndex+1)
                 ]
-                
 
                 //-- Step-1
                 dispatch({
