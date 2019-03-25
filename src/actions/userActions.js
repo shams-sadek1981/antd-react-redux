@@ -216,6 +216,7 @@ export const changeDefaultActiveKey = (keyNo) => {
     }
 }
 
+//-- Remove user
 export const removeUser = (id) => {
 
     return (dispatch, getState) => {
@@ -257,6 +258,5 @@ export const loadUser = () => {
                 })
             }
         })
-
     }
 }

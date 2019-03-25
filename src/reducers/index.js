@@ -4,12 +4,14 @@ import todoReducer from './todoReducer'
 import userReducer from './userReducer'
 import homeLayoutReducer from './homeLayoutReducer'
 import customerReducer from './customerReducer'
+import upcomingTaskReducer from './upcomingTaskReducer'
 
 const rootReducer = combineReducers({
     todoReducer,
     userReducer,
     homeLayoutReducer,
-    customerReducer
+    customerReducer,
+    upcomingTaskReducer
 })
 
 export default rootReducer

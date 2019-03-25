@@ -4,6 +4,7 @@ import { withRouter, NavLink, Route, Switch } from 'react-router-dom'
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import AboutUs from '../AboutUs/'
 import User from '../User'
+import UpcomingTask from '../UpcomingTask'
 import './adminPanel.less'
 
 const {
@@ -42,18 +43,32 @@ class AdminPanel extends Component {
                     >
                         <div className="logo" />
                         <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+                            
                             <Menu.Item key="1">
                                 <Icon type="user" />
-                                <span><NavLink to="/admin-panel/users">Users</NavLink></span>
+                                <span><NavLink to={`${url}`}>Dashboard</NavLink></span>
                             </Menu.Item>
+                            
                             <Menu.Item key="2">
+                                <Icon type="user" />
+                                <span><NavLink to={`${url}/users`}>Users</NavLink></span>
+                            </Menu.Item>
+
+                            <Menu.Item key="3">
                                 <Icon type="video-camera" />
                                 <span><NavLink to="/admin-panel/customer">Customers</NavLink></span>
                             </Menu.Item>
-                            <Menu.Item key="3">
+
+                            <Menu.Item key="4">
                                 <Icon type="upload" />
                                 <span onClick={() => this.logout()}>Logout</span>
                             </Menu.Item>
+                            
+                            <Menu.Item key="5">
+                                <Icon type="user" />
+                                <span><NavLink to={`${url}/upcoming-task`}>Upcoming Task</NavLink></span>
+                            </Menu.Item>
+
                         </Menu>
                     </Sider>
                     <Layout>
@@ -71,6 +86,7 @@ class AdminPanel extends Component {
                             <Switch>
                                 <Route exact path={`${path}`} render={() => <h2>Dashboard</h2>} />
                                 <Route path={`${path}/users`} component={User} />
+                                <Route path={`${path}/upcoming-task`} component={UpcomingTask} />
                                 <Route path={`${path}/customer`} render={() => <h2>Customers</h2>} />
                                 <Route render={() => <h2>Not Found Admin Panel child component</h2>} />
                             </Switch>
