@@ -48,12 +48,22 @@ export const _NewTaskModal = Form.create({ name: 'form_in_modal' })(
                             )}
                         </Form.Item>
 
-                        <Form.Item label="Task Type">
+                        <Form.Item label="Select Task Type">
                             {getFieldDecorator('taskType', {
                                 initialValue: upcomingTask.modal.EditInfo.taskType,
-                                rules: [{ required: true, message: 'Please input the Task type!' }],
+                                rules: [{ required: true, message: 'Please select task type' }],
                             })(
-                                <Input />
+                                <Select
+                                    showSearch
+                                    // style={{ width: 200 }}
+                                    placeholder="Select a task type"
+                                >
+                                    {
+                                        upcomingTask.taskTypes.map( (item, index) => 
+                                            <Option value={item} key={index}>{item}</Option>
+                                        )
+                                    }
+                                </Select>
                             )}
                         </Form.Item>
 
@@ -67,14 +77,11 @@ export const _NewTaskModal = Form.create({ name: 'form_in_modal' })(
                                     // style={{ width: 200 }}
                                     placeholder="Select a project"
                                 >
-                                    <Option value="Dokan">Dokan</Option>
-                                    <Option value="WPUF">WPUF</Option>
-                                    <Option value="weForms">weForms</Option>
-                                    <Option value="Project Manager">Project Manager</Option>
-                                    <Option value="Dokan App">Dokan App</Option>
-                                    <Option value="weMail">weMail</Option>
-                                    <Option value="ERP">ERP</Option>
-                                    <Option value="Binimoy">Binimoy</Option>
+                                    {
+                                        upcomingTask.projects.map( (item, index) => 
+                                            <Option value={item} key={index}>{item}</Option>
+                                        )
+                                    }
                                 </Select>
                             )}
                         </Form.Item>

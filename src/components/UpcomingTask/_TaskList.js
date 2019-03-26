@@ -58,13 +58,14 @@ export const _TaskList = (props) => {
                             onChange={ (e) => dispatch( updateCheckList( record._id, 'srs', e.target.checked) )}
                         > SRS
                         </Checkbox>
+                        
                     </div>
                     <div>
                         <Checkbox defaultChecked={record.mockup} style={{width: '100px'}}
                             onChange={ (e) => dispatch( updateCheckList( record._id, 'mockup', e.target.checked) )}
                         >Mockup</Checkbox>
 
-                        <Checkbox defaultChecked={record.desing}
+                        <Checkbox defaultChecked={record.design}
                             onChange={ (e) => dispatch( updateCheckList( record._id, 'design', e.target.checked) )}
                         >Design</Checkbox>
                     </div>
@@ -90,7 +91,8 @@ export const _TaskList = (props) => {
         }
     ];
 
-    //-- Set Table Data
+    
+    //-- Set Data for Table Data
     const data = props.upcomingTask.taskList.map((item, index) => {
         return {
             _id: item._id,
@@ -101,6 +103,7 @@ export const _TaskList = (props) => {
             projectName: item.projectName,
             assignedUser: item.assignedUser,
             srs: item.srs,
+            frontend: item.frontend,
             mockup: item.mockup,
             design: item.design,
             estHour: item.estHour,

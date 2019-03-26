@@ -4,7 +4,7 @@ import {
 
 import { get, post, put, deleteMethod } from '../functions'
 
-import { loadUser} from './userActions'
+import { loadUser } from './userActions'
 
 //-- Define action names
 export const UPCOMING_TASK_LOAD = "UPCOMING_TASK_LOAD"
@@ -16,6 +16,8 @@ export const UPCOMING_TASK_EDIT_TASK = "UPCOMING_TASK_EDIT_TASK"
 export const UPCOMING_TASK_UPDATE_TASK = "UPCOMING_TASK_UPDATE_TASK"
 
 export const UPCOMING_TASK_REMOVE_TASK = "UPCOMING_TASK_REMOVE_TASK"
+
+export const UPCOMING_TASK_UPDATE_CHECKLIST = "UPCOMING_TASK_UPDATE_CHECKLIST"
 
 
 
@@ -35,18 +37,32 @@ export const updateCheckList = (_id, fieldName, value) => {
             [fieldName]: value
         }
 
-        console.log(values)
+        const { taskList } = getState().upcomingTaskReducer
+
+        const findIndex = taskList.findIndex(item => item._id == _id)
+
+
         put('/upcoming-task/update/' + _id, values)
-            .then( result => {
+            .then(result => {
+
+                let newTaskList = [
+                    ...taskList.slice(0, findIndex),
+                    result,
+                    ...taskList.slice(findIndex + 1)
+                ]
+
+                //-- Step-1
                 dispatch({
-                    type: 'TEST',
+                    type: UPCOMING_TASK_UPDATE_CHECKLIST,
                     payload: {
-                        result
+                        taskList: newTaskList,
                     }
                 })
-            })
 
-        
+            })
+            .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
+
+
     }
 }
 
@@ -164,7 +180,7 @@ export const toggleModal = () => {
             payload: {
                 modal: {
                     ...modal,
-                    modalVisible: ! modal.modalVisible
+                    modalVisible: !modal.modalVisible
                 }
             }
         })
@@ -220,7 +236,7 @@ export const editTask = (id) => {
             payload: {
                 modal: {
                     ...modal,
-                    modalTitle: 'Edit Task 999',
+                    modalTitle: 'Edit Task',
                     okText: 'Update',
                     EditInfo: findTask,
                     modalVisible: true
@@ -244,14 +260,14 @@ export const updateTask = (values) => {
         const { _id } = modal.EditInfo
 
         put('/upcoming-task/update/' + _id, values)
-            .then( data => {
+            .then(data => {
 
-                const findIndex = taskList.findIndex( item => item._id == _id)
+                const findIndex = taskList.findIndex(item => item._id == _id)
 
                 let newTaskList = [
-                    ...taskList.slice(0,findIndex),
+                    ...taskList.slice(0, findIndex),
                     data,
-                    ...taskList.slice(findIndex+1)
+                    ...taskList.slice(findIndex + 1)
                 ]
 
                 //-- Step-1

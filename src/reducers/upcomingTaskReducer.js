@@ -4,6 +4,7 @@ import {
     UPCOMING_TASK_EDIT_TASK,
     UPCOMING_TASK_REMOVE_TASK,
     UPCOMING_TASK_UPDATE_TASK,
+    UPCOMING_TASK_UPDATE_CHECKLIST
 } from '../actions/upcomingTaskActions'
 
 
@@ -22,13 +23,28 @@ const initialState = {
             estHour: '',
             assignedUser: ''
         }
-    }
+    },
+    taskTypes: [
+        'New Feature',
+        'Plugin Issue',
+        'Enhancement',
+    ],
+    projects: [
+        'Dokan',
+        'weMail',
+        'WPUF',
+        'weForms',
+        'ERP',
+        'Project Manager'
+    ],
+
 }
 
 const upcomingTaskReducer = (state = initialState, action) => {
 
     switch (action.type) {
 
+        case UPCOMING_TASK_UPDATE_CHECKLIST:
         case UPCOMING_TASK_UPDATE_TASK:
         case UPCOMING_TASK_REMOVE_TASK:
         case UPCOMING_TASK_LOAD:
