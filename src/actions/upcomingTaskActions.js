@@ -21,6 +21,10 @@ export const UPCOMING_TASK_UPDATE_CHECKLIST = "UPCOMING_TASK_UPDATE_CHECKLIST"
 
 export const UPCOMING_TASK_SEARCH_BY_USER = "UPCOMING_TASK_SEARCH_BY_USER"
 
+export const UPCOMING_TASK_CAL_EST_HOUR = "UPCOMING_TASK_CAL_EST_HOUR"
+
+export const UPCOMING_TASK_SEARCH_BY = "UPCOMING_TASK_SEARCH_BY"
+
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -46,12 +50,35 @@ export const toggleSpinning = (booleanValue) => {
     }
 }
 
-export const searchByUser = (userName) => {
+export const searchBy = (fieldName, value) => {
     return async (dispatch, getState) => {
 
         dispatch(toggleSpinning(true))
 
-        const searchUrl = '/upcoming-task/search?name=' + userName
+        let { searchBy } = getState().upcomingTaskReducer
+
+        //-- set Search by
+        searchBy = {
+            ...searchBy,
+            [fieldName]: value
+        }
+
+        dispatch({
+            type: UPCOMING_TASK_SEARCH_BY,
+            payload: {
+                searchBy
+            }
+        })
+
+
+        //-- build query with url
+        let buildUrlQuery = '/upcoming-task/search?'
+        Object.keys(searchBy).forEach( key => {
+            buildUrlQuery += key + '=' + searchBy[key] + '&'
+        })
+
+        const searchUrl = buildUrlQuery.slice(0,-1)
+
 
         await get(searchUrl)
             .then(data => {
@@ -59,11 +86,24 @@ export const searchByUser = (userName) => {
                 dispatch({
                     type: UPCOMING_TASK_SEARCH_BY_USER,
                     payload: {
-                        taskList: data.result
+                        taskList: data.result,
+                        totalTask: data.count,
+                        totalEstHour: data.totalEstHour
                     }
                 })
             })
-            .catch(err => openNotificationWithIcon('error', err.message, 'No Data Found'))
+            .catch(err => {
+
+                dispatch({
+                    type: UPCOMING_TASK_SEARCH_BY_USER,
+                    payload: {
+                        taskList: [],
+                        totalTask: 0,
+                        totalEstHour: 0
+                    }
+                })
+
+            })
 
     
         dispatch(toggleSpinning(false))
@@ -71,6 +111,12 @@ export const searchByUser = (userName) => {
     }
 }
 
+
+/**
+ * -------------------
+ * Update Check List
+ * -------------------
+ */
 export const updateCheckList = (_id, fieldName, value) => {
 
     return (dispatch, getState) => {
@@ -181,6 +227,8 @@ export const saveNewTask = (values) => {
                     }
                 })
 
+                dispatch(calEstHour())
+                
                 dispatch(toggleModalVisible())
 
             })
@@ -189,7 +237,11 @@ export const saveNewTask = (values) => {
 }
 
 
-//-- toggle modal
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * Modal form toggle (visible or no)
+ * ----------------------------------------------------------------------------------------------------
+ */
 export const toggleModalVisible = () => {
     return (dispatch, getState) => {
 
@@ -208,27 +260,23 @@ export const toggleModalVisible = () => {
 }
 
 
-/**
- * ----------------------------------------------------------------------------------------------------
- * Modal form toggle (visible or no)
- * ----------------------------------------------------------------------------------------------------
- */
-export const toggleModal = () => {
-    return (dispatch, getState) => {
 
-        const { modal } = getState().upcomingTaskReducer
+// export const toggleModal = () => {
+//     return (dispatch, getState) => {
 
-        dispatch({
-            type: UPCOMING_TASK_TOGGLE_MODAL_VISIBLE,
-            payload: {
-                modal: {
-                    ...modal,
-                    modalVisible: !modal.modalVisible
-                }
-            }
-        })
-    }
-}
+//         const { modal } = getState().upcomingTaskReducer
+
+//         dispatch({
+//             type: UPCOMING_TASK_TOGGLE_MODAL_VISIBLE,
+//             payload: {
+//                 modal: {
+//                     ...modal,
+//                     modalVisible: !modal.modalVisible
+//                 }
+//             }
+//         })
+//     }
+// }
 
 
 /**
@@ -252,7 +300,9 @@ export const loadUpcomingTask = () => {
                 dispatch({
                     type: UPCOMING_TASK_LOAD,
                     payload: {
-                        taskList: data.result
+                        taskList: data.result,
+                        totalTask: data.count,
+                        totalEstHour: data.totalEstHour
                     }
                 })
             }
@@ -290,6 +340,24 @@ export const editTask = (id) => {
 }
 
 
+const calEstHour = () => {
+    return (dispatch, getState) => {
+
+        const { taskList } = getState().upcomingTaskReducer
+
+        const totalEstHour = taskList.reduce( (accumulator, currentValue) => {
+
+            return accumulator + currentValue.estHour
+        }, 0)
+
+        dispatch({
+            type: UPCOMING_TASK_CAL_EST_HOUR,
+            payload: {
+                totalEstHour
+            }
+        })
+    }
+}
 /**
  * -------------------------------------------------------------------------------------------------
  * Update Task
@@ -322,6 +390,9 @@ export const updateTask = (values) => {
                 })
 
                 //-- Step-2
+                dispatch(calEstHour())
+
+                //-- Step-3
                 dispatch(toggleModalVisible())
             })
             .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
@@ -347,6 +418,8 @@ export const removeTask = (id) => {
                         taskList: newTaskList
                     }
                 })
+
+                dispatch(calEstHour())
             })
     }
 }

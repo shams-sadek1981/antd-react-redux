@@ -56,12 +56,11 @@ export const get = (url) => {
     }
 
     return fetch(apiUrl, options)
-        .then(function (response) {
-            return response.json();
-        })
+        // .then(function (response) {
+        //     return response.json();
+        // })
+        .then(handleErrors)
         .then(function (myJson) {
-            // console.log(JSON.stringify(myJson));
-            // return JSON.stringify(myJson)
             return myJson
         });
 }

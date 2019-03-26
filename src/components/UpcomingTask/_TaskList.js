@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 
-import { Table, Divider, Tag, Icon, Checkbox, Spin } from 'antd';
+import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm } from 'antd';
 
 import { editTask, removeTask, updateCheckList } from '../../actions/upcomingTaskActions';
 
@@ -8,6 +8,10 @@ import { editTask, removeTask, updateCheckList } from '../../actions/upcomingTas
 export const _TaskList = (props) => {
 
     const { dispatch, upcomingTask } = props
+
+    const confirm = (id) => {
+        dispatch(removeTask(id))
+    }
 
     const columns = [
         {
@@ -84,9 +88,15 @@ export const _TaskList = (props) => {
 
                     <Divider type="vertical" />
 
-                    <a onClick={() => dispatch(removeTask(record._id))} href="javascript:;">
-                        <Icon type="delete" theme="twoTone" />
-                    </a>
+                    <Popconfirm title="Are you sure delete this task?"
+                        onConfirm={ (e) => confirm(record._id)}
+                        okText="Yes" cancelText="No">
+                        
+                        <a href="javascript:;">
+                            <Icon type="delete" theme="twoTone" />
+                        </a>
+                    </Popconfirm>
+
 
                 </span>
             ),
@@ -125,7 +135,7 @@ export const _TaskList = (props) => {
             <Spin tip="Loading..." spinning={upcomingTask.spinning}>
                 <Table columns={columns} dataSource={data} size="small" />
             </Spin>
-            
+
         </Fragment>
     )
 }

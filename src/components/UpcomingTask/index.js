@@ -8,6 +8,7 @@ import { Tabs, Radio, Form, Modal, Button, Icon, Row, Col } from 'antd';
 import { _TaskList } from './_TaskList'
 import { _NewTaskModal } from './_NewTaskModal'
 import { _SearchByUser } from './_SearchByUser'
+import { _SearchByProject } from './_SearchByProject'
 
 import { handleSubmit, loadUpcomingTask, addNewTask } from '../../actions/upcomingTaskActions'
 
@@ -48,14 +49,14 @@ class UpcomingTask extends Component {
 
     render() {
 
-        const { dispatch } = this.props
+        const { dispatch, upcomingTask } = this.props
         const { size } = this.state;
 
         return (
             <Fragment>
 
                 <Row>
-                    <Col span={12}>
+                    <Col span={3}>
                         <Button
                             type="primary"
                             onClick={() => dispatch(addNewTask())}
@@ -63,8 +64,17 @@ class UpcomingTask extends Component {
                             <Icon type="plus-circle" />New Task
                         </Button>
                     </Col>
-                    <Col span={12}>
+
+                    <Col span={4}>
+                        <div> <i>Total Est.</i> <b>{upcomingTask.totalEstHour} </b><i>Hours</i></div>
+                    </Col>
+
+                    <Col span={5}>
                         <_SearchByUser {...this.props} />
+                    </Col>
+                    
+                    <Col span={5}>
+                        <_SearchByProject {...this.props} />
                     </Col>
                 </Row>
 

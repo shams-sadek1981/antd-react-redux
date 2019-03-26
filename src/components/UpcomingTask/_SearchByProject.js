@@ -16,12 +16,12 @@ function handleFocus() {
     console.log('focus');
 }
 
-export const _SearchByUser = (props) => {
+export const _SearchByProject = (props) => {
 
-    const { dispatch, users } = props
+    const { dispatch, upcomingTask } = props
 
-    const handleChange = (userName) => {
-        dispatch(searchBy('name', userName))
+    const handleChange = (projectName) => {
+        dispatch(searchBy('project', projectName))
     }
 
     return (
@@ -29,7 +29,7 @@ export const _SearchByUser = (props) => {
             <Select
                 showSearch
                 style={{ width: 200 }}
-                placeholder="Select a person"
+                placeholder="Select a project"
                 optionFilterProp="children"
                 onChange={handleChange}
                 onFocus={handleFocus}
@@ -37,10 +37,10 @@ export const _SearchByUser = (props) => {
                 filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             >
 
-                <Option value="all" key={-1}>ALL User</Option>
+                <Option value="all" key={-1}>ALL Project</Option>
             {
-                users.userList.map( (item, index) =>
-                    <Option value={item.name} key={index}>{item.name}</Option>
+                upcomingTask.projects.map( (project, index) =>
+                    <Option value={project} key={index}>{project}</Option>
                 )
             }
             </Select>
