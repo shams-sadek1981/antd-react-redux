@@ -2,13 +2,14 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-import { Tabs, Radio, Form, Modal, Button, Icon } from 'antd';
+import { Tabs, Radio, Form, Modal, Button, Icon, Row, Col } from 'antd';
 
 // import { _AddUser } from './_AddUser'
 import { _TaskList } from './_TaskList'
 import { _NewTaskModal } from './_NewTaskModal'
+import { _SearchByUser } from './_SearchByUser'
 
-import { handleSubmit, loadUpcomingTask, toggleModal } from '../../actions/upcomingTaskActions'
+import { handleSubmit, loadUpcomingTask, addNewTask } from '../../actions/upcomingTaskActions'
 
 const { TabPane } = Tabs;
 
@@ -53,12 +54,19 @@ class UpcomingTask extends Component {
         return (
             <Fragment>
 
-                <Button
-                    type="primary"
-                onClick={() => dispatch(toggleModal())}
-                >
-                    <Icon type="plus-circle" />New Task
-                </Button>
+                <Row>
+                    <Col span={12}>
+                        <Button
+                            type="primary"
+                            onClick={() => dispatch(addNewTask())}
+                        >
+                            <Icon type="plus-circle" />New Task
+                        </Button>
+                    </Col>
+                    <Col span={12}>
+                        <_SearchByUser {...this.props} />
+                    </Col>
+                </Row>
 
                 <_NewTaskModal
                     {...this.props}
@@ -75,7 +83,7 @@ class UpcomingTask extends Component {
                     <TabPane tab="Task List" key="1"><_TaskList {...this.props} /></TabPane>
                     {/* <TabPane tab="New User" key="2"><_AddUser {...this.props} /></TabPane> */}
                 </Tabs>
-            </Fragment>
+            </Fragment >
         )
     }
 }

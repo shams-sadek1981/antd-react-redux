@@ -7,6 +7,7 @@ import { get, post, put, deleteMethod } from '../functions'
 import { loadUser } from './userActions'
 
 //-- Define action names
+export const UPCOMING_TASK_SPINNING = "UPCOMING_TASK_SPINNING"
 export const UPCOMING_TASK_LOAD = "UPCOMING_TASK_LOAD"
 export const UPCOMING_TASK_TOGGLE_MODAL_VISIBLE = "UPCOMING_TASK_TOGGLE_MODAL_VISIBLE"
 export const UPCOMING_TASK_ADD_NEW_TASK = "UPCOMING_TASK_ADD_NEW_TASK"
@@ -16,8 +17,9 @@ export const UPCOMING_TASK_EDIT_TASK = "UPCOMING_TASK_EDIT_TASK"
 export const UPCOMING_TASK_UPDATE_TASK = "UPCOMING_TASK_UPDATE_TASK"
 
 export const UPCOMING_TASK_REMOVE_TASK = "UPCOMING_TASK_REMOVE_TASK"
-
 export const UPCOMING_TASK_UPDATE_CHECKLIST = "UPCOMING_TASK_UPDATE_CHECKLIST"
+
+export const UPCOMING_TASK_SEARCH_BY_USER = "UPCOMING_TASK_SEARCH_BY_USER"
 
 
 
@@ -28,6 +30,46 @@ const openNotificationWithIcon = (type, message, description) => {
     });
 };
 
+
+//-- Toggle Spinning
+export const toggleSpinning = (booleanValue) => {
+    return (dispatch, getState) => {
+
+        const { spinning } = getState().upcomingTaskReducer
+
+        dispatch({
+            type: UPCOMING_TASK_SPINNING,
+            payload: {
+                spinning: booleanValue
+            }
+        })
+    }
+}
+
+export const searchByUser = (userName) => {
+    return async (dispatch, getState) => {
+
+        dispatch(toggleSpinning(true))
+
+        const searchUrl = '/upcoming-task/search?name=' + userName
+
+        await get(searchUrl)
+            .then(data => {
+
+                dispatch({
+                    type: UPCOMING_TASK_SEARCH_BY_USER,
+                    payload: {
+                        taskList: data.result
+                    }
+                })
+            })
+            .catch(err => openNotificationWithIcon('error', err.message, 'No Data Found'))
+
+    
+        dispatch(toggleSpinning(false))
+
+    }
+}
 
 export const updateCheckList = (_id, fieldName, value) => {
 
@@ -93,13 +135,14 @@ export const handleSubmit = (values) => {
 export const addNewTask = () => {
     return (dispatch, getState) => {
 
-        const { modal } = getState().userReducer
+        const { modal } = getState().upcomingTaskReducer
 
-        const userEditInfo = {
-            name: '',
-            email: '',
-            password: '',
-            mobile: '',
+        const EditInfo = {
+            taskName: '',
+            projectName: '',
+            taskType: '',
+            description: '',
+            assignedUser: '',
         }
 
         dispatch({
@@ -109,7 +152,7 @@ export const addNewTask = () => {
                     ...modal,
                     modalTitle: 'Create a new Task',
                     okText: 'Create',
-                    userEditInfo,
+                    EditInfo,
                     modalVisible: true
                 }
             }

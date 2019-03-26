@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react'
 
-import { Table, Divider, Tag, Icon, Checkbox } from 'antd';
+import { Table, Divider, Tag, Icon, Checkbox, Spin } from 'antd';
 
 import { editTask, removeTask, updateCheckList } from '../../actions/upcomingTaskActions';
 
 
 export const _TaskList = (props) => {
 
-    const { dispatch } = props
+    const { dispatch, upcomingTask } = props
 
     const columns = [
         {
@@ -18,8 +18,8 @@ export const _TaskList = (props) => {
                 <div>
                     <a href="javascript:;">{text}</a>
                     <div>
-                        { record.taskType }
-                        <span style={{ fontStyle: 'italic'}}> Est: {record.estHour}</span>
+                        {record.taskType}
+                        <span style={{ fontStyle: 'italic' }}> Est: {record.estHour}</span>
                     </div>
                 </div>
         },
@@ -27,17 +27,19 @@ export const _TaskList = (props) => {
             title: 'Description',
             dataIndex: 'description',
             key: 'description',
+            width: 250
         },
         {
             title: 'Assigned User',
             dataIndex: 'assignedUser',
             key: 'assignedUser',
+            render: (text, record) => <Tag color={record.userColor} key={text}>{text}</Tag>
         },
         {
             title: 'Project Name',
             dataIndex: 'projectName',
             key: 'projectName',
-            render: (text, record) => 
+            render: (text, record) =>
                 <div>
                     {record.projectName}
                 </div>
@@ -49,24 +51,24 @@ export const _TaskList = (props) => {
             render: (text, record) =>
                 <div>
                     <div>
-                        <Checkbox defaultChecked={record.frontend} style={{width: '100px'}}
-                            onChange={ (e) => dispatch( updateCheckList( record._id, 'frontend', e.target.checked) )}
+                        <Checkbox defaultChecked={record.frontend} style={{ width: '100px' }}
+                            onChange={(e) => dispatch(updateCheckList(record._id, 'frontend', e.target.checked))}
                         >Frontend</Checkbox>
-                        
+
                         <Checkbox
                             defaultChecked={record.srs}
-                            onChange={ (e) => dispatch( updateCheckList( record._id, 'srs', e.target.checked) )}
+                            onChange={(e) => dispatch(updateCheckList(record._id, 'srs', e.target.checked))}
                         > SRS
                         </Checkbox>
-                        
+
                     </div>
                     <div>
-                        <Checkbox defaultChecked={record.mockup} style={{width: '100px'}}
-                            onChange={ (e) => dispatch( updateCheckList( record._id, 'mockup', e.target.checked) )}
+                        <Checkbox defaultChecked={record.mockup} style={{ width: '100px' }}
+                            onChange={(e) => dispatch(updateCheckList(record._id, 'mockup', e.target.checked))}
                         >Mockup</Checkbox>
 
                         <Checkbox defaultChecked={record.design}
-                            onChange={ (e) => dispatch( updateCheckList( record._id, 'design', e.target.checked) )}
+                            onChange={(e) => dispatch(updateCheckList(record._id, 'design', e.target.checked))}
                         >Design</Checkbox>
                     </div>
                 </div>
@@ -91,9 +93,16 @@ export const _TaskList = (props) => {
         }
     ];
 
-    
+
     //-- Set Data for Table Data
-    const data = props.upcomingTask.taskList.map((item, index) => {
+    const data = upcomingTask.taskList.map((item, index) => {
+
+        let userColor = 'blue'
+        const findUserColor = upcomingTask.nameColors.find(colorItem => colorItem.name == item.assignedUser)
+        if (findUserColor) {
+            userColor = findUserColor.color
+        }
+
         return {
             _id: item._id,
             key: index,
@@ -107,12 +116,16 @@ export const _TaskList = (props) => {
             mockup: item.mockup,
             design: item.design,
             estHour: item.estHour,
+            userColor
         }
     })
 
     return (
         <Fragment>
-            <Table columns={columns} dataSource={data} />
+            <Spin tip="Loading..." spinning={upcomingTask.spinning}>
+                <Table columns={columns} dataSource={data} size="small" />
+            </Spin>
+            
         </Fragment>
     )
 }

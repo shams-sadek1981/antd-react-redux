@@ -111,7 +111,7 @@ export const _NewTaskModal = Form.create({ name: 'form_in_modal' })(
                                 initialValue: upcomingTask.modal.EditInfo.estHour,
                                 rules: [{ required: true, message: 'Please input the Est. Hour!' }],
                             })(
-                                <Input />
+                                <Input autoComplete="off"/>
                             )}
                         </Form.Item>
                     </Form>
