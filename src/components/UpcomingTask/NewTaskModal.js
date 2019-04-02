@@ -8,8 +8,9 @@ import {
 import { toggleModalVisible } from '../../actions/upcomingTaskActions'
 
 const { Option } = Select;
+const { TextArea } = Input;
 
-export const _NewTaskModal = Form.create({ name: 'form_in_modal' })(
+export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
     // eslint-disable-next-line
     class extends React.Component {
         render() {
@@ -44,7 +45,7 @@ export const _NewTaskModal = Form.create({ name: 'form_in_modal' })(
                                 initialValue: upcomingTask.modal.EditInfo.description,
                                 rules: [{ required: true, message: 'Please input the description!' }],
                             })(
-                                <Input />
+                                <TextArea rows={4} />
                             )}
                         </Form.Item>
 
@@ -83,35 +84,6 @@ export const _NewTaskModal = Form.create({ name: 'form_in_modal' })(
                                         )
                                     }
                                 </Select>
-                            )}
-                        </Form.Item>
-
-                        <Form.Item label="Select User">
-                            {getFieldDecorator('assignedUser', {
-                                initialValue: upcomingTask.modal.EditInfo.assignedUser,
-                                rules: [{ required: true, message: 'Please select user' }],
-                            })(
-                                <Select
-                                    showSearch
-                                    // style={{ width: 200 }}
-                                    placeholder="Select a user"
-                                >
-                                    {
-                                        users.userList.map( (item, index) => (
-                                            <Option value={item.name} key={index}>{item.name}</Option>
-                                        ))
-                                    }
-                                    
-                                </Select>
-                            )}
-                        </Form.Item>
-
-                        <Form.Item label="Est Hour">
-                            {getFieldDecorator('estHour', {
-                                initialValue: upcomingTask.modal.EditInfo.estHour,
-                                rules: [{ required: true, message: 'Please input the Est. Hour!' }],
-                            })(
-                                <Input autoComplete="off"/>
                             )}
                         </Form.Item>
                     </Form>

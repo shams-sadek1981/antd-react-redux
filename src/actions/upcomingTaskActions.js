@@ -9,7 +9,9 @@ import { loadUser } from './userActions'
 //-- Define action names
 export const UPCOMING_TASK_SPINNING = "UPCOMING_TASK_SPINNING"
 export const UPCOMING_TASK_LOAD = "UPCOMING_TASK_LOAD"
+
 export const UPCOMING_TASK_TOGGLE_MODAL_VISIBLE = "UPCOMING_TASK_TOGGLE_MODAL_VISIBLE"
+
 export const UPCOMING_TASK_ADD_NEW_TASK = "UPCOMING_TASK_ADD_NEW_TASK"
 export const UPCOMING_TASK_SAVE_NEW_TASK = "UPCOMING_TASK_SAVE_NEW_TASK"
 
@@ -17,7 +19,6 @@ export const UPCOMING_TASK_EDIT_TASK = "UPCOMING_TASK_EDIT_TASK"
 export const UPCOMING_TASK_UPDATE_TASK = "UPCOMING_TASK_UPDATE_TASK"
 
 export const UPCOMING_TASK_REMOVE_TASK = "UPCOMING_TASK_REMOVE_TASK"
-export const UPCOMING_TASK_UPDATE_CHECKLIST = "UPCOMING_TASK_UPDATE_CHECKLIST"
 
 export const UPCOMING_TASK_SEARCH_BY_USER = "UPCOMING_TASK_SEARCH_BY_USER"
 
@@ -73,11 +74,13 @@ export const searchBy = (fieldName, value) => {
 
         //-- build query with url
         let buildUrlQuery = '/upcoming-task/search?'
-        Object.keys(searchBy).forEach( key => {
+        Object.keys(searchBy).forEach(key => {
             buildUrlQuery += key + '=' + searchBy[key] + '&'
         })
 
-        const searchUrl = buildUrlQuery.slice(0,-1)
+        const searchUrl = buildUrlQuery.slice(0, -1)
+
+        console.log(searchUrl)
 
 
         await get(searchUrl)
@@ -87,10 +90,15 @@ export const searchBy = (fieldName, value) => {
                     type: UPCOMING_TASK_SEARCH_BY_USER,
                     payload: {
                         taskList: data.result,
-                        totalTask: data.count,
-                        totalEstHour: data.totalEstHour
+                        "totalTask": data.totalTask,
+                        "totalEstHour": data.totalEstHour,
+                        "totalSubTask": data.totalSubTask,
+                        "userName": data.userName,
+                        "userEstHour": data.userEstHour,
+                        "userTotalSubTask": data.userTotalSubTask
                     }
                 })
+                
             })
             .catch(err => {
 
@@ -105,54 +113,13 @@ export const searchBy = (fieldName, value) => {
 
             })
 
-    
         dispatch(toggleSpinning(false))
 
     }
 }
 
 
-/**
- * -------------------
- * Update Check List
- * -------------------
- */
-export const updateCheckList = (_id, fieldName, value) => {
 
-    return (dispatch, getState) => {
-
-        const values = {
-            [fieldName]: value
-        }
-
-        const { taskList } = getState().upcomingTaskReducer
-
-        const findIndex = taskList.findIndex(item => item._id == _id)
-
-
-        put('/upcoming-task/update/' + _id, values)
-            .then(result => {
-
-                let newTaskList = [
-                    ...taskList.slice(0, findIndex),
-                    result,
-                    ...taskList.slice(findIndex + 1)
-                ]
-
-                //-- Step-1
-                dispatch({
-                    type: UPCOMING_TASK_UPDATE_CHECKLIST,
-                    payload: {
-                        taskList: newTaskList,
-                    }
-                })
-
-            })
-            .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
-
-
-    }
-}
 
 //-- Handle Submit
 export const handleSubmit = (values) => {
@@ -173,9 +140,11 @@ export const handleSubmit = (values) => {
 
 
 
+
+
 /**
  * ------------------------------------------------------------------------------------------------------
- * New Task
+ * Add New Task
  * ------------------------------------------------------------------------------------------------------
  */
 export const addNewTask = () => {
@@ -208,6 +177,9 @@ export const addNewTask = () => {
 }
 
 
+
+
+
 //-- Save New Task
 export const saveNewTask = (values) => {
 
@@ -218,23 +190,33 @@ export const saveNewTask = (values) => {
         post('/upcoming-task/create', values)
             .then(data => {
 
-                taskList.push(data.result)
+                // taskList.push(data.result)
 
-                dispatch({
-                    type: UPCOMING_TASK_SAVE_NEW_TASK,
-                    payload: {
-                        taskList
-                    }
-                })
+                // dispatch({
+                //     type: UPCOMING_TASK_SAVE_NEW_TASK,
+                //     payload: {
+                //         taskList
+                //     }
+                // })
 
-                dispatch(calEstHour())
-                
+                // dispatch(calEstHour())
+
                 dispatch(toggleModalVisible())
+
+                dispatch(loadUpcomingTask())
+
 
             })
             .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
     }
 }
+
+
+
+
+
+
+
 
 
 /**
@@ -258,6 +240,8 @@ export const toggleModalVisible = () => {
         })
     }
 }
+
+
 
 
 
@@ -291,9 +275,9 @@ export const loadUpcomingTask = () => {
 
         const upcomingTask = getState().upcomingTaskReducer
 
-        if (upcomingTask.taskList.length > 0) return;
+        // if (upcomingTask.taskList.length > 0) return;
 
-        const list = get('/upcoming-task/list')
+        const list = get('/upcoming-task/search?name=all&project=all')
 
         list.then(data => {
             if (data.result) {
@@ -301,8 +285,12 @@ export const loadUpcomingTask = () => {
                     type: UPCOMING_TASK_LOAD,
                     payload: {
                         taskList: data.result,
-                        totalTask: data.count,
-                        totalEstHour: data.totalEstHour
+                        "totalTask": data.totalTask,
+                        "totalEstHour": data.totalEstHour,
+                        "totalSubTask": data.totalSubTask,
+                        "userName": data.userName,
+                        "userEstHour": data.userEstHour,
+                        "userTotalSubTask": data.userTotalSubTask
                     }
                 })
             }
@@ -314,7 +302,7 @@ export const loadUpcomingTask = () => {
 
 /**
  * ------------------------------------------------------------------------------------------------------
- * Edit User
+ * Edit Task
  * ------------------------------------------------------------------------------------------------------
  */
 export const editTask = (id) => {
@@ -345,7 +333,7 @@ const calEstHour = () => {
 
         const { taskList } = getState().upcomingTaskReducer
 
-        const totalEstHour = taskList.reduce( (accumulator, currentValue) => {
+        const totalEstHour = taskList.reduce((accumulator, currentValue) => {
 
             return accumulator + currentValue.estHour
         }, 0)
@@ -373,27 +361,31 @@ export const updateTask = (values) => {
         put('/upcoming-task/update/' + _id, values)
             .then(data => {
 
-                const findIndex = taskList.findIndex(item => item._id == _id)
+                // const findIndex = taskList.findIndex(item => item._id == _id)
 
-                let newTaskList = [
-                    ...taskList.slice(0, findIndex),
-                    data,
-                    ...taskList.slice(findIndex + 1)
-                ]
+                // let newTaskList = [
+                //     ...taskList.slice(0, findIndex),
+                //     data,
+                //     ...taskList.slice(findIndex + 1)
+                // ]
 
-                //-- Step-1
-                dispatch({
-                    type: UPCOMING_TASK_UPDATE_TASK,
-                    payload: {
-                        taskList: newTaskList,
-                    }
-                })
+                // //-- Step-1
+                // dispatch({
+                //     type: UPCOMING_TASK_UPDATE_TASK,
+                //     payload: {
+                //         taskList: newTaskList,
+                //     }
+                // })
 
                 //-- Step-2
-                dispatch(calEstHour())
+                // dispatch(calEstHour())
 
                 //-- Step-3
                 dispatch(toggleModalVisible())
+
+                dispatch(loadUpcomingTask())
+
+
             })
             .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
     }
@@ -410,16 +402,18 @@ export const removeTask = (id) => {
         deleteMethod('/upcoming-task/delete/' + id)
             .then(data => {
 
-                const newTaskList = taskList.filter(item => item._id != id)
+                // const newTaskList = taskList.filter(item => item._id != id)
 
-                dispatch({
-                    type: UPCOMING_TASK_REMOVE_TASK,
-                    payload: {
-                        taskList: newTaskList
-                    }
-                })
+                // dispatch({
+                //     type: UPCOMING_TASK_REMOVE_TASK,
+                //     payload: {
+                //         taskList: newTaskList
+                //     }
+                // })
 
-                dispatch(calEstHour())
+                // dispatch(calEstHour())
+
+                dispatch(loadUpcomingTask())
             })
     }
 }

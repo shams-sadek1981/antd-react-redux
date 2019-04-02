@@ -68,7 +68,7 @@ export const get = (url) => {
 
 
 //-- DELETE Method
-export const deleteMethod = (url) => {
+export const deleteMethod = (url, data={}) => {
 
     const apiUrl = process.env.REACT_APP_HOST + url;
 
@@ -87,15 +87,12 @@ export const deleteMethod = (url) => {
         },
         redirect: "follow", // manual, *follow, error
         referrer: "no-referrer", // no-referrer, *client
+        body: JSON.stringify(data)
     }
 
     return fetch(apiUrl, options)
-        .then(function (response) {
-            return response.json();
-        })
+        .then(handleErrors)
         .then(function (myJson) {
-            // console.log(JSON.stringify(myJson));
-            // return JSON.stringify(myJson)
             return myJson
         });
 }

@@ -1,9 +1,13 @@
 import React, { Fragment } from 'react'
 
-import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm } from 'antd';
+import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm, Button } from 'antd';
 
-import { editTask, removeTask, updateCheckList } from '../../actions/upcomingTaskActions';
+import { editTask, removeTask
+    } from '../../actions/upcomingTaskActions';
 
+import { toggleSubtaskModalVisible } from '../../actions/task/subTaskActions';
+
+import { _SubTaskView } from './_SubTaskView'
 
 export const _TaskList = (props) => {
 
@@ -20,7 +24,7 @@ export const _TaskList = (props) => {
             key: 'taskName',
             render: (text, record) =>
                 <div>
-                    <a href="javascript:;">{text}</a>
+                    <a href="javascript:;" onClick={() => dispatch(toggleSubtaskModalVisible())}>{text}</a>
                     <div>
                         {record.taskType}
                         <span style={{ fontStyle: 'italic' }}> Est: {record.estHour}</span>
@@ -31,13 +35,16 @@ export const _TaskList = (props) => {
             title: 'Description',
             dataIndex: 'description',
             key: 'description',
-            width: 250
+            width: 250,
         },
         {
-            title: 'Assigned User',
-            dataIndex: 'assignedUser',
-            key: 'assignedUser',
-            render: (text, record) => <Tag color={record.userColor} key={text}>{text}</Tag>
+            title: 'Task Type',
+            dataIndex: 'taskType',
+            key: 'taskType',
+            render: (text, record) =>
+                <div>
+                    {record.taskType}
+                </div>
         },
         {
             title: 'Project Name',
@@ -46,35 +53,6 @@ export const _TaskList = (props) => {
             render: (text, record) =>
                 <div>
                     {record.projectName}
-                </div>
-        },
-        {
-            title: 'Check List',
-            dataIndex: 'checkList',
-            key: 'checkList',
-            render: (text, record) =>
-                <div>
-                    <div>
-                        <Checkbox defaultChecked={record.frontend} style={{ width: '100px' }}
-                            onChange={(e) => dispatch(updateCheckList(record._id, 'frontend', e.target.checked))}
-                        >Frontend</Checkbox>
-
-                        <Checkbox
-                            defaultChecked={record.srs}
-                            onChange={(e) => dispatch(updateCheckList(record._id, 'srs', e.target.checked))}
-                        > SRS
-                        </Checkbox>
-
-                    </div>
-                    <div>
-                        <Checkbox defaultChecked={record.mockup} style={{ width: '100px' }}
-                            onChange={(e) => dispatch(updateCheckList(record._id, 'mockup', e.target.checked))}
-                        >Mockup</Checkbox>
-
-                        <Checkbox defaultChecked={record.design}
-                            onChange={(e) => dispatch(updateCheckList(record._id, 'design', e.target.checked))}
-                        >Design</Checkbox>
-                    </div>
                 </div>
         },
         {
@@ -89,15 +67,13 @@ export const _TaskList = (props) => {
                     <Divider type="vertical" />
 
                     <Popconfirm title="Are you sure delete this task?"
-                        onConfirm={ (e) => confirm(record._id)}
+                        onConfirm={(e) => confirm(record._id)}
                         okText="Yes" cancelText="No">
-                        
+
                         <a href="javascript:;">
                             <Icon type="delete" theme="twoTone" />
                         </a>
                     </Popconfirm>
-
-
                 </span>
             ),
         }
@@ -117,6 +93,7 @@ export const _TaskList = (props) => {
             _id: item._id,
             key: index,
             taskName: item.taskName,
+            subTasks: item.subTasks,
             description: item.description,
             taskType: item.taskType,
             projectName: item.projectName,
@@ -133,7 +110,15 @@ export const _TaskList = (props) => {
     return (
         <Fragment>
             <Spin tip="Loading..." spinning={upcomingTask.spinning}>
-                <Table columns={columns} dataSource={data} size="small" />
+                <Table
+                    columns={columns}
+                    dataSource={data} size="small"
+                    expandedRowRender={record =>
+                        <div style={{ margin: 0 }}>
+                            <_SubTaskView { ...props } taskId={record._id} subTasks={record.subTasks}/>
+                        </div>
+                    }
+                />
             </Spin>
 
         </Fragment>
