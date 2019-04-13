@@ -72,39 +72,11 @@ export const saveNewSubTask = (values) => {
 
     return (dispatch, getState) => {
 
-        const { taskList, subTaskModal } = getState().upcomingTaskReducer
+        const { subTaskModal } = getState().upcomingTaskReducer
         const { taskId } = subTaskModal
-
 
         post('/upcoming-task/subtask/create/' + taskId, values)
             .then(data => {
-
-                // const findTask = taskList.find(item => item._id == taskId)
-
-                // const newTaskList = taskList.map(item => {
-
-                //     if (item._id == taskId) {
-                //         return {
-                //             ...item,
-                //             subTasks: [
-                //                 ...findTask.subTasks,
-                //                 data.result
-                //             ]
-                //         }
-                //     } else {
-                //         return item
-                //     }
-
-                // })
-
-                // dispatch({
-                //     type: TASK_SAVE_NEW_SUB_TASK,
-                //     payload: {
-                //         taskList: newTaskList
-                //     }
-                // })
-
-                // dispatch(calEstHour())
 
                 dispatch(toggleSubtaskModalVisible())
 
@@ -127,35 +99,8 @@ export const deleteSubTask = (taskId, subTaskId) => {
 
     return (dispatch, getState) => {
 
-        const { taskList } = getState().upcomingTaskReducer
-
-
         deleteMethod(`/upcoming-task/subtask/delete/${subTaskId}`, { id: taskId })
             .then(data => {
-
-                // const findTask = taskList.find(item => item._id == taskId)
-                // const { subTasks } = findTask
-                // const newSubTasks = subTasks.filter(item => item._id != subTaskId)
-
-                // const filteredTaskList = taskList.filter(item => item._id != taskId)
-
-                // const updatedSingleTask = {
-                //     ...findTask,
-                //     subTasks: [...newSubTasks]
-                // }
-
-
-                // const newTaskList = [
-                //     ...filteredTaskList,
-                //     updatedSingleTask
-                // ]
-
-                // dispatch({
-                //     type: TASK_DELETE_SUB_TASK,
-                //     payload: {
-                //         taskList: newTaskList
-                //     }
-                // })
 
                 dispatch(loadUpcomingTask())
 
@@ -221,32 +166,10 @@ export const updateSubTask = (values) => {
 
     return (dispatch, getState) => {
 
-        const { taskList, subTaskModal } = getState().upcomingTaskReducer
-
-
         const subTaskId = values._id
 
         put(`/upcoming-task/subtask/update/${subTaskId}`, values)
             .then(data => {
-
-                // const taskId = data.result._id
-                // const filteredTaskList = taskList.filter(item => item._id != taskId)
-
-                // const newTaskList = [
-                //     ...filteredTaskList,
-                //     data.result
-                // ]
-
-                // dispatch({
-                //     type: TASK_UPDATE_SUB_TASK,
-                //     payload: {
-                //         taskList: newTaskList,
-                //         subTaskModal: {
-                //             ...subTaskModal,
-                //             modalVisible: false
-                //         }
-                //     }
-                // })
 
                 dispatch(toggleSubtaskModalVisible())
 

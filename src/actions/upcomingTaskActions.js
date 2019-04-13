@@ -7,8 +7,9 @@ import { get, post, put, deleteMethod } from '../functions'
 import { loadUser } from './userActions'
 
 //-- Define action names
+export const UPCOMING_TASK_CHANGE_TABKEY = "UPCOMING_TASK_CHANGE_TABKEY"
+
 export const UPCOMING_TASK_SPINNING = "UPCOMING_TASK_SPINNING"
-export const UPCOMING_TASK_LOAD = "UPCOMING_TASK_LOAD"
 
 export const UPCOMING_TASK_TOGGLE_MODAL_VISIBLE = "UPCOMING_TASK_TOGGLE_MODAL_VISIBLE"
 
@@ -20,12 +21,12 @@ export const UPCOMING_TASK_UPDATE_TASK = "UPCOMING_TASK_UPDATE_TASK"
 
 export const UPCOMING_TASK_REMOVE_TASK = "UPCOMING_TASK_REMOVE_TASK"
 
-export const UPCOMING_TASK_SEARCH_BY_USER = "UPCOMING_TASK_SEARCH_BY_USER"
-
 export const UPCOMING_TASK_CAL_EST_HOUR = "UPCOMING_TASK_CAL_EST_HOUR"
 
 export const UPCOMING_TASK_SEARCH_BY = "UPCOMING_TASK_SEARCH_BY"
+export const UPCOMING_TASK_SEARCH_BY_RESULT = "UPCOMING_TASK_SEARCH_BY_RESULT"
 
+export const UPCOMING_TASK_CHANGE_PAGINATION = "UPCOMING_TASK_CHANGE_PAGINATION"
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -34,6 +35,89 @@ const openNotificationWithIcon = (type, message, description) => {
         description: description
     });
 };
+
+
+//-- Change Pagination (Table Pagination)
+export const changePagination = (pagination) => {
+    return (dispatch, getState) => {
+
+        dispatch(toggleSpinning(true))
+
+        dispatch({
+            type: UPCOMING_TASK_CHANGE_PAGINATION,
+            payload: {
+                pagination
+            }
+        })
+
+        //-- Load Result
+        dispatch(upcomingTaskSearchByResult())
+
+        dispatch(toggleSpinning(false))
+    }
+}
+
+
+
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * Change Tabkey
+ * ----------------------------------------------------------------------------------------------------
+ * @param {*} value 
+ * Step-1 => pagination: { current: 1 }
+ * Step-2 => searchBy: { status: true/false } true=completed task, false=incomplete task
+ * Step-3 =>fetch data from API
+ */
+export const changeTabKey = (value) => {
+    return (dispatch, getState) => {
+
+        const { searchBy, pagination } = getState().upcomingTaskReducer
+        const { pageSize } = pagination
+        console.log(value, pageSize)
+
+        //-- Step-2 task status
+        let taskStatus = false
+        if (value == "2") { //-- completed task
+            taskStatus = true
+        }
+
+        const newSearchBy = {
+            ...searchBy,
+            status: taskStatus
+        }
+
+
+        //-- step-3 fetch data from API
+        const current = 1
+        const status = taskStatus
+        const { name, project, text } = searchBy
+
+
+        getTaskResult(current, pageSize, name, project, status, text)
+            .then(data => {
+                dispatch({
+                    type: UPCOMING_TASK_CHANGE_TABKEY,
+                    payload: {
+                        status,
+                        tabKey: value,
+                        searchBy: newSearchBy,
+                        pagination: {
+                            ...data.pagination,
+                            current: 1 //-- set current while changing tabkey
+                        },
+                        taskList: data.result,
+                        "totalEstHour": data.totalEstHour,
+                        "totalSubTask": data.totalSubTask,
+                        "userName": data.userName,
+                        "userEstHour": data.userEstHour,
+                        "userTotalSubTask": data.userTotalSubTask,
+                    }
+                })
+            })
+    }
+}//-- end
+
+
 
 
 //-- Toggle Spinning
@@ -52,11 +136,13 @@ export const toggleSpinning = (booleanValue) => {
 }
 
 export const searchBy = (fieldName, value) => {
-    return async (dispatch, getState) => {
+    return (dispatch, getState) => {
 
         dispatch(toggleSpinning(true))
 
-        let { searchBy } = getState().upcomingTaskReducer
+        let { searchBy, pagination, tabKey } = getState().upcomingTaskReducer
+        const { current } = pagination
+        const { name, project, text, status } = searchBy
 
         //-- set Search by
         searchBy = {
@@ -64,60 +150,110 @@ export const searchBy = (fieldName, value) => {
             [fieldName]: value
         }
 
+        pagination = {
+            ...pagination,
+            current: 1
+        }
+
         dispatch({
             type: UPCOMING_TASK_SEARCH_BY,
             payload: {
-                searchBy
+                searchBy,
+                pagination
             }
         })
 
 
-        //-- build query with url
-        let buildUrlQuery = '/upcoming-task/search?'
-        Object.keys(searchBy).forEach(key => {
-            buildUrlQuery += key + '=' + searchBy[key] + '&'
-        })
+        //-- Load Result
+        dispatch(upcomingTaskSearchByResult({ status, tabKey }))
 
-        const searchUrl = buildUrlQuery.slice(0, -1)
-
-        console.log(searchUrl)
-
-
-        await get(searchUrl)
-            .then(data => {
-
-                dispatch({
-                    type: UPCOMING_TASK_SEARCH_BY_USER,
-                    payload: {
-                        taskList: data.result,
-                        "totalTask": data.totalTask,
-                        "totalEstHour": data.totalEstHour,
-                        "totalSubTask": data.totalSubTask,
-                        "userName": data.userName,
-                        "userEstHour": data.userEstHour,
-                        "userTotalSubTask": data.userTotalSubTask
-                    }
-                })
-                
-            })
-            .catch(err => {
-
-                dispatch({
-                    type: UPCOMING_TASK_SEARCH_BY_USER,
-                    payload: {
-                        taskList: [],
-                        totalTask: 0,
-                        totalEstHour: 0
-                    }
-                })
-
-            })
 
         dispatch(toggleSpinning(false))
 
     }
+}//-- end
+
+
+
+
+//-- Helper Function for search result
+const setObjForSearchResult = (obj) => {
+
+    //-- Set initial Obj
+    let setObj = {
+        status: false,
+        tabKey: "1",
+        changeTab: false
+    }
+
+    // //-- set status
+    if (Object.entries(obj).length > 0) {
+        console.log("obj", obj)
+        setObj = {
+            ...setObj,
+            ...obj
+        }
+    }
+
+    return {
+        tabKey: setObj.tabKey,
+        status: setObj.status,
+        changeTab: setObj.changeTab
+    }
+
+}//-- end 
+
+
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * get Result Helper function
+ * ----------------------------------------------------------------------------------------------------
+ * @param {*} current 
+ * @param {*} name 
+ * @param {*} project 
+ * @param {*} status 
+ * @param {*} text 
+ */
+
+const getTaskResult = (current, pageSize, name, project, status, text) => {
+
+    const searchUrl = `/upcoming-task/search?page=${current}&pageSize=${pageSize}&name=${name}&project=${project}&status=${status}&text=${text}`
+
+    return get(searchUrl)
+        .then(data => data)
+        .catch(err => console.log(err))
 }
 
+
+/**
+ * ------------------------------------------------------------------------------------------
+ * Task Result
+ * ------------------------------------------------------------------------------------------
+ */
+export const upcomingTaskSearchByResult = () => {
+    return (dispatch, getState) => {
+
+        let { searchBy, pagination } = getState().upcomingTaskReducer
+        let { current, pageSize } = pagination
+        const { name, project, text, status } = searchBy
+
+        getTaskResult(current, pageSize, name, project, status, text)
+            .then(data => {
+                dispatch({
+                    type: UPCOMING_TASK_SEARCH_BY_RESULT,
+                    payload: {
+                        taskList: data.result,
+                        pagination: data.pagination,
+                        "totalEstHour": data.totalEstHour,
+                        "totalSubTask": data.totalSubTask,
+                        "userName": data.userName,
+                        "userEstHour": data.userEstHour,
+                        "userTotalSubTask": data.userTotalSubTask,
+                    }
+                })
+            })
+    }
+}//-- end function
 
 
 
@@ -190,17 +326,6 @@ export const saveNewTask = (values) => {
         post('/upcoming-task/create', values)
             .then(data => {
 
-                // taskList.push(data.result)
-
-                // dispatch({
-                //     type: UPCOMING_TASK_SAVE_NEW_TASK,
-                //     payload: {
-                //         taskList
-                //     }
-                // })
-
-                // dispatch(calEstHour())
-
                 dispatch(toggleModalVisible())
 
                 dispatch(loadUpcomingTask())
@@ -210,11 +335,6 @@ export const saveNewTask = (values) => {
             .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
     }
 }
-
-
-
-
-
 
 
 
@@ -243,26 +363,6 @@ export const toggleModalVisible = () => {
 
 
 
-
-
-// export const toggleModal = () => {
-//     return (dispatch, getState) => {
-
-//         const { modal } = getState().upcomingTaskReducer
-
-//         dispatch({
-//             type: UPCOMING_TASK_TOGGLE_MODAL_VISIBLE,
-//             payload: {
-//                 modal: {
-//                     ...modal,
-//                     modalVisible: !modal.modalVisible
-//                 }
-//             }
-//         })
-//     }
-// }
-
-
 /**
  * ----------------------------------------------------------------------------------------------------
  * Load Upcoming Task...
@@ -271,30 +371,19 @@ export const toggleModalVisible = () => {
 export const loadUpcomingTask = () => {
     return (dispatch, getState) => {
 
+        const upcomingTask = getState().upcomingTaskReducer
+        const { tabKey, pagination } = upcomingTask
+        const { current } = pagination
+
+        let status = false
+        if (tabKey == 2) {
+            status = true
+        }
+
         dispatch(loadUser())
 
-        const upcomingTask = getState().upcomingTaskReducer
-
-        // if (upcomingTask.taskList.length > 0) return;
-
-        const list = get('/upcoming-task/search?name=all&project=all')
-
-        list.then(data => {
-            if (data.result) {
-                dispatch({
-                    type: UPCOMING_TASK_LOAD,
-                    payload: {
-                        taskList: data.result,
-                        "totalTask": data.totalTask,
-                        "totalEstHour": data.totalEstHour,
-                        "totalSubTask": data.totalSubTask,
-                        "userName": data.userName,
-                        "userEstHour": data.userEstHour,
-                        "userTotalSubTask": data.userTotalSubTask
-                    }
-                })
-            }
-        })
+        //-- Load Result
+        dispatch(upcomingTaskSearchByResult())
 
     }
 }
@@ -328,66 +417,47 @@ export const editTask = (id) => {
 }
 
 
-const calEstHour = () => {
-    return (dispatch, getState) => {
-
-        const { taskList } = getState().upcomingTaskReducer
-
-        const totalEstHour = taskList.reduce((accumulator, currentValue) => {
-
-            return accumulator + currentValue.estHour
-        }, 0)
-
-        dispatch({
-            type: UPCOMING_TASK_CAL_EST_HOUR,
-            payload: {
-                totalEstHour
-            }
-        })
-    }
-}
 /**
  * -------------------------------------------------------------------------------------------------
  * Update Task
  * -------------------------------------------------------------------------------------------------
  */
 export const updateTask = (values) => {
+
     return (dispatch, getState) => {
 
-        const { modal, taskList } = getState().upcomingTaskReducer
+        const { modal } = getState().upcomingTaskReducer
 
         const { _id } = modal.EditInfo
 
         put('/upcoming-task/update/' + _id, values)
             .then(data => {
 
-                // const findIndex = taskList.findIndex(item => item._id == _id)
-
-                // let newTaskList = [
-                //     ...taskList.slice(0, findIndex),
-                //     data,
-                //     ...taskList.slice(findIndex + 1)
-                // ]
-
-                // //-- Step-1
-                // dispatch({
-                //     type: UPCOMING_TASK_UPDATE_TASK,
-                //     payload: {
-                //         taskList: newTaskList,
-                //     }
-                // })
-
-                //-- Step-2
-                // dispatch(calEstHour())
-
-                //-- Step-3
                 dispatch(toggleModalVisible())
 
                 dispatch(loadUpcomingTask())
 
-
             })
             .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
+    }
+}
+
+//-- Update Task Status (true/false)
+export const updateTaskStatus = (values) => {
+
+    return (dispatch, getState) => {
+
+        const { _id, status } = values
+
+        const data = { status }
+
+        put('/upcoming-task/update/' + _id, data)
+            .then(data => {
+
+                dispatch(loadUpcomingTask())
+
+            })
+            .catch(err => openNotificationWithIcon('error', err.message, 'Task status updating problem'))
     }
 }
 
@@ -401,18 +471,6 @@ export const removeTask = (id) => {
 
         deleteMethod('/upcoming-task/delete/' + id)
             .then(data => {
-
-                // const newTaskList = taskList.filter(item => item._id != id)
-
-                // dispatch({
-                //     type: UPCOMING_TASK_REMOVE_TASK,
-                //     payload: {
-                //         taskList: newTaskList
-                //     }
-                // })
-
-                // dispatch(calEstHour())
-
                 dispatch(loadUpcomingTask())
             })
     }

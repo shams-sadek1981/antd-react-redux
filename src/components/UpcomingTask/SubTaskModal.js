@@ -37,7 +37,7 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                                 initialValue: upcomingTask.subTaskModal.EditInfo._id,
                                 // rules: [{ required: true, message: 'Please input the subtask!' }],
                             })(
-                                <Input />
+                                <Input type="hidden"/>
                             )}
                         {/* </Form.Item> */}
 

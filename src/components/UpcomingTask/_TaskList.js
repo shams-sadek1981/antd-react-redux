@@ -2,8 +2,9 @@ import React, { Fragment } from 'react'
 
 import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm, Button } from 'antd';
 
-import { editTask, removeTask
-    } from '../../actions/upcomingTaskActions';
+import {
+    editTask, removeTask, updateTask, updateTaskStatus, changePagination
+} from '../../actions/upcomingTaskActions';
 
 import { toggleSubtaskModalVisible } from '../../actions/task/subTaskActions';
 
@@ -12,6 +13,10 @@ import { _SubTaskView } from './_SubTaskView'
 export const _TaskList = (props) => {
 
     const { dispatch, upcomingTask } = props
+
+    const handleTableChange = (pagination, filters, sorter) => {
+        dispatch(changePagination(pagination))
+    }
 
     const confirm = (id) => {
         dispatch(removeTask(id))
@@ -60,13 +65,23 @@ export const _TaskList = (props) => {
             key: 'action',
             render: (text, record) => (
                 <span>
+                    <Checkbox checked={record.status}
+                        onChange={(e) => dispatch(
+                            updateTaskStatus({
+                                _id: record._id,
+                                status: !record.status
+                            })
+                        )}
+                    />
+                    <Divider type="vertical" />
+
                     <a onClick={() => dispatch(editTask(record._id))} href="javascript:;">
                         <Icon type="edit" theme="twoTone" />
                     </a>
 
                     <Divider type="vertical" />
 
-                    <Popconfirm title="Are you sure delete this task?"
+                    <Popconfirm title="Are you sure to delete this task?"
                         onConfirm={(e) => confirm(record._id)}
                         okText="Yes" cancelText="No">
 
@@ -91,6 +106,7 @@ export const _TaskList = (props) => {
 
         return {
             _id: item._id,
+            status: item.status,
             key: index,
             taskName: item.taskName,
             subTasks: item.subTasks,
@@ -109,18 +125,18 @@ export const _TaskList = (props) => {
 
     return (
         <Fragment>
-            <Spin tip="Loading..." spinning={upcomingTask.spinning}>
-                <Table
-                    columns={columns}
-                    dataSource={data} size="small"
-                    expandedRowRender={record =>
-                        <div style={{ margin: 0 }}>
-                            <_SubTaskView { ...props } taskId={record._id} subTasks={record.subTasks}/>
-                        </div>
-                    }
-                />
-            </Spin>
-
+            <Table
+                loading={upcomingTask.spinning}
+                pagination={upcomingTask.pagination}
+                onChange={ handleTableChange }
+                columns={columns}
+                dataSource={data} size="small"
+                expandedRowRender={record =>
+                    <div style={{ margin: 0 }}>
+                        <_SubTaskView {...props} taskId={record._id} subTasks={record.subTasks} />
+                    </div>
+                }
+            />
         </Fragment>
     )
 }

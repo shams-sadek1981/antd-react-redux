@@ -2,24 +2,26 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-import { Tabs, Radio, Form, Modal, Button, Icon, Row, Col } from 'antd';
+import { Tabs, Radio, Form, Modal, Button, Icon, Row, Col, Input, Divider } from 'antd';
 
 // import { _AddUser } from './_AddUser'
 import { _TaskList } from './_TaskList'
 import { NewTaskModal } from './NewTaskModal'
 import { SubTaskModal } from './SubTaskModal'
-import { _SearchByUser } from './_SearchByUser'
-import { _SearchByProject } from './_SearchByProject'
+import { SearchHeader } from './SearchHeader'
 
-import { 
+import {
     handleSubmit,
     loadUpcomingTask,
     addNewTask,
-    } from '../../actions/upcomingTaskActions'
+    searchBy,
+    changeTabKey
+} from '../../actions/upcomingTaskActions'
 
 import { handleSubTaskSubmit } from '../../actions/task/subTaskActions'
 
 const { TabPane } = Tabs;
+const Search = Input.Search;
 
 class UpcomingTask extends Component {
 
@@ -30,7 +32,6 @@ class UpcomingTask extends Component {
     };
 
     componentDidMount = () => {
-
         this.props.dispatch(loadUpcomingTask())
     }
 
@@ -83,7 +84,7 @@ class UpcomingTask extends Component {
         return (
             <Fragment>
 
-                { upcomingTask.modal.modalVisible &&
+                {upcomingTask.modal.modalVisible &&
                     <NewTaskModal
                         {...this.props}
                         wrappedComponentRef={this.saveFormRef}
@@ -92,52 +93,26 @@ class UpcomingTask extends Component {
                     />
                 }
 
-                { upcomingTask.subTaskModal.modalVisible &&
+                {upcomingTask.subTaskModal.modalVisible &&
                     <SubTaskModal
-                    {...this.props}
-                    wrappedComponentRef={this.saveFormRef}
-                    // onCancel={this.handleCancel}
-                    onCreate={this.handleSubTaskCreate}
+                        {...this.props}
+                        wrappedComponentRef={this.saveFormRef}
+                        // onCancel={this.handleCancel}
+                        onCreate={this.handleSubTaskCreate}
                     />
                 }
 
+                {/* ##### Search Header ##### */}
+                <SearchHeader {...this.props}/>
+
+                <Divider>Task</Divider>
+
                 <Tabs
-                    activeKey="1"
+                    activeKey={upcomingTask.tabKey}
                     size={size}
-                // onChange={(key) => dispatch(changeDefaultActiveKey(key))}
+                    onChange={(key) => dispatch(changeTabKey(key))}
                 >
                     <TabPane tab="Task List" key="1">
-                        <Row>
-                            <Col span={3}>
-                                <Button
-                                    type="primary"
-                                    onClick={() => dispatch(addNewTask())}
-                                >
-                                    <Icon type="plus-circle" />New Task
-                                </Button>
-                            </Col>
-
-                            <Col span={3}>
-                                <div> <i>Total Est. <b>{upcomingTask.totalEstHour} </b></i></div>
-                                <div> <i>Total Task: <b>{upcomingTask.totalTask} </b></i></div>
-                                <div> <i>Total Subtask: <b>{upcomingTask.totalSubTask} </b></i></div>
-                            </Col>
-                            
-                            <Col span={3}>
-                                <div> <i>User: <b>{upcomingTask.userName} </b></i></div>
-                                <div> <i>User Est: <b>{upcomingTask.userEstHour} </b></i></div>
-                                <div> <i>User Subtask: <b>{upcomingTask.userTotalSubTask} </b></i></div>
-                            </Col>
-
-                            <Col span={5}>
-                                <_SearchByUser {...this.props} />
-                            </Col>
-
-                            <Col span={5}>
-                                <_SearchByProject {...this.props} />
-                            </Col>
-                        </Row>
-
                         <Row>
                             <Col span={24}>
                                 <_TaskList {...this.props} />
@@ -145,7 +120,10 @@ class UpcomingTask extends Component {
                         </Row>
                     </TabPane>
 
-                    <TabPane tab="Upcoming Task" key="2">Upcoming Task</TabPane>
+                    <TabPane tab="Completed Task" key="2">
+                        Completed Task
+                        <_TaskList {...this.props} />
+                    </TabPane>
                     <TabPane tab="Running Task" key="3">Running Task</TabPane>
                 </Tabs>
             </Fragment >
