@@ -5,6 +5,8 @@ import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import AboutUs from '../AboutUs/'
 import User from '../User'
 import UpcomingTask from '../UpcomingTask'
+import AdminDashboard from '../AdminDashboard'
+import Release from '../Release'
 import './adminPanel.less'
 
 const {
@@ -68,6 +70,11 @@ class AdminPanel extends Component {
                                 <Icon type="user" />
                                 <span><NavLink to={`${url}/upcoming-task`}>Upcoming Task</NavLink></span>
                             </Menu.Item>
+                            
+                            <Menu.Item key="6">
+                                <Icon type="user" />
+                                <span><NavLink to={`${url}/release`}>Release</NavLink></span>
+                            </Menu.Item>
 
                         </Menu>
                     </Sider>
@@ -84,9 +91,10 @@ class AdminPanel extends Component {
                         }}
                         >
                             <Switch>
-                                <Route exact path={`${path}`} render={() => <h2>Dashboard</h2>} />
+                                <Route exact path={`${path}`} component={AdminDashboard} />
                                 <Route path={`${path}/users`} component={User} />
                                 <Route path={`${path}/upcoming-task`} component={UpcomingTask} />
+                                <Route path={`${path}/release`} component={Release} />
                                 <Route path={`${path}/customer`} render={() => <h2>Customers</h2>} />
                                 <Route render={() => <h2>Not Found Admin Panel child component</h2>} />
                             </Switch>

@@ -3,11 +3,10 @@ import React, { Fragment } from 'react'
 import { Select, Button, Icon, Row, Col, Input } from 'antd';
 
 import {
-    addNewTask,
+    addNew,
     searchBy,
-} from '../../actions/upcomingTaskActions'
+} from '../../actions/releaseActions'
 
-import { _SearchByUser } from './_SearchByUser'
 import { _SearchByProject } from './_SearchByProject'
 
 const { Option } = Select;
@@ -31,24 +30,10 @@ export const SearchHeader = (props) => {
                 <Col span={3}>
                     <Button
                         type="primary"
-                        onClick={() => dispatch(addNewTask())}
+                        onClick={() => dispatch(addNew())}
                     >
-                        <Icon type="plus-circle" />New Task
-                                </Button>
-                </Col>
-
-                <Col span={3}>
-                    <div> <i>Total Est. <b>{upcomingTask.totalEstHour} </b></i></div>
-                    <div> <i>Total Task: <b>{upcomingTask.pagination.total} </b></i></div>
-                </Col>
-
-                <Col span={3}>
-                    <div> <i>User: <b>{upcomingTask.userName} </b></i></div>
-                    <div> <i>Total Subtask: <b>{upcomingTask.totalSubTask} </b></i></div>
-                </Col>
-
-                <Col span={5}>
-                    <_SearchByUser {...props} />
+                        <Icon type="plus-circle" />New
+                    </Button>
                 </Col>
 
                 <Col span={5}>

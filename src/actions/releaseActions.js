@@ -1,31 +1,37 @@
+import moment from 'moment'
+
 import {
     notification
 } from 'antd';
 
 import { get, post, put, deleteMethod } from '../functions'
 
-import { loadUser } from './userActions'
-
 //-- Define action names
-export const UPCOMING_TASK_CHANGE_TABKEY = "UPCOMING_TASK_CHANGE_TABKEY"
+export const RELEASE_SEARCH_BY_RESULT = "RELEASE_SEARCH_BY_RESULT"
+export const RELEASE_CHANGE_TABKEY = "RELEASE_CHANGE_TABKEY"
 
-export const UPCOMING_TASK_SPINNING = "UPCOMING_TASK_SPINNING"
+export const RELEASE_ADD_NEW = "RELEASE_ADD_NEW"
+export const RELEASE_SAVE_NEW_ITEM = "RELEASE_SAVE_NEW_ITEM"
+export const RELEASE_EDIT_ITEM = "RELEASE_EDIT_ITEM"
+export const RELEASE_UPDATE_ITEM = "RELEASE_UPDATE_ITEM"
 
-export const UPCOMING_TASK_TOGGLE_MODAL_VISIBLE = "UPCOMING_TASK_TOGGLE_MODAL_VISIBLE"
 
-export const UPCOMING_TASK_ADD_NEW_TASK = "UPCOMING_TASK_ADD_NEW_TASK"
-export const UPCOMING_TASK_SAVE_NEW_TASK = "UPCOMING_TASK_SAVE_NEW_TASK"
 
-export const UPCOMING_TASK_EDIT_TASK = "UPCOMING_TASK_EDIT_TASK"
+export const RELEASE_SPINNING = "RELEASE_SPINNING"
 
-export const UPCOMING_TASK_REMOVE_TASK = "UPCOMING_TASK_REMOVE_TASK"
+export const RELEASE_TOGGLE_MODAL_VISIBLE = "RELEASE_TOGGLE_MODAL_VISIBLE"
 
-export const UPCOMING_TASK_CAL_EST_HOUR = "UPCOMING_TASK_CAL_EST_HOUR"
 
-export const UPCOMING_TASK_SEARCH_BY = "UPCOMING_TASK_SEARCH_BY"
-export const UPCOMING_TASK_SEARCH_BY_RESULT = "UPCOMING_TASK_SEARCH_BY_RESULT"
 
-export const UPCOMING_TASK_CHANGE_PAGINATION = "UPCOMING_TASK_CHANGE_PAGINATION"
+
+export const RELEASE_REMOVE_TASK = "RELEASE_REMOVE_TASK"
+
+export const RELEASE_CAL_EST_HOUR = "RELEASE_CAL_EST_HOUR"
+
+export const RELEASE_SEARCH_BY = "RELEASE_SEARCH_BY"
+
+
+export const RELEASE_CHANGE_PAGINATION = "RELEASE_CHANGE_PAGINATION"
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -43,14 +49,14 @@ export const changePagination = (pagination) => {
         dispatch(toggleSpinning(true))
 
         dispatch({
-            type: UPCOMING_TASK_CHANGE_PAGINATION,
+            type: RELEASE_CHANGE_PAGINATION,
             payload: {
                 pagination
             }
         })
 
         //-- Load Result
-        dispatch(upcomingTaskSearchByResult())
+        dispatch(releaseSearchByResult())
 
         dispatch(toggleSpinning(false))
     }
@@ -70,32 +76,31 @@ export const changePagination = (pagination) => {
 export const changeTabKey = (value) => {
     return (dispatch, getState) => {
 
-        const { searchBy, pagination } = getState().upcomingTaskReducer
+        const { searchBy, pagination } = getState().releaseReducer
         const { pageSize } = pagination
-        console.log(value, pageSize)
 
         //-- Step-2 task status
-        let taskStatus = false
+        let newStatus = false
         if (value == "2") { //-- completed task
-            taskStatus = true
+            newStatus = true
         }
 
         const newSearchBy = {
             ...searchBy,
-            status: taskStatus
+            status: newStatus
         }
 
 
         //-- step-3 fetch data from API
         const current = 1
-        const status = taskStatus
-        const { name, project, text } = searchBy
+        const status = newStatus
+        const { project, text } = searchBy
 
 
-        getTaskResult(current, pageSize, name, project, status, text)
+        getResult(current, pageSize, project, status, text)
             .then(data => {
                 dispatch({
-                    type: UPCOMING_TASK_CHANGE_TABKEY,
+                    type: RELEASE_CHANGE_TABKEY,
                     payload: {
                         status,
                         tabKey: value,
@@ -104,12 +109,7 @@ export const changeTabKey = (value) => {
                             ...data.pagination,
                             current: 1 //-- set current while changing tabkey
                         },
-                        taskList: data.result,
-                        "totalEstHour": data.totalEstHour,
-                        "totalSubTask": data.totalSubTask,
-                        "userName": data.userName,
-                        "userEstHour": data.userEstHour,
-                        "userTotalSubTask": data.userTotalSubTask,
+                        list: data.result
                     }
                 })
             })
@@ -123,10 +123,10 @@ export const changeTabKey = (value) => {
 export const toggleSpinning = (booleanValue) => {
     return (dispatch, getState) => {
 
-        const { spinning } = getState().upcomingTaskReducer
+        const { spinning } = getState().releaseReducer
 
         dispatch({
-            type: UPCOMING_TASK_SPINNING,
+            type: RELEASE_SPINNING,
             payload: {
                 spinning: booleanValue
             }
@@ -139,7 +139,7 @@ export const searchBy = (fieldName, value) => {
 
         dispatch(toggleSpinning(true))
 
-        let { searchBy, pagination, tabKey } = getState().upcomingTaskReducer
+        let { searchBy, pagination, tabKey } = getState().releaseReducer
         const { current } = pagination
         const { name, project, text, status } = searchBy
 
@@ -155,7 +155,7 @@ export const searchBy = (fieldName, value) => {
         }
 
         dispatch({
-            type: UPCOMING_TASK_SEARCH_BY,
+            type: RELEASE_SEARCH_BY,
             payload: {
                 searchBy,
                 pagination
@@ -164,7 +164,7 @@ export const searchBy = (fieldName, value) => {
 
 
         //-- Load Result
-        dispatch(upcomingTaskSearchByResult({ status, tabKey }))
+        dispatch(releaseSearchByResult({ status, tabKey }))
 
 
         dispatch(toggleSpinning(false))
@@ -208,15 +208,14 @@ const setObjForSearchResult = (obj) => {
  * get Result Helper function
  * ----------------------------------------------------------------------------------------------------
  * @param {*} current 
- * @param {*} name 
  * @param {*} project 
  * @param {*} status 
  * @param {*} text 
  */
 
-const getTaskResult = (current, pageSize, name, project, status, text) => {
+const getResult = (current, pageSize, project, status, text) => {
 
-    const searchUrl = `/upcoming-task/search?page=${current}&pageSize=${pageSize}&name=${name}&project=${project}&status=${status}&text=${text}`
+    const searchUrl = `/release?page=${current}&pageSize=${pageSize}&project=${project}&status=${status}&text=${text}`
 
     return get(searchUrl)
         .then(data => data)
@@ -229,25 +228,20 @@ const getTaskResult = (current, pageSize, name, project, status, text) => {
  * Task Result
  * ------------------------------------------------------------------------------------------
  */
-export const upcomingTaskSearchByResult = () => {
+export const releaseSearchByResult = () => {
     return (dispatch, getState) => {
 
-        let { searchBy, pagination } = getState().upcomingTaskReducer
+        let { searchBy, pagination } = getState().releaseReducer
         let { current, pageSize } = pagination
-        const { name, project, text, status } = searchBy
+        const { project, text, status } = searchBy
 
-        getTaskResult(current, pageSize, name, project, status, text)
+        getResult(current, pageSize, project, status, text)
             .then(data => {
                 dispatch({
-                    type: UPCOMING_TASK_SEARCH_BY_RESULT,
+                    type: RELEASE_SEARCH_BY_RESULT,
                     payload: {
-                        taskList: data.result,
-                        pagination: data.pagination,
-                        "totalEstHour": data.totalEstHour,
-                        "totalSubTask": data.totalSubTask,
-                        "userName": data.userName,
-                        "userEstHour": data.userEstHour,
-                        "userTotalSubTask": data.userTotalSubTask,
+                        list: data.result,
+                        // pagination: data.pagination,
                     }
                 })
             })
@@ -260,15 +254,15 @@ export const upcomingTaskSearchByResult = () => {
 export const handleSubmit = (values) => {
     return (dispatch, getState) => {
 
-        const { modal } = getState().upcomingTaskReducer
+        const { modal } = getState().releaseReducer
         const { okText } = modal
 
         if (okText == "Create") {
             //-- Create New Task
-            dispatch(saveNewTask(values))
+            dispatch(saveNewItem(values))
         } else {
             //-- Update Task
-            dispatch(updateTask(values))
+            dispatch(updateItem(values))
         }
     }
 }
@@ -279,28 +273,27 @@ export const handleSubmit = (values) => {
 
 /**
  * ------------------------------------------------------------------------------------------------------
- * Add New Task
+ * Add New
  * ------------------------------------------------------------------------------------------------------
  */
-export const addNewTask = () => {
+export const addNew = () => {
     return (dispatch, getState) => {
 
-        const { modal } = getState().upcomingTaskReducer
+        const { modal } = getState().releaseReducer
 
         const EditInfo = {
-            taskName: '',
+            releaseDate: moment(new Date()),
             projectName: '',
-            taskType: '',
+            version: '',
             description: '',
-            assignedUser: '',
         }
 
         dispatch({
-            type: UPCOMING_TASK_ADD_NEW_TASK,
+            type: RELEASE_ADD_NEW,
             payload: {
                 modal: {
                     ...modal,
-                    modalTitle: 'Create a new Task',
+                    modalTitle: 'Create a new',
                     okText: 'Create',
                     EditInfo,
                     modalVisible: true
@@ -316,19 +309,17 @@ export const addNewTask = () => {
 
 
 //-- Save New Task
-export const saveNewTask = (values) => {
+export const saveNewItem = (values) => {
 
+    console.log(values)
     return (dispatch, getState) => {
 
-        let { taskList } = getState().upcomingTaskReducer
-
-        post('/upcoming-task/create', values)
+        post('/release', values)
             .then(data => {
 
                 dispatch(toggleModalVisible())
 
-                dispatch(loadUpcomingTask())
-
+                dispatch(releaseSearchByResult())
 
             })
             .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
@@ -346,10 +337,10 @@ export const saveNewTask = (values) => {
 export const toggleModalVisible = () => {
     return (dispatch, getState) => {
 
-        const { modal } = getState().upcomingTaskReducer
+        const { modal } = getState().releaseReducer
 
         dispatch({
-            type: UPCOMING_TASK_TOGGLE_MODAL_VISIBLE,
+            type: RELEASE_TOGGLE_MODAL_VISIBLE,
             payload: {
                 modal: {
                     ...modal,
@@ -361,53 +352,36 @@ export const toggleModalVisible = () => {
 }
 
 
-
 /**
- * ----------------------------------------------------------------------------------------------------
- * Load Upcoming Task...
- * ----------------------------------------------------------------------------------------------------
+ * ------------------------------------------------------------------------------------------------------
+ * Edit Item
+ * ------------------------------------------------------------------------------------------------------
  */
-export const loadUpcomingTask = () => {
+export const editItem = (id) => {
     return (dispatch, getState) => {
 
-        const upcomingTask = getState().upcomingTaskReducer
-        const { tabKey, pagination } = upcomingTask
-        const { current } = pagination
+        const { list, modal } = getState().releaseReducer
 
-        let status = false
-        if (tabKey == 2) {
-            status = true
+        const findItem = list.find(item => item._id == id)
+
+        const EditInfo = {
+            _id: findItem._id,
+            releaseDate: moment(findItem.releaseDate, "YYYY-MM-DD"),
+            projectName: findItem.projectName,
+            version: findItem.version,
+            description: findItem.description,
         }
+        // console.log(EditInfo)
 
-        dispatch(loadUser())
-
-        //-- Load Result
-        dispatch(upcomingTaskSearchByResult())
-
-    }
-}
-
-
-/**
- * ------------------------------------------------------------------------------------------------------
- * Edit Task
- * ------------------------------------------------------------------------------------------------------
- */
-export const editTask = (id) => {
-    return (dispatch, getState) => {
-
-        const { taskList, modal } = getState().upcomingTaskReducer
-
-        const findTask = taskList.find(item => item._id == id)
 
         dispatch({
-            type: UPCOMING_TASK_EDIT_TASK,
+            type: RELEASE_EDIT_ITEM,
             payload: {
                 modal: {
                     ...modal,
-                    modalTitle: 'Edit Task',
+                    modalTitle: 'Edit Item',
                     okText: 'Update',
-                    EditInfo: findTask,
+                    EditInfo,
                     modalVisible: true
                 }
             }
@@ -421,69 +395,28 @@ export const editTask = (id) => {
  * Update Task
  * -------------------------------------------------------------------------------------------------
  */
-export const updateTask = (values) => {
+export const updateItem = (values) => {
 
     return (dispatch, getState) => {
 
-        const { modal } = getState().upcomingTaskReducer
+        const { modal } = getState().releaseReducer
 
         const { _id } = modal.EditInfo
 
-        put('/upcoming-task/update/' + _id, values)
+        put('/release/' + _id, values)
             .then(data => {
 
                 dispatch(toggleModalVisible())
 
-                dispatch(loadUpcomingTask())
+                dispatch(releaseSearchByResult())
 
             })
-            .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
+            .catch(err => openNotificationWithIcon('error', err.message, 'Already exists this item'))
     }
 }
-
-/**
- * -------------------------------------------------------------------------------------------------
- * Update Running Task
- * -------------------------------------------------------------------------------------------------
- */
-export const updateRunningTask = (obj) => {
-
-    return (dispatch, getState) => {
-
-        const { _id, running } = obj
-
-        put('/upcoming-task/update/' + _id, { running })
-            .then(data => {
-                dispatch(upcomingTaskSearchByResult())
-
-            })
-            .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
-    }
-}
-
-/**
- * -------------------------------------------------------------------------------------------------
- * Update Task Rate
- * -------------------------------------------------------------------------------------------------
- */
-export const updateTaskRate = (obj) => {
-
-    return (dispatch, getState) => {
-
-        const { _id, rate } = obj
-
-        put('/upcoming-task/update/' + _id, { rate })
-            .then(data => {
-                dispatch(upcomingTaskSearchByResult())
-
-            })
-            .catch(err => openNotificationWithIcon('error', err.message, 'Task Rate Problem, Please the updateTaskRate'))
-    }
-}
-
 
 //-- Update Task Status (true/false)
-export const updateTaskStatus = (values) => {
+export const updateStatus = (values) => {
 
     return (dispatch, getState) => {
 
@@ -491,10 +424,10 @@ export const updateTaskStatus = (values) => {
 
         const data = { status }
 
-        put('/upcoming-task/update/' + _id, data)
+        put('/release/' + _id, data)
             .then(data => {
 
-                dispatch(loadUpcomingTask())
+                dispatch(releaseSearchByResult())
 
             })
             .catch(err => openNotificationWithIcon('error', err.message, 'Task status updating problem'))
@@ -503,15 +436,15 @@ export const updateTaskStatus = (values) => {
 
 
 //-- Remove user
-export const removeTask = (id) => {
+export const removeItem = (id) => {
 
     return (dispatch, getState) => {
 
-        let { taskList } = getState().upcomingTaskReducer
+        // let { taskList } = getState().releaseReducer
 
-        deleteMethod('/upcoming-task/delete/' + id)
+        deleteMethod('/release/' + id)
             .then(data => {
-                dispatch(loadUpcomingTask())
+                dispatch(releaseSearchByResult())
             })
     }
 }

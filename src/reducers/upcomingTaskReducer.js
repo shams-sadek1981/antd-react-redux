@@ -4,7 +4,6 @@ import {
     UPCOMING_TASK_TOGGLE_SUB_TASK_MODAL_VISIBLE,
     UPCOMING_TASK_EDIT_TASK,
     UPCOMING_TASK_REMOVE_TASK,
-    UPCOMING_TASK_UPDATE_TASK,
     UPCOMING_TASK_ADD_NEW_TASK,
     UPCOMING_TASK_CAL_EST_HOUR,
     UPCOMING_TASK_SEARCH_BY,
@@ -28,7 +27,7 @@ const initialState = {
     pagination: {
         current: 1,
         total: 0,
-        pageSize: 5
+        pageSize: 10
     },
     searchBy: {
         project: 'all',
@@ -77,6 +76,7 @@ const initialState = {
     projects: [
         'All Plugin',
         'Dokan',
+        'Dokan App',
         'weMail',
         'WPUF',
         'weForms',
@@ -93,7 +93,8 @@ const initialState = {
             name: 'Sabbir',
             color: 'green'
         },
-    ]
+    ],
+    subTaskList: ['SRS', 'R&D', 'Mockup', 'Design', 'Frontend', 'Develop']
 }
 
 const upcomingTaskReducer = (state = initialState, action) => {
@@ -107,7 +108,6 @@ const upcomingTaskReducer = (state = initialState, action) => {
 
         case TASK_DELETE_SUB_TASK:
         case TASK_SAVE_NEW_SUB_TASK:
-        case UPCOMING_TASK_UPDATE_TASK:
         case UPCOMING_TASK_REMOVE_TASK:
             return Object.assign({}, state, {
                 taskList: action.payload.taskList,

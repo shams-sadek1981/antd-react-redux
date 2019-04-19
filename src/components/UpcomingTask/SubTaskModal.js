@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 
 import {
-    Button, Modal, Form, Input, Radio, Icon, Select
+    Button, Modal, Form, Input, Radio, Icon, Select, AutoComplete
 } from 'antd';
 
 
@@ -33,12 +33,12 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                     <Form layout="vertical">
 
                         {/* <Form.Item label="" type="hidden"> */}
-                            {getFieldDecorator('_id', {
-                                initialValue: upcomingTask.subTaskModal.EditInfo._id,
-                                // rules: [{ required: true, message: 'Please input the subtask!' }],
-                            })(
-                                <Input type="hidden"/>
-                            )}
+                        {getFieldDecorator('_id', {
+                            initialValue: upcomingTask.subTaskModal.EditInfo._id,
+                            // rules: [{ required: true, message: 'Please input the subtask!' }],
+                        })(
+                            <Input type="hidden" />
+                        )}
                         {/* </Form.Item> */}
 
                         <Form.Item label="SubTask">
@@ -46,7 +46,10 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                                 initialValue: upcomingTask.subTaskModal.EditInfo.name,
                                 rules: [{ required: true, message: 'Please input the subtask!' }],
                             })(
-                                <Input />
+                                <AutoComplete
+                                    dataSource={upcomingTask.subTaskList}
+                                    placeholder="input here"
+                                />
                             )}
                         </Form.Item>
 
@@ -69,7 +72,7 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                                 </Select>
                             )}
                         </Form.Item>
-                        
+
 
                         <Form.Item label="Est Hour">
                             {getFieldDecorator('estHour', {

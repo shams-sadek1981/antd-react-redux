@@ -1,14 +1,16 @@
 import React, { Fragment } from 'react'
 
-import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm, Button } from 'antd';
+import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm, Button, Switch, Rate, Dropdown, Menu } from 'antd';
 
 import {
-    editTask, removeTask, updateTask, updateTaskStatus, changePagination
+    editTask, removeTask, updateTask, updateTaskStatus, changePagination, updateRunningTask, updateTaskRate
 } from '../../actions/upcomingTaskActions';
 
 import { toggleSubtaskModalVisible } from '../../actions/task/subTaskActions';
 
 import { _SubTaskView } from './_SubTaskView'
+import { _MoreActionMenu } from './_MoreActionMenu'
+
 
 export const _TaskList = (props) => {
 
@@ -18,8 +20,12 @@ export const _TaskList = (props) => {
         dispatch(changePagination(pagination))
     }
 
-    const confirm = (id) => {
-        dispatch(removeTask(id))
+    const handleRateChange = (_id, value) => {
+        console.log(value)
+        dispatch(updateTaskRate({
+            _id,
+            rate: value
+        }))
     }
 
     const columns = [
@@ -29,10 +35,18 @@ export const _TaskList = (props) => {
             key: 'taskName',
             render: (text, record) =>
                 <div>
-                    <a href="javascript:;" onClick={() => dispatch(toggleSubtaskModalVisible())}>{text}</a>
+                    <a href="javascript:;" onClick={() => dispatch(toggleSubtaskModalVisible())}>
+                        { 
+                            (record.running == true)
+                            ? <span>{text}</span>
+                            : <span style={{ color: 'black' }}>{text}</span>
+                        }
+                    </a>
                     <div>
                         {record.taskType}
                         <span style={{ fontStyle: 'italic' }}> Est: {record.estHour}</span>
+                        <Divider type="vertical" />
+                        <Rate allowHalf onChange={value => handleRateChange(record._id, value)} value={record.rate} />
                     </div>
                 </div>
         },
@@ -46,50 +60,50 @@ export const _TaskList = (props) => {
             title: 'Task Type',
             dataIndex: 'taskType',
             key: 'taskType',
-            render: (text, record) =>
-                <div>
-                    {record.taskType}
-                </div>
+            width: 100,
+            render: (text, record) => {
+
+                const featureTypes = [
+                    {
+                        name: 'New Feature',
+                        color: 'blue'
+                    },
+                    {
+                        name: 'Enhancement',
+                        color: 'magenta'
+                    },
+                    {
+                        name: 'Plugin Issue',
+                        color: 'orange'
+                    },
+                    {
+                        name: 'R&D',
+                        color: 'green'
+                    }
+                ]
+
+                const findItem = featureTypes.find(item => item.name == record.taskType)
+
+                const color = findItem.color
+                return <Tag color={color}>{record.taskType}</Tag>
+            }
         },
         {
             title: 'Project Name',
             dataIndex: 'projectName',
             key: 'projectName',
+            width: 110,
             render: (text, record) =>
                 <div>
                     {record.projectName}
                 </div>
         },
         {
-            title: 'Action',
+            title: '',
             key: 'action',
+            align: "right",
             render: (text, record) => (
-                <span>
-                    <Checkbox checked={record.status}
-                        onChange={(e) => dispatch(
-                            updateTaskStatus({
-                                _id: record._id,
-                                status: !record.status
-                            })
-                        )}
-                    />
-                    <Divider type="vertical" />
-
-                    <a onClick={() => dispatch(editTask(record._id))} href="javascript:;">
-                        <Icon type="edit" theme="twoTone" />
-                    </a>
-
-                    <Divider type="vertical" />
-
-                    <Popconfirm title="Are you sure to delete this task?"
-                        onConfirm={(e) => confirm(record._id)}
-                        okText="Yes" cancelText="No">
-
-                        <a href="javascript:;">
-                            <Icon type="delete" theme="twoTone" />
-                        </a>
-                    </Popconfirm>
-                </span>
+                <_MoreActionMenu {...props} record={record}/>
             ),
         }
     ];
@@ -107,6 +121,8 @@ export const _TaskList = (props) => {
         return {
             _id: item._id,
             status: item.status,
+            rate: item.rate || 0,
+            running: item.running,
             key: index,
             taskName: item.taskName,
             subTasks: item.subTasks,
@@ -128,7 +144,7 @@ export const _TaskList = (props) => {
             <Table
                 loading={upcomingTask.spinning}
                 pagination={upcomingTask.pagination}
-                onChange={ handleTableChange }
+                onChange={handleTableChange}
                 columns={columns}
                 dataSource={data} size="small"
                 expandedRowRender={record =>
