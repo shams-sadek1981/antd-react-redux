@@ -6,6 +6,8 @@ import {
     editItem, removeItem, updateTask, updateStatus, changePagination
 } from '../../actions/releaseActions';
 
+import { _ChangeLog } from './_ChangeLog'
+
 
 export const List = (props) => {
 
@@ -35,10 +37,6 @@ export const List = (props) => {
             dataIndex: 'projectName',
             key: 'projectName',
             width: 150,
-            render: (text, record) =>
-                <div>
-                    {record.projectName}
-                </div>
         },
         {
             title: 'Version',
@@ -79,15 +77,9 @@ export const List = (props) => {
                 ]
 
                 const findItem = weekDays.find( item => item.name == moment(record.releaseDate).format('ddd'))
-                console.log(findItem)
                 const color = findItem.color
                 return <Tag color={color}>{record.version}</Tag>
             }
-        },
-        {
-            title: 'Description',
-            dataIndex: 'description',
-            key: 'description',
         },
         {
             title: 'Action',
@@ -147,6 +139,11 @@ export const List = (props) => {
                 onChange={ handleTableChange }
                 columns={columns}
                 dataSource={data} size="small"
+                expandedRowRender={record =>
+                    <div style={{ margin: 0 }}>
+                        <_ChangeLog {...props} description={record.description} />
+                    </div>
+                }
             />
         </Fragment>
     )

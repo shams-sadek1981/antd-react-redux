@@ -58,6 +58,7 @@ export const SearchHeader = (props) => {
                 <Col span={5}>
                     <Search
                         placeholder="input search text"
+                        defaultValue={ upcomingTask.searchBy.text }
                         onSearch={value => dispatch(searchBy('text', value))}
                         style={{ width: 200 }}
                     />

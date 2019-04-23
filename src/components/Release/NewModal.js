@@ -11,7 +11,7 @@ import { toggleModalVisible } from '../../actions/releaseActions'
 const { Option } = Select;
 const { TextArea } = Input;
 
-const dateFormat = 'YYYY/MM/DD';
+const dateFormat = 'YYYY-MMM-DD';
 
 export const NewModal = Form.create({ name: 'form_in_modal' })(
     // eslint-disable-next-line

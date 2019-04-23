@@ -18,7 +18,7 @@ function handleFocus() {
 
 export const _SearchByUser = (props) => {
 
-    const { dispatch, users } = props
+    const { dispatch, users, upcomingTask } = props
 
     const handleChange = (userName) => {
         dispatch(searchBy('name', userName))
@@ -29,6 +29,7 @@ export const _SearchByUser = (props) => {
             <Select
                 showSearch
                 style={{ width: 200 }}
+                defaultValue={ upcomingTask.searchBy.name }
                 placeholder="Select a person"
                 optionFilterProp="children"
                 onChange={handleChange}

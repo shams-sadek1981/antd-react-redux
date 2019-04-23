@@ -39,7 +39,6 @@ class Release extends Component {
             if (err) {
                 return;
             }
-
             console.log('Received values of form: ', values);
 
             this.props.dispatch(handleSubmit(values))

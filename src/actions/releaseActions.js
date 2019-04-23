@@ -306,15 +306,17 @@ export const addNew = () => {
 
 
 
-
-
 //-- Save New Task
 export const saveNewItem = (values) => {
 
-    console.log(values)
     return (dispatch, getState) => {
 
-        post('/release', values)
+        const newValues = {
+            ...values,
+            releaseDate: moment(values.releaseDate).format('YYYY-MM-DD')
+        }
+
+        post('/release', newValues)
             .then(data => {
 
                 dispatch(toggleModalVisible())
@@ -364,6 +366,8 @@ export const editItem = (id) => {
 
         const findItem = list.find(item => item._id == id)
 
+        console.log(findItem)
+
         const EditInfo = {
             _id: findItem._id,
             releaseDate: moment(findItem.releaseDate, "YYYY-MM-DD"),
@@ -371,7 +375,6 @@ export const editItem = (id) => {
             version: findItem.version,
             description: findItem.description,
         }
-        // console.log(EditInfo)
 
 
         dispatch({
@@ -403,7 +406,13 @@ export const updateItem = (values) => {
 
         const { _id } = modal.EditInfo
 
-        put('/release/' + _id, values)
+        const newValues = {
+            ...values,
+            releaseDate: moment(values.releaseDate).format('YYYY-MM-DD')
+        }
+
+
+        put('/release/' + _id, newValues)
             .then(data => {
 
                 dispatch(toggleModalVisible())
