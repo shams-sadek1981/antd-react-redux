@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
-
+import moment from 'moment'
 import {
-    Button, Modal, Form, Input, Radio, Icon, Select
+    Button, Modal, Form, Input, Radio, Icon, Select, DatePicker
 } from 'antd';
 
 
@@ -9,6 +9,7 @@ import { toggleModalVisible } from '../../actions/upcomingTaskActions'
 
 const { Option } = Select;
 const { TextArea } = Input;
+const dateFormat = 'YYYY-MMM-DD';
 
 export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
     // eslint-disable-next-line
@@ -21,6 +22,13 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
             const { getFieldDecorator } = form;
 
             const { dispatch, upcomingTask, users } = this.props
+
+            //-- Set Completed At
+            let completedAt = { initialValue: moment(upcomingTask.modal.EditInfo.completedAt) }
+            if (upcomingTask.modal.EditInfo.completedAt == undefined) {
+                completedAt = {}
+            }
+
             return (
                 <Modal
                     visible={upcomingTask.modal.modalVisible}
@@ -43,7 +51,7 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                         <Form.Item label="Description">
                             {getFieldDecorator('description', {
                                 initialValue: upcomingTask.modal.EditInfo.description,
-                                rules: [{ required: true, message: 'Please input the description!' }],
+                                // rules: [{ required: true, message: 'Please input the description!' }],
                             })(
                                 <TextArea rows={4} />
                             )}
@@ -86,6 +94,16 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                                 </Select>
                             )}
                         </Form.Item>
+
+                        <Form.Item label="Completed At">
+                            {getFieldDecorator('completedAt', {
+                                ...completedAt
+                                // initialValue: startDate,
+                            })(
+                                <DatePicker format={dateFormat} />
+                            )}
+                        </Form.Item>
+                        
                     </Form>
                 </Modal>
             );

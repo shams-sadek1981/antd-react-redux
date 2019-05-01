@@ -33,7 +33,8 @@ const initialState = {
         project: 'all',
         name: 'all',
         text: '',
-        status: false
+        completedAt: null,
+        running: false
     },
     spinning: false,
     taskList: [],
@@ -65,7 +66,8 @@ const initialState = {
             name: '',
             estHour: '',
             assignedUser: ''
-        }
+        },
+        startDate: null
     },
     taskTypes: [
         'New Feature',

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
-
-import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm, Button, Switch, Rate, Dropdown, Menu } from 'antd';
+import moment from 'moment'
+import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm, Button, Switch, Rate, Progress, Menu } from 'antd';
 
 import {
     editTask, removeTask, updateTask, updateTaskStatus, changePagination, updateRunningTask, updateTaskRate
@@ -28,6 +28,36 @@ export const _TaskList = (props) => {
         }))
     }
 
+    //-- Set Data for Table Data
+    const data = upcomingTask.taskList.map((item, index) => {
+
+        let userColor = 'blue'
+        const findUserColor = upcomingTask.nameColors.find(colorItem => colorItem.name == item.assignedUser)
+        if (findUserColor) {
+            userColor = findUserColor.color
+        }
+
+        return {
+            key: index,
+            _id: item._id,
+            status: item.status,
+            rate: item.rate || 0,
+            running: item.running,
+            taskName: item.taskName,
+            subTasks: item.subTasks,
+            description: item.description,
+            taskType: item.taskType,
+            projectName: item.projectName,
+            assignedBy: item.assignedBy,
+            completedAt: item.completedAt,
+            estHour: item.estHour,
+            completedHour: item.completedHour,
+            dueHour: item.dueHour,
+            percent: item.percent,
+            userColor
+        }
+    })
+
     const columns = [
         {
             title: 'Task Name',
@@ -43,18 +73,26 @@ export const _TaskList = (props) => {
                         }
                     </a>
                     <div>
-                        {record.taskType}
-                        <span style={{ fontStyle: 'italic' }}> Est: {record.estHour}</span>
+                        
+                        <span style={{ fontStyle: 'italic' }}> Est: <b>{record.completedHour}/{record.estHour}</b> Due: {record.dueHour} </span>
                         <Divider type="vertical" />
                         <Rate allowHalf onChange={value => handleRateChange(record._id, value)} value={record.rate} />
+                        <Divider type="vertical" />
+                        { record.assignedBy && <span><Icon type="like" /> { record.assignedBy }</span> }
                     </div>
                 </div>
         },
         {
-            title: 'Description',
-            dataIndex: 'description',
-            key: 'description',
+            title: 'Completed',
+            dataIndex: 'completed',
+            key: 'completed',
             width: 250,
+            render: (text, record) => (
+                <div>
+                    <Progress type="circle" percent={record.percent} width={50}/>
+                    &nbsp;{ record.completedAt && moment(record.completedAt).format('DD-MMM-YYYY') }
+                </div>
+            )
         },
         {
             title: 'Task Type',
@@ -109,36 +147,6 @@ export const _TaskList = (props) => {
     ];
 
 
-    //-- Set Data for Table Data
-    const data = upcomingTask.taskList.map((item, index) => {
-
-        let userColor = 'blue'
-        const findUserColor = upcomingTask.nameColors.find(colorItem => colorItem.name == item.assignedUser)
-        if (findUserColor) {
-            userColor = findUserColor.color
-        }
-
-        return {
-            _id: item._id,
-            status: item.status,
-            rate: item.rate || 0,
-            running: item.running,
-            key: index,
-            taskName: item.taskName,
-            subTasks: item.subTasks,
-            description: item.description,
-            taskType: item.taskType,
-            projectName: item.projectName,
-            assignedUser: item.assignedUser,
-            srs: item.srs,
-            frontend: item.frontend,
-            mockup: item.mockup,
-            design: item.design,
-            estHour: item.estHour,
-            userColor
-        }
-    })
-
     return (
         <Fragment>
             <Table
@@ -146,10 +154,11 @@ export const _TaskList = (props) => {
                 pagination={upcomingTask.pagination}
                 onChange={handleTableChange}
                 columns={columns}
-                dataSource={data} size="small"
+                dataSource={data}
+                size="small"
                 expandedRowRender={record =>
                     <div style={{ margin: 0 }}>
-                        <_SubTaskView {...props} taskId={record._id} subTasks={record.subTasks} />
+                        <_SubTaskView {...props} taskId={record._id} subTasks={record.subTasks} des={record.description}/>
                     </div>
                 }
             />

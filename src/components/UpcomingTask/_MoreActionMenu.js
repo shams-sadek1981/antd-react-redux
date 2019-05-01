@@ -3,7 +3,7 @@ import React, { Fragment } from 'react'
 import { Table, Divider, Tag, Icon, Checkbox, Switch, Popconfirm, Button, Dropdown, Menu, Col, Row } from 'antd';
 
 import {
-    editTask, removeTask, updateTask, updateTaskStatus, changePagination, updateRunningTask, updateTaskRate
+    editTask, removeTask, updateTask, changePagination, updateRunningTask, updateTaskRate
 } from '../../actions/upcomingTaskActions';
 
 export const _MoreActionMenu = (props) => {
@@ -37,24 +37,6 @@ export const _MoreActionMenu = (props) => {
                     <Col span={12}>
                         Running
                     </Col>
-                </Row>
-            </Menu.Item>
-
-            <Menu.Item>
-                <Row>
-                    <Col span={10}>
-                        <Checkbox checked={record.status}
-                            onChange={(e) => dispatch(
-                                updateTaskStatus({
-                                    _id: record._id,
-                                    status: !record.status
-                                })
-                            )}
-                        />
-                    </Col>
-                    <Col span={14}>
-                        Complete
-                </Col>
                 </Row>
             </Menu.Item>
 

@@ -121,10 +121,11 @@ class UpcomingTask extends Component {
                     </TabPane>
 
                     <TabPane tab="Completed Task" key="2">
-                        Completed Task
                         <_TaskList {...this.props} />
                     </TabPane>
-                    <TabPane tab="Running Task" key="3">Running Task</TabPane>
+                    <TabPane tab="Running Task" key="3">
+                        <_TaskList {...this.props} />
+                    </TabPane>
                 </Tabs>
             </Fragment >
         )

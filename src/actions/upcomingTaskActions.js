@@ -1,3 +1,4 @@
+import moment from 'moment'
 import {
     notification
 } from 'antd';
@@ -72,32 +73,44 @@ export const changeTabKey = (value) => {
 
         const { searchBy, pagination } = getState().upcomingTaskReducer
         const { pageSize } = pagination
-        console.log(value, pageSize)
+        // console.log(value, pageSize)
 
-        //-- Step-2 task status
-        let taskStatus = false
-        if (value == "2") { //-- completed task
-            taskStatus = true
+        let searchByCompletedAt = false
+        let running = false
+        switch (value) {
+            case "1":
+                searchByCompletedAt = null
+                running = false
+                break;
+
+            case "2":
+                searchByCompletedAt = true
+                break;
+
+            case "3":
+                searchByCompletedAt = null
+                running = true
+                break;
         }
 
         const newSearchBy = {
             ...searchBy,
-            status: taskStatus
+            completedAt: searchByCompletedAt,
+            running
         }
 
 
         //-- step-3 fetch data from API
         const current = 1
-        const status = taskStatus
+        const completedAt = searchByCompletedAt
         const { name, project, text } = searchBy
 
 
-        getTaskResult(current, pageSize, name, project, status, text)
+        getTaskResult(current, pageSize, name, project, completedAt, text, running)
             .then(data => {
                 dispatch({
                     type: UPCOMING_TASK_CHANGE_TABKEY,
                     payload: {
-                        status,
                         tabKey: value,
                         searchBy: newSearchBy,
                         pagination: {
@@ -214,9 +227,9 @@ const setObjForSearchResult = (obj) => {
  * @param {*} text 
  */
 
-const getTaskResult = (current, pageSize, name, project, status, text) => {
+const getTaskResult = (current, pageSize, name, project, completedAt, text, running) => {
 
-    const searchUrl = `/upcoming-task/search?page=${current}&pageSize=${pageSize}&name=${name}&project=${project}&status=${status}&text=${text}`
+    const searchUrl = `/upcoming-task/search?page=${current}&pageSize=${pageSize}&name=${name}&project=${project}&completedAt=${completedAt}&text=${text}&running=${running}`
 
     return get(searchUrl)
         .then(data => data)
@@ -232,12 +245,14 @@ const getTaskResult = (current, pageSize, name, project, status, text) => {
 export const upcomingTaskSearchByResult = () => {
     return (dispatch, getState) => {
 
+
         let { searchBy, pagination } = getState().upcomingTaskReducer
         let { current, pageSize } = pagination
-        const { name, project, text, status } = searchBy
+        const { name, project, text, completedAt, running } = searchBy
 
-        getTaskResult(current, pageSize, name, project, status, text)
+        getTaskResult(current, pageSize, name, project, completedAt, text, running)
             .then(data => {
+                console.log(data)
                 dispatch({
                     type: UPCOMING_TASK_SEARCH_BY_RESULT,
                     payload: {
@@ -250,7 +265,7 @@ export const upcomingTaskSearchByResult = () => {
                         "userTotalSubTask": data.userTotalSubTask,
                     }
                 })
-            })
+            }).catch(err => console.log(err))
     }
 }//-- end function
 
@@ -374,10 +389,10 @@ export const loadUpcomingTask = () => {
         const { tabKey, pagination } = upcomingTask
         const { current } = pagination
 
-        let status = false
-        if (tabKey == 2) {
-            status = true
-        }
+        // let status = false
+        // if (tabKey == 2) {
+        //     status = true
+        // }
 
         dispatch(loadUser())
 
@@ -425,11 +440,21 @@ export const updateTask = (values) => {
 
     return (dispatch, getState) => {
 
+        let newValues = values
+
+        if (values.completedAt != null) {
+            newValues = {
+                ...values,
+                completedAt: moment(values.completedAt).format('YYYY-MM-DD')
+            }
+        }
+
+
         const { modal } = getState().upcomingTaskReducer
 
         const { _id } = modal.EditInfo
 
-        put('/upcoming-task/update/' + _id, values)
+        put('/upcoming-task/update/' + _id, newValues)
             .then(data => {
 
                 dispatch(toggleModalVisible())
@@ -483,23 +508,23 @@ export const updateTaskRate = (obj) => {
 
 
 //-- Update Task Status (true/false)
-export const updateTaskStatus = (values) => {
+// export const updateTaskStatus = (values) => {
 
-    return (dispatch, getState) => {
+//     return (dispatch, getState) => {
 
-        const { _id, status } = values
+//         const { _id, status } = values
 
-        const data = { status }
+//         const data = { status }
 
-        put('/upcoming-task/update/' + _id, data)
-            .then(data => {
+//         put('/upcoming-task/update/' + _id, data)
+//             .then(data => {
 
-                dispatch(loadUpcomingTask())
+//                 dispatch(loadUpcomingTask())
 
-            })
-            .catch(err => openNotificationWithIcon('error', err.message, 'Task status updating problem'))
-    }
-}
+//             })
+//             .catch(err => openNotificationWithIcon('error', err.message, 'Task status updating problem'))
+//     }
+// }
 
 
 //-- Remove user

@@ -11,8 +11,8 @@ export const _ChangeLog = (props) => {
     return (
         <ol>
             {
-                data.map( item => (
-                    <li>{ item }</li>
+                data.map( (item, index) => (
+                    <li key={index}>{ item }</li>
                 ))
             }
         </ol>

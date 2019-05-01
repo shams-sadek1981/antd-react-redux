@@ -44,11 +44,11 @@ class AdminPanel extends Component {
                         collapsed={this.state.collapsed}
                     >
                         <div className="logo" />
-                        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+                        <Menu theme="dark" mode="inline" defaultSelectedKeys={['5']}>
                             
                             <Menu.Item key="1">
                                 <Icon type="user" />
-                                <span><NavLink to={`${url}`}>Dashboard</NavLink></span>
+                                <span><NavLink to={`${url}`} exact>Dashboard</NavLink></span>
                             </Menu.Item>
                             
                             <Menu.Item key="2">
@@ -61,11 +61,6 @@ class AdminPanel extends Component {
                                 <span><NavLink to="/admin-panel/customer">Customers</NavLink></span>
                             </Menu.Item>
 
-                            <Menu.Item key="4">
-                                <Icon type="upload" />
-                                <span onClick={() => this.logout()}>Logout</span>
-                            </Menu.Item>
-                            
                             <Menu.Item key="5">
                                 <Icon type="user" />
                                 <span><NavLink to={`${url}/upcoming-task`}>Upcoming Task</NavLink></span>
@@ -74,6 +69,11 @@ class AdminPanel extends Component {
                             <Menu.Item key="6">
                                 <Icon type="user" />
                                 <span><NavLink to={`${url}/release`}>Release</NavLink></span>
+                            </Menu.Item>
+
+                            <Menu.Item key="4">
+                                <Icon type="upload" />
+                                <span onClick={() => this.logout()}>Logout</span>
                             </Menu.Item>
 
                         </Menu>

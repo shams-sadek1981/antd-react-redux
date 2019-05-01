@@ -1,5 +1,6 @@
 import { get, post, put, deleteMethod } from '../../functions'
 import { loadUpcomingTask } from '../upcomingTaskActions'
+import moment from 'moment'
 
 export const TASK_ADD_NEW_SUB_TASK = "TASK_ADD_NEW_SUB_TASK"
 export const TASK_SAVE_NEW_SUB_TASK = "TASK_SAVE_NEW_SUB_TASK"
@@ -75,7 +76,30 @@ export const saveNewSubTask = (values) => {
         const { subTaskModal } = getState().upcomingTaskReducer
         const { taskId } = subTaskModal
 
-        post('/upcoming-task/subtask/create/' + taskId, values)
+        //-- set new values
+        let newValues = values
+        if (values.startDate != undefined) {
+            newValues = {
+                ...values,
+                startDate: moment(values.startDate).format("YYYY-MM-DD")
+            }
+        }
+        
+        if (values.dueDate != undefined) {
+            newValues = {
+                ...values,
+                dueDate: moment(values.dueDate).format("YYYY-MM-DD")
+            }
+        }
+        
+        if (values.completedAt != undefined) {
+            newValues = {
+                ...values,
+                completedAt: moment(values.completedAt).format("YYYY-MM-DD")
+            }
+        }
+
+        post('/upcoming-task/subtask/create/' + taskId, newValues)
             .then(data => {
 
                 dispatch(toggleSubtaskModalVisible())
