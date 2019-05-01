@@ -24,7 +24,7 @@ export const _MoreActionMenu = (props) => {
 
     const menu = (
         <Menu>
-            <Menu.Item style={{ width: "130px"}}>
+            <Menu.Item style={{ width: "130px" }}>
                 <Row>
                     <Col span={10}>
                         <Switch
@@ -41,17 +41,16 @@ export const _MoreActionMenu = (props) => {
             </Menu.Item>
 
             <Menu.Item>
-                <Row>
-                    <Col span={10}>
-                        <a onClick={() => dispatch(editTask(record._id))} href="javascript:;">
+                <a onClick={() => dispatch(editTask(record._id))} href="javascript:;">
+                    <Row>
+                        <Col span={10}>
                             <Icon type="edit" theme="twoTone" />
-                        </a>
-                    </Col>
-
-                    <Col span={12}>
-                        Edit
-                </Col>
-                </Row>
+                        </Col>
+                        <Col span={12}>
+                            Edit
+                        </Col>
+                    </Row>
+                </a>
             </Menu.Item>
 
             <Menu.Item>
@@ -69,7 +68,7 @@ export const _MoreActionMenu = (props) => {
 
                     <Col span={14}>
                         Delete
-                </Col>
+                    </Col>
                 </Row>
             </Menu.Item>
         </Menu>

@@ -72,11 +72,14 @@ export const _TaskList = (props) => {
                             : <span style={{ color: 'black' }}>{text}</span>
                         }
                     </a>
-                    <div>
+                    <div style={{ fontSize: '13px'}}>
                         
-                        <span style={{ fontStyle: 'italic' }}> Est: <b>{record.completedHour}/{record.estHour}</b> Due: {record.dueHour} </span>
+                        <span style={{ fontStyle: 'italic' }}> Est: <b>{record.estHour}</b> </span>
+                        { record.completedHour > 0 && <span style={{ fontStyle: 'italic' }}> Due: <b style={{ color: '#e0801f'}}>{record.dueHour}</b></span> }
+                        { record.completedHour > 0 && <span style={{ fontStyle: 'italic' }}> Complete: <b style={{ color: 'green'}}>{record.completedHour}</b></span> }
+
                         <Divider type="vertical" />
-                        <Rate allowHalf onChange={value => handleRateChange(record._id, value)} value={record.rate} />
+                        <Rate allowHalf onChange={value => handleRateChange(record._id, value)} value={record.rate} style={{ fontSize: '13px'}}/>
                         <Divider type="vertical" />
                         { record.assignedBy && <span><Icon type="like" /> { record.assignedBy }</span> }
                     </div>

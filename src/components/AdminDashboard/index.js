@@ -27,9 +27,18 @@ class AdminDashboard extends Component {
 
         const { userSummaryList, projectSummaryList } = this.props.adminDashboard
 
-        const projectWidth = projectSummaryList.length * 120
-        const userWidth = userSummaryList.length * 100
+        let projectWidth = projectSummaryList.length * 120
+        if (projectSummaryList.length < 2) {
+            projectWidth = 200
+        }
+        
 
+        let userWidth = userSummaryList.length * 100
+        if (userSummaryList.length < 2) {
+            userWidth = 200
+        }
+
+        console.log( 'userSummaryList', userSummaryList)
 
         return (
             <div>
