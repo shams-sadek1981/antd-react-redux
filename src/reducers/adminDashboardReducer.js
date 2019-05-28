@@ -6,11 +6,11 @@ import {
 //-- Initialize State
 const initialState = {
     userSummaryList: [
-        { assignedUser: 'Ashraf', estHour: 275 },
-        { assignedUser: 'Mishu', estHour: 115 },
-        { assignedUser: 'Rockybul', estHour: 120 },
-        { assignedUser: 'Sabbir', estHour: 350 },
-        { assignedUser: 'Edi Amin', estHour: 150 }
+        // { assignedUser: 'Ashraf', estHour: 275 },
+        // { assignedUser: 'Mishu', estHour: 115 },
+        // { assignedUser: 'Rockybul', estHour: 120 },
+        // { assignedUser: 'Sabbir', estHour: 350 },
+        // { assignedUser: 'Edi Amin', estHour: 150 }
     ],
     projectSummaryList: []
 }

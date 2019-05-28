@@ -31,14 +31,14 @@ class AdminDashboard extends Component {
         if (projectSummaryList.length < 2) {
             projectWidth = 200
         }
-        
+
 
         let userWidth = userSummaryList.length * 100
         if (userSummaryList.length < 2) {
             userWidth = 200
         }
 
-        console.log( 'userSummaryList', userSummaryList)
+        console.log('userSummaryList', userSummaryList)
 
         return (
             <div>
@@ -50,7 +50,7 @@ class AdminDashboard extends Component {
                     <Tooltip />
                     <Geom type="interval" position="projectName*estHour" color="projectName" />
                 </Chart>
-                
+
 
                 <h1> User Summary </h1>
                 <Chart width={userWidth} height={400} data={userSummaryList} scale={cols}>

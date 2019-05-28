@@ -50,9 +50,7 @@ class HomeLayout extends Component {
                     <_Breadcrumb {...this.props} />
                     <Content style={{ padding: '0 50px' }}>
 
-                    <Button onClick={ () => this.props.dispatch(addNewCustomer('Ashik Uddin'))}>Click Here</Button>
                         <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
-
                             <Switch>
                                 <Route exact path="/" render={() => <h1>Home Page</h1>} />
                                 <Route path="/about-us" render={() => <h1>About Us</h1>} />
@@ -63,16 +61,6 @@ class HomeLayout extends Component {
                             </Switch>
                         </div>
 
-                        {
-                            this.props.customer.list.map( (item, index) => {
-                                return (
-                                    <div key={index}>{item}</div>
-                                )
-                            })
-                        }
-
-
-                        
                     </Content>
 
 

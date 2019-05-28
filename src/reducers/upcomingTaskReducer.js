@@ -79,12 +79,13 @@ const initialState = {
         'All Plugin',
         'Dokan',
         'Dokan App',
+        'ERP',
+        'wePOS',
+        'Project Manager',
+        'weForms',
         'weMail',
         'WPUF',
-        'weForms',
-        'ERP',
-        'Project Manager',
-        'POS'
+        "Appsero"
     ],
     nameColors: [
         {
@@ -96,7 +97,7 @@ const initialState = {
             color: 'green'
         },
     ],
-    subTaskList: ['SRS', 'R&D', 'Mockup', 'Design', 'Frontend', 'Develop']
+    subTaskList: ['SRS', 'R&D', 'Mockup', 'Design', 'Frontend', 'Develop', 'Merge', 'Testing', 'Documentation']
 }
 
 const upcomingTaskReducer = (state = initialState, action) => {

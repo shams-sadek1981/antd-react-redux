@@ -53,7 +53,7 @@ export const _UserList = (props) => {
 
     return (
         <Fragment>
-            <Table columns={columns} dataSource={data} />
+            <Table columns={columns} dataSource={data} size="small"/>
         </Fragment>
     )
 }

@@ -41,7 +41,7 @@ export const _SubTaskView = (props) => {
             key: 'assignedUser',
             render: (text, record) => (
                 record.completedAt
-                ? <span style={{ color: 'green'}}>{record.assignedUser}</span>
+                ? <Tag color={`geekblue`}>{record.assignedUser}</Tag>
                 : <Tag color={`magenta`}>{record.assignedUser}</Tag> 
             )
         },
@@ -52,7 +52,7 @@ export const _SubTaskView = (props) => {
             align: "center", 
             render: (text, record) => (
                 record.completedAt
-                ? <span style={{ color: 'green'}}>{record.estHour}</span> 
+                ? <span style={{ color: 'geekblue'}}>{record.estHour}</span> 
                 : <Tag color={`purple`}>{record.estHour}</Tag>
             )
             

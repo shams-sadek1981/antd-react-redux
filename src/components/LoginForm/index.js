@@ -41,8 +41,7 @@ class LoginForm extends React.Component {
 
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
-
+                // console.log('Received values of form: ', values);
                 const { email, password, remember } = values
                 
                 const userInfo = {
@@ -52,12 +51,13 @@ class LoginForm extends React.Component {
 
                 //-- check user info
                 postWithoutToken('/users/login', userInfo)
-                    .then(data => {
-                        
+                    .then( async data => {
                         //-- manage cookie
                         manageCookie(values)
 
-                        localStorage.setItem('token', data.token)
+                        //-- set token in local storage
+                        await localStorage.setItem('token', data.token)
+
                         this.props.history.push('/admin-panel')
                     })
                     .catch(err => openNotificationWithIcon('error', err.message, 'Your password or email is mismatch'))

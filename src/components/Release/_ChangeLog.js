@@ -11,17 +11,11 @@ export const _ChangeLog = (props) => {
     return (
         <ol>
             {
-                data.map( (item, index) => (
-                    <li key={index}>{ item }</li>
+                data.map((item, index) => (
+                    (item != "") &&
+                    <li key={index}>{item}</li>
                 ))
             }
         </ol>
-        // <List
-        //     size="small"
-        //     header={<div style={{ fontWeight: 'bold'}}>Change Log</div>}
-        //     bordered
-        //     dataSource={data}
-        //     renderItem={item => (<List.Item>{item}</List.Item>)}
-        // />
     )
 }

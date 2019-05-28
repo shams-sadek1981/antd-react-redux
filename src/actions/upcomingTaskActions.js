@@ -245,14 +245,14 @@ const getTaskResult = (current, pageSize, name, project, completedAt, text, runn
 export const upcomingTaskSearchByResult = () => {
     return (dispatch, getState) => {
 
-
         let { searchBy, pagination } = getState().upcomingTaskReducer
         let { current, pageSize } = pagination
         const { name, project, text, completedAt, running } = searchBy
 
         getTaskResult(current, pageSize, name, project, completedAt, text, running)
             .then(data => {
-                console.log(data)
+                // console.log(data)
+
                 dispatch({
                     type: UPCOMING_TASK_SEARCH_BY_RESULT,
                     payload: {
@@ -265,6 +265,7 @@ export const upcomingTaskSearchByResult = () => {
                         "userTotalSubTask": data.userTotalSubTask,
                     }
                 })
+
             }).catch(err => console.log(err))
     }
 }//-- end function
@@ -325,9 +326,6 @@ export const addNewTask = () => {
 
     }
 }
-
-
-
 
 
 //-- Save New Task

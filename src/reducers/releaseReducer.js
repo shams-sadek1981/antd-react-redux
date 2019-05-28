@@ -51,7 +51,7 @@ const initialState = {
         'weForms',
         'ERP',
         'Project Manager',
-        'POS'
+        'wePOS'
     ],
 }
 

@@ -8,6 +8,7 @@ import UpcomingTask from '../UpcomingTask'
 import AdminDashboard from '../AdminDashboard'
 import Release from '../Release'
 import './adminPanel.less'
+import { changeSelectedKeysByPath, changeSelectedKeys } from '../../actions/adminPanelActions'
 
 const {
     Header, Footer, Sider, Content,
@@ -19,6 +20,11 @@ class AdminPanel extends Component {
     state = {
         collapsed: false,
     };
+
+    componentDidMount() {
+        const runningPath = this.props.location.pathname
+        this.props.dispatch(changeSelectedKeysByPath(runningPath))
+    }
 
     toggle = () => {
         this.setState({
@@ -33,6 +39,7 @@ class AdminPanel extends Component {
     }
 
     render() {
+        const { adminPanel, dispatch } = this.props
         const { path, url } = this.props.match
 
         return (
@@ -44,34 +51,41 @@ class AdminPanel extends Component {
                         collapsed={this.state.collapsed}
                     >
                         <div className="logo" />
-                        <Menu theme="dark" mode="inline" defaultSelectedKeys={['5']}>
-                            
-                            <Menu.Item key="1">
-                                <Icon type="user" />
-                                <span><NavLink to={`${url}`} exact>Dashboard</NavLink></span>
-                            </Menu.Item>
-                            
-                            <Menu.Item key="2">
-                                <Icon type="user" />
-                                <span><NavLink to={`${url}/users`}>Users</NavLink></span>
+                        <Menu
+                            theme="dark"
+                            mode="inline"
+                            selectedKeys={adminPanel.selectedKeys}
+                        >
+
+                            <Menu.Item key="1" onClick={() => dispatch(changeSelectedKeys(1))}>
+                                <NavLink to={`${url}`} exact>
+                                    <Icon type="user" />
+                                    Dashboard
+                                </NavLink>
                             </Menu.Item>
 
-                            <Menu.Item key="3">
-                                <Icon type="video-camera" />
-                                <span><NavLink to="/admin-panel/customer">Customers</NavLink></span>
+                            <Menu.Item key="2" onClick={() => dispatch(changeSelectedKeys(2))}>
+                                <NavLink to={`${url}/users`}>
+                                    <Icon type="user" />
+                                    Users
+                                </NavLink>
+                            </Menu.Item>
+
+                            <Menu.Item key="3" onClick={() => dispatch(changeSelectedKeys(3))}>
+                                <NavLink to={`${url}/upcoming-task`}>
+                                    <Icon type="user" />
+                                    Upcoming Task
+                                </NavLink>
+                            </Menu.Item>
+
+                            <Menu.Item key="4" onClick={() => dispatch(changeSelectedKeys(4))}>
+                                <NavLink to={`${url}/release`}>
+                                    <Icon type="user" />
+                                    Release
+                                </NavLink>
                             </Menu.Item>
 
                             <Menu.Item key="5">
-                                <Icon type="user" />
-                                <span><NavLink to={`${url}/upcoming-task`}>Upcoming Task</NavLink></span>
-                            </Menu.Item>
-                            
-                            <Menu.Item key="6">
-                                <Icon type="user" />
-                                <span><NavLink to={`${url}/release`}>Release</NavLink></span>
-                            </Menu.Item>
-
-                            <Menu.Item key="4">
                                 <Icon type="upload" />
                                 <span onClick={() => this.logout()}>Logout</span>
                             </Menu.Item>
@@ -109,7 +123,7 @@ class AdminPanel extends Component {
 
 
 const mapStateToProps = state => ({
-    // dashboard: state.dashboardReducer
+    adminPanel: state.adminPanelReducer
 })
 
 export default withRouter(connect(mapStateToProps)(AdminPanel))
