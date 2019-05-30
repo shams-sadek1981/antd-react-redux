@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 
 import { Form } from 'antd';
 
-import { Chart, Axis, Legend, Tooltip, Geom } from 'bizcharts';
+import { Chart, Axis, Legend, Tooltip, Geom, Label } from 'bizcharts';
 
 import {
     userSummaryLoading,
@@ -12,8 +12,8 @@ import {
 } from '../../actions/adminDashboardActions'
 
 const cols = {
-    estHour: { alias: '销售量' },
-    assignedUser: { alias: '游戏种类' }
+    // estHour: { alias: '销售量' },
+    // assignedUser: { alias: '游戏种类' }
 };
 
 class AdminDashboard extends Component {
@@ -43,14 +43,18 @@ class AdminDashboard extends Component {
         return (
             <div>
                 <h1> Project Summary </h1>
-                <Chart width={projectWidth} height={400} data={projectSummaryList} scale={cols}>
-                    <Axis name="projectName" />
-                    <Axis name="estHour" />
+                <Chart
+                    width={projectWidth}
+                    height={400}
+                    data={projectSummaryList}
+                    scale={cols}
+                >
+                    {/* <Axis name="projectName" /> */}
+                    <Axis name="estHour"/>
                     <Legend position="top" dy={-20} />
                     <Tooltip />
-                    <Geom type="interval" position="projectName*estHour" color="projectName" />
+                    <Geom type="interval" position="projectName*estHour" color="projectName"/>
                 </Chart>
-
 
                 <h1> User Summary </h1>
                 <Chart width={userWidth} height={400} data={userSummaryList} scale={cols}>
@@ -58,7 +62,19 @@ class AdminDashboard extends Component {
                     <Axis name="estHour" />
                     <Legend position="top" dy={-20} />
                     <Tooltip />
-                    <Geom type="interval" position="assignedUser*estHour" color="assignedUser" />
+                    {/* <Geom type="interval" position="assignedUser*estHour" color="assignedUser" /> */}
+                    <Geom type='interval'
+                        type="interval" position="assignedUser*estHour" color="assignedUser"
+                        animate={{
+                            appear: {
+                                animation: 'delayScaleInY',
+                                easing: 'easeElasticOut',
+                                delay: index => {
+                                    return index * 10;
+                                }
+                            }
+                        }}
+                    />
                 </Chart>
             </div>
         )

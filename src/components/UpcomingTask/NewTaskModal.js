@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import moment from 'moment'
 import {
-    Button, Modal, Form, Input, Radio, Icon, Select, DatePicker
+    Button, Modal, Form, Input, Radio, Icon, Select, DatePicker, Switch
 } from 'antd';
 
 
@@ -22,6 +22,18 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
             const { getFieldDecorator } = form;
 
             const { dispatch, upcomingTask, users } = this.props
+
+            // check hasMultiTask
+            let editMode = false
+            if (upcomingTask.modal.okText == 'Update') {
+                editMode = true
+            }
+
+            let hasMultiTask = false
+            const descriptionToTasks = upcomingTask.modal.EditInfo.description.split(/\r\n|\n|\r/);
+            if (editMode && descriptionToTasks.length > 1) {
+                hasMultiTask = true
+            }
 
             //-- Set Completed At
             let completedAt = { initialValue: moment(upcomingTask.modal.EditInfo.completedAt) }
@@ -44,7 +56,7 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                                 initialValue: upcomingTask.modal.EditInfo.taskName,
                                 rules: [{ required: true, message: 'Please input the task name!' }],
                             })(
-                                <Input autoComplete="off"/>
+                                <Input autoComplete="off" />
                             )}
                         </Form.Item>
 
@@ -57,6 +69,17 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                             )}
                         </Form.Item>
 
+
+                        {hasMultiTask &&
+                            <Form.Item label="Convert Into Multitask from description">
+                                {getFieldDecorator('bulkInsert', {
+                                    // initialValue: upcomingTask.modal.EditInfo.description,
+                                })(
+                                    <Switch size="small" />
+                                )}
+                            </Form.Item>
+                        }
+
                         <Form.Item label="Select Task Type">
                             {getFieldDecorator('taskType', {
                                 initialValue: upcomingTask.modal.EditInfo.taskType,
@@ -68,7 +91,7 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                                     placeholder="Select a task type"
                                 >
                                     {
-                                        upcomingTask.taskTypes.map( (item, index) => 
+                                        upcomingTask.taskTypes.map((item, index) =>
                                             <Option value={item} key={index}>{item}</Option>
                                         )
                                     }
@@ -87,7 +110,7 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                                     placeholder="Select a project"
                                 >
                                     {
-                                        upcomingTask.projects.map( (item, index) => 
+                                        upcomingTask.projects.map((item, index) =>
                                             <Option value={item} key={index}>{item}</Option>
                                         )
                                     }
@@ -115,15 +138,17 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                             )}
                         </Form.Item>
 
-                        <Form.Item label="Completed At">
-                            {getFieldDecorator('completedAt', {
-                                ...completedAt
-                                // initialValue: startDate,
-                            })(
-                                <DatePicker format={dateFormat} />
-                            )}
-                        </Form.Item>
-                        
+                        {editMode &&
+                            <Form.Item label="Completed At">
+                                {getFieldDecorator('completedAt', {
+                                    ...completedAt
+                                    // initialValue: startDate,
+                                })(
+                                    <DatePicker format={dateFormat} />
+                                )}
+                            </Form.Item>
+                        }
+
                     </Form>
                 </Modal>
             );
