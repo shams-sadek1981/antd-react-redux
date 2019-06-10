@@ -30,6 +30,12 @@ const initialState = {
             to: '/admin-panel/release',
             breadcrumb: ['Admin Panel','Release']
         },
+        {
+            keyNo:5,
+            label: 'Reports',
+            to: '/admin-panel/reports',
+            breadcrumb: ['Admin Panel','Report']
+        },
     ]
 }
 

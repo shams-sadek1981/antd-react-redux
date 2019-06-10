@@ -1,0 +1,26 @@
+@tableWidth: 100%;
+
+@border: 1px solid black;
+
+.user-details-table {
+    width: @tableWidth;
+    border: @border;
+    
+    td,
+    th {
+        border: @border;
+        padding: 5px;
+    }
+    
+}
+
+@media print {
+        th:nth-child(1) {
+            width: 100px;
+        }
+        
+        th:nth-child(6) {
+            width: 70px;
+        }
+        
+}

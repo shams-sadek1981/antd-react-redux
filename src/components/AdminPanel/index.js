@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withRouter, NavLink, Route, Switch } from 'react-router-dom'
+import { withRouter, NavLink } from 'react-router-dom'
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
-import AboutUs from '../AboutUs/'
-import User from '../User'
-import UpcomingTask from '../UpcomingTask'
-import AdminDashboard from '../AdminDashboard'
-import Release from '../Release'
+
 import './adminPanel.less'
 import { changeSelectedKeysByPath, changeSelectedKeys } from '../../actions/adminPanelActions'
+import { AdminRoutes } from './AdminRoutes'
 
 const {
     Header, Footer, Sider, Content,
@@ -46,6 +43,7 @@ class AdminPanel extends Component {
             <div id="admin-panel">
                 <Layout>
                     <Sider
+                        className="no-print"
                         trigger={null}
                         collapsible
                         collapsed={this.state.collapsed}
@@ -59,61 +57,66 @@ class AdminPanel extends Component {
 
                             <Menu.Item key="1" onClick={() => dispatch(changeSelectedKeys(1))}>
                                 <NavLink to={`${url}`} exact>
-                                    <Icon type="user" />
-                                    Dashboard
+                                    <Icon type="bar-chart" />
+                                    <span>Dashboard</span>
                                 </NavLink>
                             </Menu.Item>
 
                             <Menu.Item key="2" onClick={() => dispatch(changeSelectedKeys(2))}>
                                 <NavLink to={`${url}/users`}>
                                     <Icon type="user" />
-                                    Users
+                                    <span>Users</span>
                                 </NavLink>
                             </Menu.Item>
 
                             <Menu.Item key="3" onClick={() => dispatch(changeSelectedKeys(3))}>
                                 <NavLink to={`${url}/upcoming-task`}>
-                                    <Icon type="user" />
-                                    Upcoming Task
+                                    <Icon type="unordered-list" />
+                                    <span>Upcoming Task</span>
                                 </NavLink>
                             </Menu.Item>
 
                             <Menu.Item key="4" onClick={() => dispatch(changeSelectedKeys(4))}>
                                 <NavLink to={`${url}/release`}>
-                                    <Icon type="user" />
-                                    Release
+                                    <Icon type="issues-close" />
+                                    <span>Release</span>
                                 </NavLink>
                             </Menu.Item>
 
-                            <Menu.Item key="5">
-                                <Icon type="upload" />
+                            <Menu.Item key="5" onClick={() => dispatch(changeSelectedKeys(5))}>
+                                <NavLink to={`${url}/reports`}>
+                                    <Icon type="snippets" />
+                                    <span>Report</span>
+                                </NavLink>
+                            </Menu.Item>
+
+                            <Menu.Item key="6">
+                                <Icon type="logout" />
                                 <span onClick={() => this.logout()}>Logout</span>
                             </Menu.Item>
 
                         </Menu>
                     </Sider>
                     <Layout>
-                        <Header style={{ background: '#fff', padding: 0 }}>
+                        <Header
+                            className="no-print"
+                            style={{ background: '#fff', padding: 0 }}
+                        >
                             <Icon
                                 className="trigger"
                                 type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
                                 onClick={this.toggle}
                             />
                         </Header>
+                        
+
                         <Content style={{
                             margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280,
                         }}
                         >
-                            <Switch>
-                                <Route exact path={`${path}`} component={AdminDashboard} />
-                                <Route path={`${path}/users`} component={User} />
-                                <Route path={`${path}/upcoming-task`} component={UpcomingTask} />
-                                <Route path={`${path}/release`} component={Release} />
-                                <Route path={`${path}/customer`} render={() => <h2>Customers</h2>} />
-                                <Route render={() => <h2>Not Found Admin Panel child component</h2>} />
-                            </Switch>
-
+                            <AdminRoutes {...this.props} />
                         </Content>
+
                     </Layout>
                 </Layout>
             </div>

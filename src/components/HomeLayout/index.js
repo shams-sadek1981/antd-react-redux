@@ -44,7 +44,7 @@ class HomeLayout extends Component {
                 <Layout>
                     <Header style={{ textAlign: 'right' }}>
                         <div className="logo" />
-                        <_NavMenus {...this.props} />
+                        <_NavMenus {...this.props}/>
                     </Header>
 
                     <_Breadcrumb {...this.props} />
