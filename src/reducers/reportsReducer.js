@@ -8,14 +8,23 @@ import {
 
 //-- Initialize State
 const initialState = {
-    tabKey: "2",
+    tabKey: "1",
     searchBy: {
         name: 'all',
         startDate: null,
         endDate: null,
     },
     data: {
-        result: []
+        result: [],
+        projectData: {
+            result: []
+        },
+        taskTypeData: {
+            result: []
+        },
+        subTaskData: {
+            result: []
+        }
     },
     userSummary: {
         result: []
