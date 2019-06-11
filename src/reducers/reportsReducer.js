@@ -8,7 +8,7 @@ import {
 
 //-- Initialize State
 const initialState = {
-    tabKey: "4",
+    tabKey: "2",
     searchBy: {
         name: 'all',
         startDate: null,

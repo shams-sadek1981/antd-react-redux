@@ -29,7 +29,7 @@ export const SearchByForm = (props) => {
 
     return (
         <Fragment>
-            <Form layout="inline" onSubmit={ handleSubmit }>
+            <Form layout="inline" onSubmit={ e => handleSubmit(e, "1") }>
 
                 <Form.Item label="Select User">
                     {getFieldDecorator('userName', {

@@ -1,13 +1,21 @@
 import React, { Fragment } from 'react'
 import moment from 'moment'
-import { Select, Form, DatePicker, Button } from 'antd';
+import { Select, Form, DatePicker, Button, Divider } from 'antd';
 
+import { _TaskTypeSummaryChart } from './_TaskTypeSummaryChart'
 
 export const TaskTypeSummaryDetailsReport = (props) => {
 
     const { reports } = props
     return (
         <Fragment>
+
+            <div className="no-print">
+                <_TaskTypeSummaryChart {...props}/>
+            </div>
+    
+            <Divider />
+
             <div>
                 Date Between: { reports.searchBy.startDate } to { reports.searchBy.endDate } 
             </div>

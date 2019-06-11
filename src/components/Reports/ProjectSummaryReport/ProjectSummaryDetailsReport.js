@@ -1,13 +1,23 @@
 import React, { Fragment } from 'react'
 import moment from 'moment'
-import { Select, Form, DatePicker, Button } from 'antd';
+import { Select, Form, DatePicker, Button, Divider, Row, Col } from 'antd';
 
+import { _ProjectSummaryChart } from './_ProjectSummaryChart'
 
 export const ProjectSummaryDetailsReport = (props) => {
 
     const { reports } = props
     return (
         <Fragment>
+
+            <Row gutter={24} className="no-print">
+                <Col span={24}>
+                    <_ProjectSummaryChart {...props}/>
+                </Col>
+            </Row>
+
+            <Divider />
+
             <div>
                 Date Between: { reports.searchBy.startDate } to { reports.searchBy.endDate } 
             </div>

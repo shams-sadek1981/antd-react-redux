@@ -25,7 +25,7 @@ export const SearchByForm = (props) => {
 
     return (
         <Fragment>
-            <Form layout="inline" onSubmit={ handleSubmit }>
+            <Form layout="inline" onSubmit={ e => handleSubmit(e, "4") }>
 
                 <Form.Item label="Start Date">
                     {getFieldDecorator('startDate', {

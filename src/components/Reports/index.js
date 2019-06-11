@@ -37,48 +37,28 @@ class Reports extends Component {
         this.props.dispatch(loadUser())
     }
 
-    handleSubmit = e => {
+    handleSubmit = (e, tabKeyNo) => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
+        
+        const values = this.props.form.getFieldsValue()
 
+        switch ( tabKeyNo ) {
+            case "1": //-- search by user
                 this.props.dispatch(searchBy(values))
-            }
-        });
-    };
-    
-    handleSubmitUserSummary = e => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
+                break;
 
+            case "2": //-- user summary
                 this.props.dispatch(searchByUserSummary(values))
-            }
-        });
-    };
+                break;
 
-    handleSubmitProjectSummary = e => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-
+            case "3": //-- project summary
                 this.props.dispatch(searchByProjectSummary(values))
-            }
-        });
-    };
+                break;
 
-    handleSubmitTaskTypeSummary = e => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-
+            case "4": //-- task type summary
                 this.props.dispatch(searchByTaskTypeSummary(values))
-            }
-        });
+                break;
+        }
     };
 
     render() {
@@ -98,21 +78,21 @@ class Reports extends Component {
                     <TabPane tab="User Summary" key="2">
                         {
                             reports.tabKey == 2 && 
-                            <UserSummaryReport { ...this.props } handleSubmit={this.handleSubmitUserSummary}/>
+                            <UserSummaryReport { ...this.props } handleSubmit={this.handleSubmit}/>
                         }
                     </TabPane>
 
                     <TabPane tab="Project Summary" key="3">
                         {
                             reports.tabKey == 3 && 
-                            <ProjectSummaryReport { ...this.props } handleSubmit={this.handleSubmitProjectSummary}/>
+                            <ProjectSummaryReport { ...this.props } handleSubmit={this.handleSubmit}/>
                         }
                     </TabPane>
 
                     <TabPane tab="Task Type Summary" key="4">
                         {
                             reports.tabKey == 4 && 
-                            <TaskTypeSummaryReport { ...this.props } handleSubmit={this.handleSubmitTaskTypeSummary}/>
+                            <TaskTypeSummaryReport { ...this.props } handleSubmit={this.handleSubmit}/>
                         }
                     </TabPane>
                     
