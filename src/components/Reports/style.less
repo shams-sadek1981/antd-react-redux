@@ -2,7 +2,7 @@
 
 @border: 1px solid black;
 
-.user-details-table {
+.report-table {
     width: @tableWidth;
     border: @border;
     
@@ -15,6 +15,7 @@
 }
 
 @media print {
+    .user-details-table {
         th:nth-child(1) {
             width: 100px;
         }
@@ -22,5 +23,5 @@
         th:nth-child(6) {
             width: 70px;
         }
-        
+    }
 }

@@ -9,6 +9,10 @@ import { loadUser } from './userActions'
 
 //-- Define action names
 export const REPORTS_SEARCH_BY = "REPORTS_SEARCH_BY"
+export const REPORTS_CHANGE_TAB_KEY = "REPORTS_CHANGE_TAB_KEY"
+export const REPORTS_SEARCH_BY_SUMMARY = "REPORTS_SEARCH_BY_SUMMARY"
+export const REPORTS_PROJECT_SUMMARY = "REPORTS_PROJECT_SUMMARY"
+export const REPORTS_TASK_TYPE_SUMMARY = "REPORTS_TASK_TYPE_SUMMARY"
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -18,47 +22,20 @@ const openNotificationWithIcon = (type, message, description) => {
     });
 };
 
+//-- Change tab key
+export const changeTabKey = (keyNo) => {
+    return ( dispatch, getState) => {
+        dispatch({
+            type: 'REPORTS_CHANGE_TAB_KEY',
+            payload: {
+                tabKey: keyNo
+            }
+        })
+    }
+}
 
 
-// export const searchBy = (fieldName, value) => {
-//     return (dispatch, getState) => {
-
-//         // dispatch(toggleSpinning(true))
-
-//         let { searchBy, pagination, tabKey } = getState().upcomingTaskReducer
-//         const { current } = pagination
-//         const { name, project, text, status } = searchBy
-
-//         //-- set Search by
-//         searchBy = {
-//             ...searchBy,
-//             [fieldName]: value
-//         }
-
-//         pagination = {
-//             ...pagination,
-//             current: 1
-//         }
-
-//         dispatch({
-//             type: REPORTS_SEARCH_BY,
-//             payload: {
-//                 searchBy,
-//                 pagination
-//             }
-//         })
-
-//         //-- Load Result
-//         // dispatch(upcomingTaskSearchByResult({ status, tabKey }))
-
-
-//         // dispatch(toggleSpinning(false))
-
-//     }
-// }
-
-//-- handleSubmit
-
+//-- Search By User
 export const searchBy = (values) => {
 
     return ( dispatch, getState ) => {
@@ -87,7 +64,100 @@ export const searchBy = (values) => {
                 })
             })
             .catch(err => console.log(err))
-
     }
+}
 
+
+//-- Search By User Summary
+export const searchByUserSummary = (values) => {
+
+    return ( dispatch, getState ) => {
+
+        let { startDate, endDate } = values
+        startDate = moment(startDate).format('YYYY-MMM-DD')
+        endDate = moment(endDate).format('YYYY-MMM-DD')
+
+        const searchUrl = `/upcoming-task/subtask/report-user-summary?startDate=${startDate}&endDate=${endDate}`
+
+        const { searchBy } = getState().reportsReducer
+
+        return get(searchUrl)
+            .then(data => {
+                dispatch({
+                    type: REPORTS_SEARCH_BY_SUMMARY,
+                    payload: {
+                        userSummary: data,
+                        searchBy: {
+                            ...searchBy,
+                            startDate: moment(startDate).format('DD/MMM/YYYY'),
+                            endDate: moment(endDate).format('DD/MMM/YYYY')
+                        }
+                    }
+                })
+            })
+            .catch(err => console.log(err))
+    }
+}
+
+//-- Search By Project Summary
+export const searchByProjectSummary = (values) => {
+
+    return ( dispatch, getState ) => {
+
+        let { startDate, endDate } = values
+        startDate = moment(startDate).format('YYYY-MMM-DD')
+        endDate = moment(endDate).format('YYYY-MMM-DD')
+
+        const searchUrl = `/upcoming-task/subtask/report-project-summary?startDate=${startDate}&endDate=${endDate}`
+
+        const { searchBy } = getState().reportsReducer
+
+        return get(searchUrl)
+            .then(data => {
+                dispatch({
+                    type: REPORTS_PROJECT_SUMMARY,
+                    payload: {
+                        projectSummary: data,
+                        searchBy: {
+                            ...searchBy,
+                            startDate: moment(startDate).format('DD/MMM/YYYY'),
+                            endDate: moment(endDate).format('DD/MMM/YYYY')
+                        }
+                    }
+                })
+            })
+            .catch(err => console.log(err))
+    }
+}
+
+
+//-- Search By Task Type Summary
+export const searchByTaskTypeSummary = (values) => {
+
+    return ( dispatch, getState ) => {
+
+        let { startDate, endDate } = values
+        startDate = moment(startDate).format('YYYY-MMM-DD')
+        endDate = moment(endDate).format('YYYY-MMM-DD')
+
+        const searchUrl = `/upcoming-task/subtask/report-task-type-summary?startDate=${startDate}&endDate=${endDate}`
+
+        const { searchBy } = getState().reportsReducer
+
+        return get(searchUrl)
+            .then(data => {
+                dispatch({
+                    type: REPORTS_TASK_TYPE_SUMMARY,
+                    payload: {
+                        taskTypeSummary: data,
+                        searchBy: {
+                            ...searchBy,
+                            startDate: moment(startDate).format('DD/MMM/YYYY'),
+                            endDate: moment(endDate).format('DD/MMM/YYYY')
+                        }
+                    }
+                })
+            })
+            .catch(err => console.log(err))
+    }
 }

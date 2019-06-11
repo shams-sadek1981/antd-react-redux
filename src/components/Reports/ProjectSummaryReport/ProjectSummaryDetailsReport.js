@@ -3,8 +3,7 @@ import moment from 'moment'
 import { Select, Form, DatePicker, Button } from 'antd';
 
 
-
-export const UserDetailsReport = (props) => {
+export const ProjectSummaryDetailsReport = (props) => {
 
     const { reports } = props
     return (
@@ -13,17 +12,13 @@ export const UserDetailsReport = (props) => {
                 Date Between: { reports.searchBy.startDate } to { reports.searchBy.endDate } 
             </div>
             <div>
-                User Name: <strong>{ reports.searchBy.name }</strong>
+                Project Summary Report
             </div>
 
-            <table className="user-details-table">
+            <table className="user-summary-details-table report-table">
                 <thead>
                     <tr>
-                        <th>Completed At</th>
-                        <th>Task Name</th>
-                        <th>Subtask</th>
                         <th>Project Name</th>
-                        <th>Task Type</th>
                         <th>Est. Hour</th>
                     </tr>
                 </thead>
@@ -31,21 +26,17 @@ export const UserDetailsReport = (props) => {
                 <tbody>
 
                     {
-                        reports.data.result.map((item, index) => (
+                        reports.projectSummary.result.map((item, index) => (
                             <tr key={index}>
-                                <td>{item.completedAt}</td>
-                                <td>{item.taskName}</td>
-                                <td>{item.subTask}</td>
                                 <td>{item.projectName}</td>
-                                <td>{item.taskType}</td>
                                 <td style={{ textAlign: 'right' }}>{item.estHour}</td>
                             </tr>
                         ))
                     }
 
                     <tr>
-                        <td colSpan="5" style={{ textAlign: 'right' }}>Total = </td>
-                        <td style={{ textAlign: 'right' }}>{reports.data.totalEst}</td>
+                        <td colSpan="1" style={{ textAlign: 'right' }}>Total = </td>
+                        <td style={{ textAlign: 'right' }}>{reports.projectSummary.totalEst}</td>
                     </tr>
                 </tbody>
 
