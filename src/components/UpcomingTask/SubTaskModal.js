@@ -146,6 +146,16 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                                 <DatePicker format={dateFormat} />
                             )}
                         </Form.Item>
+
+                        <Form.Item label="Ref. Link">
+                            {getFieldDecorator('refLink', {
+                                initialValue: upcomingTask.subTaskModal.EditInfo.refLink,
+                                rules: [{ required: true, message: 'Please input the Ref. Link' }],
+                            })(
+                                <Input autoComplete="off" />
+                            )}
+                        </Form.Item>
+
                     </Form>
                 </Modal>
             );

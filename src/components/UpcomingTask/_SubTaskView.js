@@ -2,7 +2,13 @@ import React from 'react'
 import moment from 'moment'
 import { List, Typography, Button, Divider, Popconfirm, Icon, Skeleton, Table, Tag } from 'antd';
 
-import { addNewSubTask, deleteSubTask, editSubTask, updateSubTask, updateSubTaskStatus } from '../../actions/task/subTaskActions';
+import {
+    addNewSubTask,
+    deleteSubTask,
+    editSubTask,
+    updateSubTask,
+    updateSubTaskStatus,
+} from '../../actions/task/subTaskActions';
 
 import './style.less'
 
@@ -34,6 +40,11 @@ export const _SubTaskView = (props) => {
             title: 'Sub Task',
             dataIndex: 'subtask',
             key: 'subtask',
+            render: (text, record) => (
+                <a href="javascript:;" onClick={() => dispatch(editSubTask(taskId, record._id))}>
+                    {record.subtask}
+                </a>
+            )
         },
         {
             title: 'Assigned User',
@@ -41,21 +52,32 @@ export const _SubTaskView = (props) => {
             key: 'assignedUser',
             render: (text, record) => (
                 record.completedAt
-                ? <Tag color={`geekblue`}>{record.assignedUser}</Tag>
-                : <Tag color={`magenta`}>{record.assignedUser}</Tag> 
+                    ? <Tag color={`geekblue`}>{record.assignedUser}</Tag>
+                    : <Tag color={`magenta`}>{record.assignedUser}</Tag>
+            )
+        },
+        {
+            title: 'Ref. Link',
+            dataIndex: 'refLink',
+            key: 'refLink',
+            render: (text, record) => (
+                record.refLink &&
+                    <a href={record.refLink} target="_blank">
+                        <Icon type="link" style={{ fontSize: '17px', color: '#08c' }} />
+                    </a>
             )
         },
         {
             title: 'Est. Hour',
             dataIndex: 'estHour',
             key: 'estHour',
-            align: "center", 
+            align: "center",
             render: (text, record) => (
                 record.completedAt
-                ? <span style={{ color: 'geekblue'}}>{record.estHour}</span> 
-                : <Tag color={`purple`}>{record.estHour}</Tag>
+                    ? <span style={{ color: 'geekblue' }}>{record.estHour}</span>
+                    : <Tag color={`purple`}>{record.estHour}</Tag>
             )
-            
+
         },
         {
             title: 'Start Date',
@@ -108,7 +130,8 @@ export const _SubTaskView = (props) => {
             estHour: item.estHour,
             startDate: item.startDate && moment(item.startDate).format("DD-MMM-YYYY"),
             dueDate: item.dueDate && moment(item.dueDate).format("DD-MMM-YYYY"),
-            completedAt: item.completedAt && moment(item.completedAt).format("DD-MMM-YYYY")
+            completedAt: item.completedAt && moment(item.completedAt).format("DD-MMM-YYYY"),
+            refLink: item.refLink
         }
     })
 
@@ -119,8 +142,8 @@ export const _SubTaskView = (props) => {
                 +Sub Task
             </a>
             &nbsp;
-            <span style={{ marginLeft: "10px"}}>{ des }</span>
-            <Table dataSource={dataSource} columns={columns} size="small"/>
+            <span style={{ marginLeft: "10px" }}>{des}</span>
+            <Table dataSource={dataSource} columns={columns} size="small" />
         </div>
     )
 }

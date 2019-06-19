@@ -3,7 +3,13 @@ import moment from 'moment'
 import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm, Button, Switch, Rate, Progress, Menu } from 'antd';
 
 import {
-    editTask, removeTask, updateTask, updateTaskStatus, changePagination, updateRunningTask, updateTaskRate
+    editTask,
+    removeTask,
+    updateTask,
+    updateTaskStatus,
+    changePagination,
+    updateRunningTask,
+    updateTaskRate
 } from '../../actions/upcomingTaskActions';
 
 import { toggleSubtaskModalVisible } from '../../actions/task/subTaskActions';
@@ -12,7 +18,7 @@ import { _SubTaskView } from './_SubTaskView'
 import { _MoreActionMenu } from './_MoreActionMenu'
 
 
-export const _TaskList = (props) => {
+export const TaskList = (props) => {
 
     const { dispatch, upcomingTask } = props
 
@@ -65,23 +71,27 @@ export const _TaskList = (props) => {
             key: 'taskName',
             render: (text, record) =>
                 <div>
-                    <a href="javascript:;" onClick={() => dispatch(toggleSubtaskModalVisible())}>
-                        { 
+                    <a href="javascript:;" onClick={() => dispatch(editTask(record._id))}>
+                        {
                             (record.running == true)
-                            ? <span>{text}</span>
-                            : <span style={{ color: 'black' }}>{text}</span>
+                                ? <span>{text}</span>
+                                : <span style={{ color: 'black' }}>{text}</span>
                         }
                     </a>
-                    <div style={{ fontSize: '13px'}}>
-                        
+                    <div style={{ fontSize: '13px' }}>
+
                         <span style={{ fontStyle: 'italic' }}> Est: <b>{record.estHour}</b> </span>
-                        { record.completedHour > 0 && <span style={{ fontStyle: 'italic' }}> Due: <b style={{ color: '#e0801f'}}>{record.dueHour}</b></span> }
-                        { record.completedHour > 0 && <span style={{ fontStyle: 'italic' }}> Complete: <b style={{ color: 'green'}}>{record.completedHour}</b></span> }
+                        {record.completedHour > 0 && <span style={{ fontStyle: 'italic' }}> Due: <b style={{ color: '#e0801f' }}>{record.dueHour}</b></span>}
+                        {record.completedHour > 0 && <span style={{ fontStyle: 'italic' }}> Complete: <b style={{ color: 'green' }}>{record.completedHour}</b></span>}
 
                         <Divider type="vertical" />
-                        <Rate allowHalf onChange={value => handleRateChange(record._id, value)} value={record.rate} style={{ fontSize: '13px'}}/>
-                        <Divider type="vertical" />
-                        { record.assignedBy && <span><Icon type="like" /> { record.assignedBy }</span> }
+                        <Rate allowHalf onChange={value => handleRateChange(record._id, value)} value={record.rate} style={{ fontSize: '13px' }} />
+                        {record.assignedBy &&
+                            <Fragment>
+                                <Divider type="vertical" />
+                                <span><Icon type="like" /> {record.assignedBy}</span>
+                            </Fragment>
+                        }
                     </div>
                 </div>
         },
@@ -92,8 +102,8 @@ export const _TaskList = (props) => {
             width: 250,
             render: (text, record) => (
                 <div>
-                    <Progress type="circle" percent={record.percent} width={50}/>
-                    &nbsp;{ record.completedAt && moment(record.completedAt).format('DD-MMM-YYYY') }
+                    <Progress type="circle" percent={record.percent} width={50} />
+                    &nbsp;{record.completedAt && moment(record.completedAt).format('DD-MMM-YYYY')}
                 </div>
             )
         },
@@ -126,8 +136,8 @@ export const _TaskList = (props) => {
                 const findItem = featureTypes.find(item => item.name == record.taskType)
 
                 let color = 'orange'
-                if ( typeof(findItem) != 'undefined' ) color = findItem.color
-                
+                if (typeof (findItem) != 'undefined') color = findItem.color
+
                 return <Tag color={color}>{record.taskType}</Tag>
             }
         },
@@ -146,7 +156,7 @@ export const _TaskList = (props) => {
             key: 'action',
             align: "right",
             render: (text, record) => (
-                <_MoreActionMenu {...props} record={record}/>
+                <_MoreActionMenu {...props} record={record} />
             ),
         }
     ];
@@ -163,7 +173,7 @@ export const _TaskList = (props) => {
                 size="small"
                 expandedRowRender={record =>
                     <div style={{ margin: 0 }}>
-                        <_SubTaskView {...props} taskId={record._id} subTasks={record.subTasks} des={record.description}/>
+                        <_SubTaskView {...props} taskId={record._id} subTasks={record.subTasks} des={record.description} />
                     </div>
                 }
             />

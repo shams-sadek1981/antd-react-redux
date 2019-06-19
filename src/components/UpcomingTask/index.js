@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import { Tabs, Radio, Form, Modal, Button, Icon, Row, Col, Input, Divider } from 'antd';
 
 // import { _AddUser } from './_AddUser'
-import { _TaskList } from './_TaskList'
+import { TaskList } from './TaskList'
 import { NewTaskModal } from './NewTaskModal'
 import { SubTaskModal } from './SubTaskModal'
 import { SearchHeader } from './SearchHeader'
@@ -115,17 +115,17 @@ class UpcomingTask extends Component {
                     <TabPane tab="Todo" key="1">
                         <Row>
                             <Col span={24}>
-                                <_TaskList {...this.props} />
+                                <TaskList {...this.props} />
                             </Col>
                         </Row>
                     </TabPane>
                     
                     <TabPane tab="In Progress" key="3">
-                        <_TaskList {...this.props} />
+                        <TaskList {...this.props} />
                     </TabPane>
 
-                    <TabPane tab="Completed" key="2">
-                        <_TaskList {...this.props} />
+                    <TabPane tab="Done" key="2">
+                        <TaskList {...this.props} />
                     </TabPane>
                 </Tabs>
             </Fragment >
