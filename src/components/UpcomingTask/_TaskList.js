@@ -125,7 +125,9 @@ export const _TaskList = (props) => {
 
                 const findItem = featureTypes.find(item => item.name == record.taskType)
 
-                const color = findItem.color
+                let color = 'orange'
+                if ( typeof(findItem) != 'undefined' ) color = findItem.color
+                
                 return <Tag color={color}>{record.taskType}</Tag>
             }
         },

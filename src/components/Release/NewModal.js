@@ -23,7 +23,7 @@ export const NewModal = Form.create({ name: 'form_in_modal' })(
 
             const { getFieldDecorator } = form;
 
-            const { dispatch, release, users } = this.props
+            const { dispatch, release, users, project } = this.props
             return (
                 <Modal
                     visible={release.modal.modalVisible}
@@ -53,8 +53,8 @@ export const NewModal = Form.create({ name: 'form_in_modal' })(
                                     placeholder="Select a project"
                                 >
                                     {
-                                        release.projects.map((item, index) =>
-                                            <Option value={item} key={index}>{item}</Option>
+                                        project.projectList.map((item, index) =>
+                                            <Option value={item.name} key={index}>{item.name}</Option>
                                         )
                                     }
                                 </Select>

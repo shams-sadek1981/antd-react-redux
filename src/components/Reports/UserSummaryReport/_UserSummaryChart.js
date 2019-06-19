@@ -25,7 +25,7 @@ export const _UserSummaryChart = (props) => {
                 data.length > 0 &&
                 <BarChart
                     width={1100}
-                    height={650}
+                    height={750}
                     data={data}
                     margin={{ top: 30, right: 30, left: 20, bottom: 5 }}
                     layout="vertical"
@@ -45,9 +45,9 @@ export const _UserSummaryChart = (props) => {
                         {/* <LabelList dataKey="officeHour" position="right" /> */}
                     </Bar>
                     
-                    <Bar dataKey="timeLog" fill="#778899">
+                    {/* <Bar dataKey="timeLog" fill="#778899">
                         <LabelList dataKey="timeLog" position="right" />
-                    </Bar>
+                    </Bar> */}
                 </BarChart>
             }
         </div>

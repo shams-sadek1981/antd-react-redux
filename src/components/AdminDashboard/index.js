@@ -11,6 +11,8 @@ import {
     projectSummaryLoading
 } from '../../actions/adminDashboardActions'
 
+import { ProjectSummaryChart } from './ProjectSummaryChart'
+
 const cols = {
     // estHour: { alias: '销售量' },
     // assignedUser: { alias: '游戏种类' }
@@ -48,6 +50,7 @@ class AdminDashboard extends Component {
                     height={400}
                     data={projectSummaryList}
                     scale={cols}
+                    onClick={evt => {console.log(evt)}}
                 >
                     {/* <Axis name="projectName" /> */}
                     <Axis name="estHour"/>

@@ -26,6 +26,7 @@ export const TaskTypeSummaryDetailsReport = (props) => {
             <table className="user-summary-details-table report-table">
                 <thead>
                     <tr>
+                        <th style={{width: '60px'}}>SL</th>
                         <th>Task Type</th>
                         <th>Est. Hour</th>
                     </tr>
@@ -36,6 +37,7 @@ export const TaskTypeSummaryDetailsReport = (props) => {
                     {
                         reports.taskTypeSummary.result.map((item, index) => (
                             <tr key={index}>
+                                <td>{++index}</td>
                                 <td>{item.taskType}</td>
                                 <td style={{ textAlign: 'right' }}>{item.estHour}</td>
                             </tr>
@@ -43,7 +45,7 @@ export const TaskTypeSummaryDetailsReport = (props) => {
                     }
 
                     <tr>
-                        <td colSpan="1" style={{ textAlign: 'right' }}>Total = </td>
+                        <td colSpan="2" style={{ textAlign: 'right' }}>Total = </td>
                         <td style={{ textAlign: 'right' }}>{reports.taskTypeSummary.totalEst}</td>
                     </tr>
                 </tbody>

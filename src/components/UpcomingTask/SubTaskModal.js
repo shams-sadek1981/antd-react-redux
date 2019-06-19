@@ -61,18 +61,24 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                         )}
                         {/* </Form.Item> */}
 
-                        <Form.Item label="SubTask">
+                        <Form.Item label="Select SubTask">
                             {getFieldDecorator('name', {
                                 initialValue: upcomingTask.subTaskModal.EditInfo.name,
-                                rules: [{ required: true, message: 'Please input the subtask!' }],
+                                rules: [{ required: true, message: 'Please select subTask' }],
                             })(
-                                <AutoComplete
-                                    dataSource={upcomingTask.subTaskList}
-                                    placeholder="input here"
-                                />
+                                <Select
+                                    showSearch
+                                    placeholder="Select a SubTask"
+                                >
+                                    {
+                                        upcomingTask.subTaskList.map((item, index) => (
+                                            <Option value={item} key={index}>{item}</Option>
+                                        ))
+                                    }
+                                </Select>
                             )}
                         </Form.Item>
-
+                        
                         <Form.Item label="Select User">
                             {getFieldDecorator('assignedUser', {
                                 initialValue: upcomingTask.subTaskModal.EditInfo.assignedUser,

@@ -134,7 +134,9 @@ class UpcomingTask extends Component {
 
 const mapStateToProps = state => ({
     upcomingTask: state.upcomingTaskReducer,
-    users: state.userReducer
+    users: state.userReducer,
+    project: state.projectReducer,
+    taskType: state.taskTypeReducer,
 })
 
 

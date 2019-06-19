@@ -6,6 +6,8 @@ import {
 import { get, post, put, deleteMethod } from '../functions'
 
 import { loadUser } from './userActions'
+import { getAllProject } from './projectActions'
+import { getAllTaskType } from './taskTypeActions'
 
 //-- Define action names
 export const UPCOMING_TASK_CHANGE_TABKEY = "UPCOMING_TASK_CHANGE_TABKEY"
@@ -229,7 +231,7 @@ const setObjForSearchResult = (obj) => {
 
 const getTaskResult = (current, pageSize, name, project, completedAt, text, running) => {
 
-    const searchUrl = `/upcoming-task/search?page=${current}&pageSize=${pageSize}&name=${name}&project=${project}&completedAt=${completedAt}&text=${text}&running=${running}`
+    const searchUrl = `/upcoming-task/search-running?page=${current}&pageSize=${pageSize}&name=${name}&project=${project}&completedAt=${completedAt}&text=${text}&running=${running}`
 
     return get(searchUrl)
         .then(data => data)
@@ -392,7 +394,15 @@ export const loadUpcomingTask = () => {
         //     status = true
         // }
 
+        //-- load user
         dispatch(loadUser())
+        
+        //-- load project
+        dispatch(getAllProject())
+        
+        //-- load task-type
+        dispatch(getAllTaskType())
+
 
         //-- Load Result
         dispatch(upcomingTaskSearchByResult())

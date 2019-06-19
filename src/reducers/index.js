@@ -9,6 +9,8 @@ import releaseReducer from './releaseReducer'
 import adminDashboardReducer from './adminDashboardReducer'
 import adminPanelReducer from './adminPanelReducer'
 import reportsReducer from './reportsReducer'
+import projectReducer from './projectReducer'
+import taskTypeReducer from './taskTypeReducer'
 
 const rootReducer = combineReducers({
     todoReducer,
@@ -19,7 +21,9 @@ const rootReducer = combineReducers({
     releaseReducer,
     adminDashboardReducer,
     adminPanelReducer,
-    reportsReducer
+    reportsReducer,
+    projectReducer,
+    taskTypeReducer
 })
 
 export default rootReducer

@@ -14,7 +14,7 @@ export const _TaskTypeSummaryChart = (props) => {
                 data.length > 0 &&
                 <BarChart
                     width={1000}
-                    height={200}
+                    height={600}
                     data={data}
                     margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                     layout="vertical"
@@ -22,13 +22,13 @@ export const _TaskTypeSummaryChart = (props) => {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis type="number" />   
                     
-                    <YAxis dataKey="taskType" type="category" width={100}>
+                    <YAxis dataKey="taskType" type="category" width={150}>
                         <Label value="Task Type" offset={0} position="top" />
                     </YAxis>
                     <Tooltip />
                     <Legend />
                     <Bar dataKey="estHour" fill="#A64CA6">
-                        <LabelList dataKey="estHour" position="middle" />
+                        <LabelList dataKey="estHour" position="right" />
                     </Bar>
                 </BarChart>
             }

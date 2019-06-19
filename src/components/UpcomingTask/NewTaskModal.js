@@ -21,7 +21,7 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
 
             const { getFieldDecorator } = form;
 
-            const { dispatch, upcomingTask, users } = this.props
+            const { dispatch, upcomingTask, users, project, taskType } = this.props
 
             // check hasMultiTask
             let editMode = false
@@ -91,8 +91,8 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                                     placeholder="Select a task type"
                                 >
                                     {
-                                        upcomingTask.taskTypes.map((item, index) =>
-                                            <Option value={item} key={index}>{item}</Option>
+                                        taskType.taskTypeList.map((item, index) =>
+                                            <Option value={item.name} key={index}>{item.name}</Option>
                                         )
                                     }
                                 </Select>
@@ -110,8 +110,8 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                                     placeholder="Select a project"
                                 >
                                     {
-                                        upcomingTask.projects.map((item, index) =>
-                                            <Option value={item} key={index}>{item}</Option>
+                                        project.projectList.map((item, index) =>
+                                            <Option value={item.name} key={index}>{item.name}</Option>
                                         )
                                     }
                                 </Select>

@@ -1,35 +1,35 @@
 import { get, post, put, deleteMethod } from '../functions'
 
-export const ADD_PROJECT = "ADD_PROJECT"
-export const LOAD_PROJECT = "LOAD_PROJECT"
+// export const ADD_TASK_TYPE = "ADD_TASK_TYPE"
+export const LOAD_TASK_TYPE = "LOAD_TASK_TYPE"
 
 
-export const addProject = (projectInfo) => {
-    return (dispatch, getState) => {
+// export const addProject = (projectInfo) => {
+//     return (dispatch, getState) => {
 
-        dispatch({
-            type: ADD_PROJECT
-        })
-    }
-}
+//         dispatch({
+//             type: ADD_PROJECT
+//         })
+//     }
+// }
 
 /**
  * --------------------------------------------------------------------------------------------------
  * get all project
  * --------------------------------------------------------------------------------------------------
  */
-export const getAllProject = () => {
+export const getAllTaskType = () => {
 
     return (dispatch, getState) => {
 
-        const searchUrl = `/project`
+        const searchUrl = `/task-type`
 
         return get(searchUrl)
             .then(data => {
                 dispatch({
-                    type: LOAD_PROJECT,
+                    type: LOAD_TASK_TYPE,
                     payload: {
-                        projectList: data.result
+                        taskTypeList: data.result
                     }
                 })
             })

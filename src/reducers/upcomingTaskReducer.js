@@ -75,18 +75,6 @@ const initialState = {
         'Enhancement',
         'R&D'
     ],
-    projects: [
-        'All Plugin',
-        'Dokan',
-        'Dokan App',
-        'ERP',
-        'wePOS',
-        'Project Manager',
-        'weForms',
-        'weMail',
-        'WPUF',
-        "Appsero"
-    ],
     nameColors: [
         {
             name: 'Mishu',

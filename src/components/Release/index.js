@@ -15,6 +15,7 @@ import {
     searchBy,
     changeTabKey
 } from '../../actions/releaseActions'
+import { getAllProject } from '../../actions/projectActions';
 
 
 const { TabPane } = Tabs;
@@ -30,6 +31,7 @@ class Release extends Component {
 
     componentDidMount = () => {
         this.props.dispatch(releaseSearchByResult())
+        this.props.dispatch(getAllProject())
     }
 
     //-- Modal form submit
@@ -100,6 +102,7 @@ class Release extends Component {
 
 const mapStateToProps = state => ({
     release: state.releaseReducer,
+    project: state.projectReducer
 })
 
 
