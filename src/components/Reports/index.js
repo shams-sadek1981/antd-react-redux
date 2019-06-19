@@ -15,6 +15,7 @@ import {
     searchByUserSummary,
     searchByProjectSummary,
     searchByTaskTypeSummary,
+    searchBySubTaskSummary
 } from '../../actions/reportsActions'
 
 import { Form, Select, Row, Col, Divider, Tabs } from 'antd';
@@ -23,6 +24,7 @@ import { UserReport } from './UserReport'
 import { UserSummaryReport } from './UserSummaryReport'
 import { ProjectSummaryReport } from './ProjectSummaryReport'
 import { TaskTypeSummaryReport } from './TaskTypeSummaryReport'
+import { SubTaskSummaryReport } from './SubTaskSummaryReport'
 
 import './style.less'
 
@@ -57,6 +59,10 @@ class Reports extends Component {
 
             case "4": //-- task type summary
                 this.props.dispatch(searchByTaskTypeSummary(values))
+                break;
+
+            case "5": //-- subtask summary
+                this.props.dispatch(searchBySubTaskSummary(values))
                 break;
         }
     };
@@ -96,6 +102,13 @@ class Reports extends Component {
                         }
                     </TabPane>
                     
+                    <TabPane tab="SubTask Summary" key="5">
+                        {
+                            reports.tabKey == 5 && 
+                            <SubTaskSummaryReport { ...this.props } handleSubmit={this.handleSubmit}/>
+                        }
+                    </TabPane>
+                    
                 
                 </Tabs>
 
@@ -106,6 +119,7 @@ class Reports extends Component {
                     { reports.tabKey == 2 && <UserSummaryDetailsReport {...this.props} /> }
                     { reports.tabKey == 3 && <ProjectSummaryDetailsReport {...this.props} /> }
                     { reports.tabKey == 4 && <TaskTypeSummaryDetailsReport {...this.props} /> }
+                    { reports.tabKey == 5 && <SubTaskSummaryReport {...this.props} /> }
                 </div>
 
             </Fragment>

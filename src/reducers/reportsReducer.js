@@ -3,7 +3,8 @@ import {
     REPORTS_CHANGE_TAB_KEY,
     REPORTS_SEARCH_BY_SUMMARY,
     REPORTS_PROJECT_SUMMARY,
-    REPORTS_TASK_TYPE_SUMMARY
+    REPORTS_TASK_TYPE_SUMMARY,
+    REPORTS_SUBTASK_SUMMARY
 } from '../actions/reportsActions'
 
 //-- Initialize State
@@ -33,6 +34,9 @@ const initialState = {
         result: []
     },
     taskTypeSummary: {
+        result: []
+    },
+    subTaskSummary: {
         result: []
     },
 }
@@ -68,6 +72,12 @@ const reportsReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 searchBy: action.payload.searchBy,
                 taskTypeSummary: action.payload.taskTypeSummary,
+            })
+
+        case REPORTS_SUBTASK_SUMMARY:
+            return Object.assign({}, state, {
+                searchBy: action.payload.searchBy,
+                subTaskSummary: action.payload.subTaskSummary,
             })
 
     }

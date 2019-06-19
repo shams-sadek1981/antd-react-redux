@@ -112,18 +112,19 @@ class UpcomingTask extends Component {
                     size={size}
                     onChange={(key) => dispatch(changeTabKey(key))}
                 >
-                    <TabPane tab="Task List" key="1">
+                    <TabPane tab="Todo" key="1">
                         <Row>
                             <Col span={24}>
                                 <_TaskList {...this.props} />
                             </Col>
                         </Row>
                     </TabPane>
-
-                    <TabPane tab="Completed Task" key="2">
+                    
+                    <TabPane tab="In Progress" key="3">
                         <_TaskList {...this.props} />
                     </TabPane>
-                    <TabPane tab="Running Task" key="3">
+
+                    <TabPane tab="Completed" key="2">
                         <_TaskList {...this.props} />
                     </TabPane>
                 </Tabs>

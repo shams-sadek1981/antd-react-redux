@@ -85,7 +85,7 @@ const initialState = {
             color: 'green'
         },
     ],
-    subTaskList: ['SRS', 'R&D', 'Mockup', 'Design', 'Frontend', 'Develop', 'Merge', 'Testing', 'Documentation']
+    subTaskList: ['API','SRS', 'R&D', 'Mockup', 'Design', 'Frontend', 'Develop', 'Merge', 'Testing', 'Documentation']
 }
 
 const upcomingTaskReducer = (state = initialState, action) => {

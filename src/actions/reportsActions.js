@@ -13,6 +13,7 @@ export const REPORTS_CHANGE_TAB_KEY = "REPORTS_CHANGE_TAB_KEY"
 export const REPORTS_SEARCH_BY_SUMMARY = "REPORTS_SEARCH_BY_SUMMARY"
 export const REPORTS_PROJECT_SUMMARY = "REPORTS_PROJECT_SUMMARY"
 export const REPORTS_TASK_TYPE_SUMMARY = "REPORTS_TASK_TYPE_SUMMARY"
+export const REPORTS_SUBTASK_SUMMARY = "REPORTS_SUBTASK_SUMMARY"
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -150,6 +151,38 @@ export const searchByTaskTypeSummary = (values) => {
                     type: REPORTS_TASK_TYPE_SUMMARY,
                     payload: {
                         taskTypeSummary: data,
+                        searchBy: {
+                            ...searchBy,
+                            startDate: moment(startDate).format('DD/MMM/YYYY'),
+                            endDate: moment(endDate).format('DD/MMM/YYYY')
+                        }
+                    }
+                })
+            })
+            .catch(err => console.log(err))
+    }
+}
+
+
+//-- Search By SubTask Summary
+export const searchBySubTaskSummary = (values) => {
+
+    return ( dispatch, getState ) => {
+
+        let { startDate, endDate } = values
+        startDate = moment(startDate).format('YYYY-MMM-DD')
+        endDate = moment(endDate).format('YYYY-MMM-DD')
+
+        const searchUrl = `/upcoming-task/subtask/report-subtask-summary?startDate=${startDate}&endDate=${endDate}`
+
+        const { searchBy } = getState().reportsReducer
+
+        return get(searchUrl)
+            .then(data => {
+                dispatch({
+                    type: REPORTS_SUBTASK_SUMMARY,
+                    payload: {
+                        subTaskSummary: data,
                         searchBy: {
                             ...searchBy,
                             startDate: moment(startDate).format('DD/MMM/YYYY'),
