@@ -103,7 +103,7 @@ class UpcomingTask extends Component {
                 }
 
                 {/* ##### Search Header ##### */}
-                <SearchHeader {...this.props}/>
+                <SearchHeader {...this.props} />
 
                 <Divider>Task</Divider>
 
@@ -112,19 +112,34 @@ class UpcomingTask extends Component {
                     size={size}
                     onChange={(key) => dispatch(changeTabKey(key))}
                 >
-                    <TabPane tab="Todo" key="1">
+                    <TabPane tab={
+                        <span style={{ fontWeight: 'bold'}}>
+                            <Icon type="apple" />
+                            Todo
+                        </span>
+                    } key="1">
                         <Row>
                             <Col span={24}>
                                 <TaskList {...this.props} />
                             </Col>
                         </Row>
                     </TabPane>
-                    
-                    <TabPane tab="In Progress" key="3">
+
+                    <TabPane tab={
+                        <span style={{ fontWeight: 'bold'}}>
+                            <Icon type="api" />
+                            In Progress
+                        </span>
+                    } key="3">
                         <TaskList {...this.props} />
                     </TabPane>
 
-                    <TabPane tab="Done" key="2">
+                    <TabPane tab={
+                        <span style={{ fontWeight: 'bold'}}>
+                            <Icon type="pushpin" />
+                            Done
+                        </span>
+                    } key="2" >
                         <TaskList {...this.props} />
                     </TabPane>
                 </Tabs>
