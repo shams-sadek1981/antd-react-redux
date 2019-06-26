@@ -18,6 +18,8 @@ import {
     changeTabKey
 } from '../../actions/upcomingTaskActions'
 
+import { loadUser } from '../../actions/userActions'
+
 import { handleSubTaskSubmit } from '../../actions/task/subTaskActions'
 
 const { TabPane } = Tabs;
@@ -32,6 +34,7 @@ class UpcomingTask extends Component {
     };
 
     componentDidMount = () => {
+        this.props.dispatch(loadUser())
         this.props.dispatch(loadUpcomingTask())
     }
 
@@ -71,7 +74,6 @@ class UpcomingTask extends Component {
         });
     }
 
-
     saveFormRef = (formRef) => {
         this.formRef = formRef;
     }
@@ -102,8 +104,8 @@ class UpcomingTask extends Component {
                     />
                 }
 
-                {/* ##### Search Header ##### */}
-                <SearchHeader {...this.props} />
+                {/* #####---------- Search Header ------------##### */}
+                <SearchHeader {...this.props}/>
 
                 <Divider>Task</Divider>
 
@@ -113,7 +115,7 @@ class UpcomingTask extends Component {
                     onChange={(key) => dispatch(changeTabKey(key))}
                 >
                     <TabPane tab={
-                        <span style={{ fontWeight: 'bold'}}>
+                        <span style={{ fontWeight: 'bold' }}>
                             <Icon type="apple" />
                             Todo
                         </span>
@@ -126,7 +128,7 @@ class UpcomingTask extends Component {
                     </TabPane>
 
                     <TabPane tab={
-                        <span style={{ fontWeight: 'bold'}}>
+                        <span style={{ fontWeight: 'bold' }}>
                             <Icon type="api" />
                             In Progress
                         </span>
@@ -135,7 +137,7 @@ class UpcomingTask extends Component {
                     </TabPane>
 
                     <TabPane tab={
-                        <span style={{ fontWeight: 'bold'}}>
+                        <span style={{ fontWeight: 'bold' }}>
                             <Icon type="pushpin" />
                             Done
                         </span>

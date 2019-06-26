@@ -23,7 +23,7 @@ function handleFocus() {
 
 export const SearchHeader = (props) => {
 
-    const { dispatch, upcomingTask } = props
+    const { dispatch, upcomingTask, searchInput } = props
 
     return (
         <Fragment>
@@ -34,7 +34,7 @@ export const SearchHeader = (props) => {
                         onClick={() => dispatch(addNewTask())}
                     >
                         <Icon type="plus-circle" />New Task
-                                </Button>
+                    </Button>
                 </Col>
 
                 <Col span={3}>
@@ -61,6 +61,7 @@ export const SearchHeader = (props) => {
                         defaultValue={ upcomingTask.searchBy.text }
                         onSearch={value => dispatch(searchBy('text', value))}
                         style={{ width: 200 }}
+                        autoFocus
                     />
                 </Col>
             </Row>

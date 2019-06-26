@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from 'react'
 
 import {
-    Button, Modal, Form, Input, Radio, Icon
+    Button, Modal, Form, Input, Radio, Icon, Select
 } from 'antd';
 
 
 import { toggleModalVisible } from '../../actions/userActions'
+
+const { Option } = Select;
 
 export const NewUserModal = Form.create({ name: 'form_in_modal' })(
     // eslint-disable-next-line
@@ -34,6 +36,25 @@ export const NewUserModal = Form.create({ name: 'form_in_modal' })(
                                 rules: [{ required: true, message: 'Please input the user name!' }],
                             })(
                                 <Input />
+                            )}
+                        </Form.Item>
+                        
+                        <Form.Item label="Select Department">
+                            {getFieldDecorator('department', {
+                                initialValue: users.modal.userEditInfo.department,
+                                rules: [{ required: true, message: 'Please select department' }],
+                            })(
+                                <Select
+                                    showSearch
+                                    // style={{ width: 200 }}
+                                    placeholder="Select a department"
+                                >
+                                    {
+                                        users.departmentList.map((item, index) =>
+                                            <Option value={item.name} key={index}>{item.name}</Option>
+                                        )
+                                    }
+                                </Select>
                             )}
                         </Form.Item>
 

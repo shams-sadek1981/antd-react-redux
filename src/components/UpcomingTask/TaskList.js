@@ -145,9 +145,9 @@ export const TaskList = (props) => {
             title: 'Project Name',
             dataIndex: 'projectName',
             key: 'projectName',
-            width: 110,
+            width: 130,
             render: (text, record) =>
-                <div>
+                <div style={{ color: 'green'}}>
                     {record.projectName}
                 </div>
         },

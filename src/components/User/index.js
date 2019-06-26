@@ -4,11 +4,13 @@ import { withRouter } from 'react-router-dom'
 
 import { Tabs, Radio, Form, Modal, Button, Icon } from 'antd';
 
-import { _AddUser } from './_AddUser'
-import { _UserList } from './_UserList'
-import { NewUserModal } from './_NewUserModal'
+import { AddUser } from './AddUser'
+import { UserList } from './UserList'
+import { NewUserModal } from './NewUserModal'
 
-import { loadUser, handleSubmit, changeDefaultActiveKey, addNewUser } from '../../actions/userActions'
+import { SearchHeader } from './SearchHeader'
+
+import { handleSubmit, changeDefaultActiveKey, addNewUser, userSearchByResult } from '../../actions/userActions'
 
 const { TabPane } = Tabs;
 
@@ -20,7 +22,7 @@ class User extends Component {
     };
 
     componentDidMount = () => {
-        this.props.dispatch(loadUser())
+        this.props.dispatch(userSearchByResult())
     }
 
 
@@ -54,12 +56,7 @@ class User extends Component {
         return (
             <Fragment>
 
-                <Button
-                    type="primary"
-                    onClick={ () => dispatch(addNewUser()) }
-                >
-                    <Icon type="plus-circle" />New User
-                </Button>
+                <SearchHeader {...this.props}/>
 
                 <NewUserModal
                     {...this.props}
@@ -74,8 +71,8 @@ class User extends Component {
                     size={size}
                     onChange={(key) => dispatch(changeDefaultActiveKey(key))}
                 >
-                    <TabPane tab="User List" key="1"><_UserList {...this.props} /></TabPane>
-                    <TabPane tab="New User" key="2"><_AddUser {...this.props} /></TabPane>
+                    <TabPane tab="User List" key="1"><UserList {...this.props} /></TabPane>
+                    {/* <TabPane tab="New User" key="2"><AddUser {...this.props} /></TabPane> */}
                 </Tabs>
             </Fragment>
         )

@@ -48,7 +48,7 @@ export const SearchByForm = (props) => {
                         >
                             <Option value="all" key={-1}>ALL User</Option>
                             {
-                                users.userList.map((item, index) =>
+                                users.allUser.map((item, index) =>
                                     <Option value={item.name} key={index}>{item.name}</Option>
                                 )
                             }

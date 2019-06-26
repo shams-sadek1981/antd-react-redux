@@ -139,11 +139,12 @@ export const _SubTaskView = (props) => {
         <div id="sub-task-list">
             <a href="javascript:;" style={{ fontSize: '13px', cursor: 'pointer' }}
                 onClick={() => dispatch(addNewSubTask(taskId))}>
-                +Sub Task
+                <Icon type="plus-circle" /> Sub Task
             </a>
             &nbsp;
             <span style={{ marginLeft: "10px" }}>{des}</span>
             <Table dataSource={dataSource} columns={columns} size="small" />
+            <span style={{ color: "#C6C0C0"}}>Task ID: { taskId} </span>
         </div>
     )
 }

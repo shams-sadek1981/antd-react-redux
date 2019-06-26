@@ -14,6 +14,10 @@ export const TOGGLE_USER_MODAL_VISIBLE = "TOGGLE_USER_MODAL_VISIBLE"
 export const EDIT_USER = "EDIT_USER"
 export const UPDATE_USER = "UPDATE_USER"
 export const ADD_NEW_USER = "ADD_NEW_USER"
+export const USER_SEARCH_BY = "USER_SEARCH_BY"
+export const USER_SPINNING = "USER_SPINNING"
+export const USER_SEARCH_BY_RESULT = "USER_SEARCH_BY_RESULT"
+export const USER_CHANGE_PAGINATION = "USER_CHANGE_PAGINATION"
 
 const openNotificationWithIcon = (type, message, description) => {
     notification[type]({
@@ -244,19 +248,133 @@ export const loadUser = () => {
 
         const users = getState().userReducer
 
-        if (users.userList.length > 0) return;
+        if (users.allUser.length > 0) return;
 
-        const userList = get('/users/list')
+        const userList = get('/users/all-user')
 
         userList.then(data => {
-            if (data.result) {
+            if (data) {
                 dispatch({
                     type: LOAD_USER,
                     payload: {
-                        userList: data.result
+                        allUser: data
                     }
                 })
             }
         })
+    }
+}
+
+
+
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * get Result Helper function
+ * ----------------------------------------------------------------------------------------------------
+ * @param {*} current 
+ * @param {*} name 
+ * @param {*} project 
+ * @param {*} status 
+ * @param {*} text 
+ */
+
+const getTaskResult = (current, pageSize, text) => {
+
+    const searchUrl = `/users/list?page=${current}&pageSize=${pageSize}&text=${text}`
+
+    return get(searchUrl)
+        .then(data => data)
+        .catch(err => console.log(err))
+}
+
+/**
+ * ------------------------------------------------------------------------------------------
+ * User Result
+ * ------------------------------------------------------------------------------------------
+ */
+export const userSearchByResult = () => {
+    return (dispatch, getState) => {
+
+        let { searchBy, pagination } = getState().userReducer
+        let { current, pageSize } = pagination
+        const { text } = searchBy
+
+
+        getTaskResult( current, pageSize, text )
+            .then(data => {
+
+                dispatch({
+                    type: USER_SEARCH_BY_RESULT,
+                    payload: {
+                        userList: data.result,
+                        pagination: data.pagination,
+                    }
+                })
+
+            }).catch(err => console.log(err))
+    }
+}//-- end function
+
+
+//-- Toggle Spinning
+export const toggleSpinning = (booleanValue) => {
+    return (dispatch, getState) => {
+
+        const { spinning } = getState().userReducer
+
+        dispatch({
+            type: USER_SPINNING,
+            payload: {
+                spinning: booleanValue
+            }
+        })
+    }
+}
+
+export const searchBy = (fieldName, value) => {
+    return (dispatch, getState) => {
+
+        dispatch(toggleSpinning(true))
+
+        // let { searchBy, pagination } = getState().userReducer
+        // let { current, pageSize } = pagination
+        // // const { text } = searchBy
+
+        dispatch({
+            type: USER_SEARCH_BY,
+            payload: {
+                searchBy: {
+                    text: value
+                }
+            }
+        })
+
+        //-- Load Result
+        dispatch(userSearchByResult())
+
+
+        dispatch(toggleSpinning(false))
+
+    }
+}//-- end
+
+//-- Change Pagination (Table Pagination)
+export const changePagination = (pagination) => {
+    return (dispatch, getState) => {
+
+        console.log(pagination)
+        dispatch(toggleSpinning(true))
+
+        dispatch({
+            type: USER_CHANGE_PAGINATION,
+            payload: {
+                pagination
+            }
+        })
+
+        //-- Load Result
+        dispatch(userSearchByResult())
+
+        dispatch(toggleSpinning(false))
     }
 }

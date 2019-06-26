@@ -60,6 +60,7 @@ const initialState = {
     subTaskModal: {
         modalVisible: false,
         taskId: '',
+        taskName: 'Elementor',
         modalTitle: 'Create Sub Task',
         okText: 'Create',
         EditInfo: {

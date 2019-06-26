@@ -35,12 +35,15 @@ export const handleSubTaskSubmit = (values) => {
  * ------------------------------------------------------------------------------------------------------
  */
 export const addNewSubTask = (taskId) => {
-    console.log(taskId)
+    // console.log(taskId)
     return (dispatch, getState) => {
 
-        const { subTaskModal } = getState().upcomingTaskReducer
+        const { subTaskModal, taskList } = getState().upcomingTaskReducer
+
+        const task = taskList.find( item => item._id == taskId)
 
         const EditInfo = {
+            taskName: task.taskName,
             name: '',
             assignedUser: '',
             estHour: '',

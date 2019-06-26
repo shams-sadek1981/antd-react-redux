@@ -2,12 +2,16 @@ import React, { Fragment } from 'react'
 
 import { Table, Divider, Tag, Icon } from 'antd';
 
-import { removeUser, editUser } from '../../actions/userActions';
+import { removeUser, editUser, changePagination } from '../../actions/userActions';
 
 
-export const _UserList = (props) => {
+export const UserList = (props) => {
 
-    const { dispatch } = props
+    const { dispatch, users } = props
+
+    const handleTableChange = (pagination, filters, sorter) => {
+        dispatch(changePagination(pagination))
+    }
 
     const columns = [
         {
@@ -20,6 +24,11 @@ export const _UserList = (props) => {
             title: 'Mobile',
             dataIndex: 'mobile',
             key: 'mobile',
+        },
+        {
+            title: 'Department',
+            dataIndex: 'department',
+            key: 'department',
         },
         {
             title: 'Action',
@@ -41,19 +50,27 @@ export const _UserList = (props) => {
         }
     ];
 
-    const data = props.users.userList.map((item, index) => {
+    const data = users.userList.map((item, index) => {
 
         return {
             _id: item._id,
             key: index,
             name: item.name,
-            mobile: item.mobile
+            mobile: item.mobile,
+            department: item.department
         }
     })
 
     return (
         <Fragment>
-            <Table columns={columns} dataSource={data} size="small"/>
+            <Table
+                loading={users.spinning}
+                pagination={users.pagination}
+                onChange={handleTableChange}
+                columns={columns}
+                dataSource={data}
+                size="small"
+            />
         </Fragment>
     )
 }

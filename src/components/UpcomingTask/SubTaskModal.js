@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import moment from 'moment'
 import {
-    Modal, Form, Input, Select, AutoComplete, DatePicker, Row, Col
+    Modal, Form, Input, Select, AutoComplete, DatePicker, Row, Col, Icon, Divider
 } from 'antd';
 
 
@@ -50,6 +50,7 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                     onCancel={() => dispatch(toggleSubtaskModalVisible())}
                     onOk={onCreate}
                 >
+                    <div style={{ paddingBottom: '5px', fontSize: '11pt'}}><Icon type="bulb" theme="twoTone" />{upcomingTask.subTaskModal.EditInfo.taskName}</div>
                     <Form layout="vertical">
 
                         {/* <Form.Item label="" type="hidden"> */}
@@ -69,6 +70,7 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                                 <Select
                                     showSearch
                                     placeholder="Select a SubTask"
+                                    autoFocus
                                 >
                                     {
                                         upcomingTask.subTaskList.map((item, index) => (

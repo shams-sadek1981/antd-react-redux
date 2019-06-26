@@ -8,6 +8,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <title>Hello</title>
         {/* <Button type="primary">Button</Button> */}
         {/* <MyLaout/> */}
       </div>

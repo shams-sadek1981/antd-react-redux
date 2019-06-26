@@ -7,7 +7,7 @@ import { saveUser } from '../../actions/userActions';
 
 const { Option } = Select;
 
-export const _AddUser = (props) => {
+export const AddUser = (props) => {
 
     const { getFieldDecorator } = props.form;
 

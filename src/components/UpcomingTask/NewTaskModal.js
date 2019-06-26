@@ -56,7 +56,7 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                                 initialValue: upcomingTask.modal.EditInfo.taskName,
                                 rules: [{ required: true, message: 'Please input the task name!' }],
                             })(
-                                <Input autoComplete="off" />
+                                <Input autoComplete="off" autoFocus/>
                             )}
                         </Form.Item>
 
