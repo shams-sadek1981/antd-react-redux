@@ -92,7 +92,7 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                                     placeholder="Select a user"
                                 >
                                     {
-                                        users.userList.map((item, index) => (
+                                        users.allUser.map((item, index) => (
                                             <Option value={item.name} key={index}>{item.name}</Option>
                                         ))
                                     }

@@ -129,7 +129,7 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                                     placeholder="Select a user"
                                 >
                                     {
-                                        users.userList.map((item, index) => (
+                                        users.allUser.map((item, index) => (
                                             <Option value={item.name} key={index}>{item.name}</Option>
                                         ))
                                     }
