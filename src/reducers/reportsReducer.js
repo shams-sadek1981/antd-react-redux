@@ -4,7 +4,8 @@ import {
     REPORTS_SEARCH_BY_SUMMARY,
     REPORTS_PROJECT_SUMMARY,
     REPORTS_TASK_TYPE_SUMMARY,
-    REPORTS_SUBTASK_SUMMARY
+    REPORTS_SUBTASK_SUMMARY,
+    REPORTS_SET_DATE_RANGE
 } from '../actions/reportsActions'
 
 //-- Initialize State
@@ -44,6 +45,11 @@ const initialState = {
 const reportsReducer = (state = initialState, action) => {
 
     switch (action.type) {
+
+        case REPORTS_SET_DATE_RANGE:
+            return Object.assign({}, state, {
+                searchBy: action.payload.searchBy,
+            })
 
         case REPORTS_SEARCH_BY:
             return Object.assign({}, state, {

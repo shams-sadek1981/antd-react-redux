@@ -4,6 +4,8 @@ import { Select, Form, DatePicker, Button } from 'antd';
 
 import { searchBy } from '../../../actions/reportsActions';
 
+import { DateRange } from '../DateRange'
+
 const { Option } = Select;
 const dateFormat = 'YYYY-MMM-DD';
 
@@ -56,30 +58,7 @@ export const SearchByForm = (props) => {
                     )}
                 </Form.Item>
 
-
-                <Form.Item label="Start Date">
-                    {getFieldDecorator('startDate', {
-                        initialValue: startOfMonth,
-                        rules: [{ required: true, message: 'Please select start date' }],
-                    })(
-                        <DatePicker format={dateFormat} />
-                    )}
-                </Form.Item>
-                
-                <Form.Item label="End Date">
-                    {getFieldDecorator('endDate', {
-                        initialValue: endOfMonth,
-                        rules: [{ required: true, message: 'Please select start date' }],
-                    })(
-                        <DatePicker format={dateFormat} />
-                    )}
-                </Form.Item>
-
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        Search
-                        </Button>
-                </Form.Item>
+                <DateRange {...props}/>
 
             </Form>
         </Fragment>

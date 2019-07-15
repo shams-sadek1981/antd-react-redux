@@ -42,12 +42,12 @@ export const UserDetailsReport = (props) => {
             <table className="user-details-table report-table">
                 <thead>
                     <tr>
-                        <th>Completed At</th>
-                        <th>Task Name</th>
+                        <th style={{ width: "10%"}}>Completed_At</th>
+                        <th>Task_Name</th>
                         <th>Subtask</th>
-                        <th>Project Name</th>
+                        <th style={{ width: "10%"}}>Project_Name</th>
                         <th>Task Type</th>
-                        <th style={{ width: '12%'}}>Est. Hour</th>
+                        <th style={{ width: '10%'}}>Est._Hour</th>
                     </tr>
                 </thead>
 

@@ -1,15 +1,36 @@
 @media screen {
-  .print-me {
-      display: none;
-  }
+    .print-me {
+        display: none;
+    }
+}
+
+@page {
+    size: A4;
+    margin: .5in;
 }
 
 @media print {
-    * {
-        margin: 0;
-        padding: 0;
-        font-size: 9pt;
+    html, body {
+        width: 210mm;
+        height: 297mm;
     }
+
+    /* .page {
+        margin: 2in;
+        padding: 3in;
+        border: initial;
+        border-radius: initial;
+        width: initial;
+        min-height: initial;
+        box-shadow: initial;
+        background: initial;
+        page-break-after: always;
+    } */
+
+    /* * {
+        margin: 0;
+        font-size: 9pt;
+    } */
 
     .no-print {
         display: none;
@@ -19,8 +40,6 @@
         display: block;
     }
 }
-
-
 
 .App {
     text-align: center;

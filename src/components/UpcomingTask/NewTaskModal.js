@@ -30,9 +30,11 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
             }
 
             let hasMultiTask = false
-            const descriptionToTasks = upcomingTask.modal.EditInfo.description.split(/\r\n|\n|\r/);
-            if (editMode && descriptionToTasks.length > 1) {
-                hasMultiTask = true
+            if (upcomingTask.modal.EditInfo.description){
+                const descriptionToTasks = upcomingTask.modal.EditInfo.description.split(/\r\n|\n|\r/);
+                if (editMode && descriptionToTasks.length > 1) {
+                    hasMultiTask = true
+                }
             }
 
             //-- Set Completed At

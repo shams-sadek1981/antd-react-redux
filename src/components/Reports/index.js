@@ -11,6 +11,7 @@ import { TaskTypeSummaryDetailsReport } from './TaskTypeSummaryReport/TaskTypeSu
 import { loadUser } from '../../actions/userActions'
 import {
     searchBy,
+    setDateRange,
     changeTabKey,
     searchByUserSummary,
     searchByProjectSummary,
@@ -37,12 +38,15 @@ class Reports extends Component {
 
     componentDidMount() {
         this.props.dispatch(loadUser())
+        this.props.dispatch(setDateRange())
     }
 
     handleSubmit = (e, tabKeyNo) => {
         e.preventDefault();
         
         const values = this.props.form.getFieldsValue()
+
+        console.log('1: ', values)
 
         switch ( tabKeyNo ) {
             case "1": //-- search by user
@@ -61,7 +65,7 @@ class Reports extends Component {
                 this.props.dispatch(searchByTaskTypeSummary(values))
                 break;
 
-            case "5": //-- subtask summary
+            case "6": //-- subtask summary
                 this.props.dispatch(searchBySubTaskSummary(values))
                 break;
         }
@@ -102,9 +106,9 @@ class Reports extends Component {
                         }
                     </TabPane>
                     
-                    <TabPane tab="SubTask Summary" key="5">
+                    <TabPane tab="SubTask Summary" key="6">
                         {
-                            reports.tabKey == 5 && 
+                            reports.tabKey == 6 && 
                             <SubTaskSummaryReport { ...this.props } handleSubmit={this.handleSubmit}/>
                         }
                     </TabPane>

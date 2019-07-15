@@ -56,6 +56,8 @@ export const TaskList = (props) => {
             projectName: item.projectName,
             assignedBy: item.assignedBy,
             completedAt: item.completedAt,
+            maxCompletedAt: item.maxCompletedAt,
+            startAt: item.startAt,
             estHour: item.estHour,
             completedHour: item.completedHour,
             dueHour: item.dueHour,
@@ -92,6 +94,22 @@ export const TaskList = (props) => {
                                 <span><Icon type="like" /> {record.assignedBy}</span>
                             </Fragment>
                         }
+
+                        {/* Start Date & maxCompletedAt */}
+                        <div style={{ float: 'right', color: 'gray' }}>
+
+                            { record.startAt && 
+                                <span style={{ fontStyle: 'italic'}}>
+                                    {moment(record.startAt).format('DD-MMM-YYYY')}/
+                                </span>
+                            }
+
+                            { record.maxCompletedAt &&
+                                <span style={{ fontStyle: 'italic'}}>
+                                    {moment(record.maxCompletedAt).format('DD-MMM-YYYY')}
+                                </span>
+                            }
+                        </div>
                     </div>
                 </div>
         },
@@ -147,7 +165,7 @@ export const TaskList = (props) => {
             key: 'projectName',
             width: 130,
             render: (text, record) =>
-                <div style={{ color: 'green'}}>
+                <div style={{ color: 'green' }}>
                     {record.projectName}
                 </div>
         },

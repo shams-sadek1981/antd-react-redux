@@ -14,6 +14,7 @@ export const REPORTS_SEARCH_BY_SUMMARY = "REPORTS_SEARCH_BY_SUMMARY"
 export const REPORTS_PROJECT_SUMMARY = "REPORTS_PROJECT_SUMMARY"
 export const REPORTS_TASK_TYPE_SUMMARY = "REPORTS_TASK_TYPE_SUMMARY"
 export const REPORTS_SUBTASK_SUMMARY = "REPORTS_SUBTASK_SUMMARY"
+export const REPORTS_SET_DATE_RANGE = "REPORTS_SET_DATE_RANGE"
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -22,6 +23,33 @@ const openNotificationWithIcon = (type, message, description) => {
         description: description
     });
 };
+
+
+//-- set Date Range
+export const setDateRange = (startDate, endDate) => {
+
+    return ( dispatch, getState) => {
+
+        const reports = getState().reportsReducer
+        const { name } = reports.searchBy
+
+        const startDate = moment().startOf('month').format("YYYY-MMM-DD")
+        const endDate = moment().endOf('month').format("YYYY-MMM-DD")
+
+        // console.log(startDate)
+
+        dispatch({
+            type: 'REPORTS_SET_DATE_RANGE',
+            payload: {
+                searchBy: {
+                    name,
+                    startDate,
+                    endDate
+                }
+            }
+        })
+    }
+}
 
 //-- Change tab key
 export const changeTabKey = (keyNo) => {
@@ -58,8 +86,8 @@ export const searchBy = (values) => {
                         searchBy: {
                             ...searchBy,
                             name: userName,
-                            startDate: moment(startDate).format('DD/MMM/YYYY'),
-                            endDate: moment(endDate).format('DD/MMM/YYYY')
+                            startDate,
+                            endDate
                         }
                     }
                 })
@@ -90,8 +118,8 @@ export const searchByUserSummary = (values) => {
                         userSummary: data,
                         searchBy: {
                             ...searchBy,
-                            startDate: moment(startDate).format('DD/MMM/YYYY'),
-                            endDate: moment(endDate).format('DD/MMM/YYYY')
+                            startDate,
+                            endDate
                         }
                     }
                 })
@@ -121,8 +149,8 @@ export const searchByProjectSummary = (values) => {
                         projectSummary: data,
                         searchBy: {
                             ...searchBy,
-                            startDate: moment(startDate).format('DD/MMM/YYYY'),
-                            endDate: moment(endDate).format('DD/MMM/YYYY')
+                            startDate,
+                            endDate
                         }
                     }
                 })
@@ -153,8 +181,8 @@ export const searchByTaskTypeSummary = (values) => {
                         taskTypeSummary: data,
                         searchBy: {
                             ...searchBy,
-                            startDate: moment(startDate).format('DD/MMM/YYYY'),
-                            endDate: moment(endDate).format('DD/MMM/YYYY')
+                            startDate,
+                            endDate
                         }
                     }
                 })
@@ -170,6 +198,7 @@ export const searchBySubTaskSummary = (values) => {
     return ( dispatch, getState ) => {
 
         let { startDate, endDate } = values
+        
         startDate = moment(startDate).format('YYYY-MMM-DD')
         endDate = moment(endDate).format('YYYY-MMM-DD')
 
@@ -185,8 +214,8 @@ export const searchBySubTaskSummary = (values) => {
                         subTaskSummary: data,
                         searchBy: {
                             ...searchBy,
-                            startDate: moment(startDate).format('DD/MMM/YYYY'),
-                            endDate: moment(endDate).format('DD/MMM/YYYY')
+                            startDate,
+                            endDate
                         }
                     }
                 })
