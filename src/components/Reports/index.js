@@ -7,6 +7,8 @@ import { UserDetailsReport } from './UserReport/UserDetailsReport'
 import { UserSummaryDetailsReport } from './UserSummaryReport/UserSummaryDetailsReport'
 import { ProjectSummaryDetailsReport } from './ProjectSummaryReport/ProjectSummaryDetailsReport'
 import { TaskTypeSummaryDetailsReport } from './TaskTypeSummaryReport/TaskTypeSummaryDetailsReport'
+import { SubTaskSummaryDetailsReport } from './SubTaskSummaryReport/SubTaskSummaryDetailsReport'
+import { TaskDetailsReport } from './TaskStatusReport/TaskDetailsReport'
 
 import { loadUser } from '../../actions/userActions'
 import {
@@ -16,7 +18,8 @@ import {
     searchByUserSummary,
     searchByProjectSummary,
     searchByTaskTypeSummary,
-    searchBySubTaskSummary
+    searchBySubTaskSummary,
+    reportTaskStatusByDate
 } from '../../actions/reportsActions'
 
 import { Form, Select, Row, Col, Divider, Tabs } from 'antd';
@@ -26,6 +29,7 @@ import { UserSummaryReport } from './UserSummaryReport'
 import { ProjectSummaryReport } from './ProjectSummaryReport'
 import { TaskTypeSummaryReport } from './TaskTypeSummaryReport'
 import { SubTaskSummaryReport } from './SubTaskSummaryReport'
+import { TaskStatusReport } from './TaskStatusReport'
 
 import './style.less'
 
@@ -35,41 +39,10 @@ const { TabPane } = Tabs;
 
 
 class Reports extends Component {
-
     componentDidMount() {
         this.props.dispatch(loadUser())
         this.props.dispatch(setDateRange())
     }
-
-    handleSubmit = (e, tabKeyNo) => {
-        e.preventDefault();
-        
-        const values = this.props.form.getFieldsValue()
-
-        console.log('1: ', values)
-
-        switch ( tabKeyNo ) {
-            case "1": //-- search by user
-                this.props.dispatch(searchBy(values))
-                break;
-
-            case "2": //-- user summary
-                this.props.dispatch(searchByUserSummary(values))
-                break;
-
-            case "3": //-- project summary
-                this.props.dispatch(searchByProjectSummary(values))
-                break;
-
-            case "4": //-- task type summary
-                this.props.dispatch(searchByTaskTypeSummary(values))
-                break;
-
-            case "6": //-- subtask summary
-                this.props.dispatch(searchBySubTaskSummary(values))
-                break;
-        }
-    };
 
     render() {
 
@@ -106,10 +79,17 @@ class Reports extends Component {
                         }
                     </TabPane>
                     
-                    <TabPane tab="SubTask Summary" key="6">
+                    <TabPane tab="SubTask Summary" key="5">
                         {
-                            reports.tabKey == 6 && 
+                            reports.tabKey == 5 && 
                             <SubTaskSummaryReport { ...this.props } handleSubmit={this.handleSubmit}/>
+                        }
+                    </TabPane>
+
+                    <TabPane tab="Task Status" key="6">
+                        {
+                            reports.tabKey == 6 &&
+                            <TaskStatusReport { ...this.props }/>
                         }
                     </TabPane>
                     
@@ -123,7 +103,8 @@ class Reports extends Component {
                     { reports.tabKey == 2 && <UserSummaryDetailsReport {...this.props} /> }
                     { reports.tabKey == 3 && <ProjectSummaryDetailsReport {...this.props} /> }
                     { reports.tabKey == 4 && <TaskTypeSummaryDetailsReport {...this.props} /> }
-                    { reports.tabKey == 5 && <SubTaskSummaryReport {...this.props} /> }
+                    { reports.tabKey == 5 && <SubTaskSummaryDetailsReport {...this.props} /> }
+                    { reports.tabKey == 6 && <TaskDetailsReport {...this.props} /> }
                 </div>
 
             </Fragment>
@@ -135,6 +116,7 @@ class Reports extends Component {
 const mapStateToProps = state => ({
     reports: state.reportsReducer,
     users: state.userReducer,
+    projects: state.projectReducer
 })
 
 const WrappedComponent = Form.create({ name: 'Reports' })(Reports);

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import moment from 'moment'
 import { Select, Form, DatePicker, Button } from 'antd';
 
-import { searchBy } from '../../../actions/reportsActions';
+import { searchByUserSummary } from '../../../actions/reportsActions';
 import { DateRange } from '../DateRange'
 
 const { Option } = Select;
@@ -21,13 +21,19 @@ export const SearchByForm = (props) => {
     const { dispatch, users, reports, form, handleSubmit } = props
     const { getFieldDecorator } = form;
 
-    const startOfMonth = moment().startOf('month')
-    const endOfMonth   = moment().endOf('month')
+    // const startOfMonth = moment().startOf('month')
+    // const endOfMonth   = moment().endOf('month')
 
     return (
         <Fragment>
-            <Form layout="inline" onSubmit={ e => handleSubmit(e, "2") }>
+            <Form layout="inline">
                 <DateRange {...props}/>
+                
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" onClick={ () => dispatch(searchByUserSummary())}>
+                        Search
+                    </Button>
+                </Form.Item>
             </Form>
         </Fragment>
     )

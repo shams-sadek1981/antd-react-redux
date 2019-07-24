@@ -6,6 +6,7 @@ import {
 import { get, post, put, deleteMethod } from '../functions'
 
 import { loadUser } from './userActions'
+import { getAllProject } from '../actions/projectActions'
 
 //-- Define action names
 export const REPORTS_SEARCH_BY = "REPORTS_SEARCH_BY"
@@ -15,6 +16,8 @@ export const REPORTS_PROJECT_SUMMARY = "REPORTS_PROJECT_SUMMARY"
 export const REPORTS_TASK_TYPE_SUMMARY = "REPORTS_TASK_TYPE_SUMMARY"
 export const REPORTS_SUBTASK_SUMMARY = "REPORTS_SUBTASK_SUMMARY"
 export const REPORTS_SET_DATE_RANGE = "REPORTS_SET_DATE_RANGE"
+export const REPORTS_TASK_STATUS_BY_DATE = "REPORTS_TASK_STATUS_BY_DATE"
+export const REPORT_CHANGE_DATE = "REPORT_CHANGE_DATE"
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -35,7 +38,7 @@ export const setDateRange = (startDate, endDate) => {
 
         const startDate = moment().startOf('month').format("YYYY-MMM-DD")
         const endDate = moment().endOf('month').format("YYYY-MMM-DD")
-
+        
         // console.log(startDate)
 
         dispatch({
@@ -54,6 +57,10 @@ export const setDateRange = (startDate, endDate) => {
 //-- Change tab key
 export const changeTabKey = (keyNo) => {
     return ( dispatch, getState) => {
+
+        //-- load projects name
+        dispatch( getAllProject() )
+
         dispatch({
             type: 'REPORTS_CHANGE_TAB_KEY',
             payload: {
@@ -65,13 +72,16 @@ export const changeTabKey = (keyNo) => {
 
 
 //-- Search By User
-export const searchBy = (values) => {
+export const searchBy = () => {
 
     return ( dispatch, getState ) => {
 
-        let { userName, startDate, endDate } = values
-        startDate = moment(startDate).format('YYYY-MMM-DD')
-        endDate = moment(endDate).format('YYYY-MMM-DD')
+        // let { userName, startDate, endDate } = values
+        // startDate = moment(startDate).format('YYYY-MMM-DD')
+        // endDate = moment(endDate).format('YYYY-MMM-DD')
+
+        const reportsReducer = getState().reportsReducer
+        const { userName, startDate, endDate } = reportsReducer.searchBy
 
         const searchUrl = `/upcoming-task/subtask/report-user?startDate=${startDate}&endDate=${endDate}&userName=${userName}`
 
@@ -102,9 +112,10 @@ export const searchByUserSummary = (values) => {
 
     return ( dispatch, getState ) => {
 
-        let { startDate, endDate } = values
-        startDate = moment(startDate).format('YYYY-MMM-DD')
-        endDate = moment(endDate).format('YYYY-MMM-DD')
+        let { startDate, endDate } = getState().reportsReducer.searchBy
+
+        // startDate = moment(startDate).format('YYYY-MMM-DD')
+        // endDate = moment(endDate).format('YYYY-MMM-DD')
 
         const searchUrl = `/upcoming-task/subtask/report-user-summary?startDate=${startDate}&endDate=${endDate}`
 
@@ -133,9 +144,7 @@ export const searchByProjectSummary = (values) => {
 
     return ( dispatch, getState ) => {
 
-        let { startDate, endDate } = values
-        startDate = moment(startDate).format('YYYY-MMM-DD')
-        endDate = moment(endDate).format('YYYY-MMM-DD')
+        const { startDate, endDate } = getState().reportsReducer.searchBy
 
         const searchUrl = `/upcoming-task/subtask/report-project-summary?startDate=${startDate}&endDate=${endDate}`
 
@@ -165,9 +174,7 @@ export const searchByTaskTypeSummary = (values) => {
 
     return ( dispatch, getState ) => {
 
-        let { startDate, endDate } = values
-        startDate = moment(startDate).format('YYYY-MMM-DD')
-        endDate = moment(endDate).format('YYYY-MMM-DD')
+        const { startDate, endDate } = getState().reportsReducer.searchBy
 
         const searchUrl = `/upcoming-task/subtask/report-task-type-summary?startDate=${startDate}&endDate=${endDate}`
 
@@ -197,10 +204,7 @@ export const searchBySubTaskSummary = (values) => {
 
     return ( dispatch, getState ) => {
 
-        let { startDate, endDate } = values
-        
-        startDate = moment(startDate).format('YYYY-MMM-DD')
-        endDate = moment(endDate).format('YYYY-MMM-DD')
+        const { startDate, endDate } = getState().reportsReducer.searchBy
 
         const searchUrl = `/upcoming-task/subtask/report-subtask-summary?startDate=${startDate}&endDate=${endDate}`
 
@@ -221,5 +225,64 @@ export const searchBySubTaskSummary = (values) => {
                 })
             })
             .catch(err => console.log(err))
+    }
+}
+
+
+/**
+ * ----------------------------------------------------------------------------------------
+ * Report Task Status
+ * ----------------------------------------------------------------------------------------
+ */
+export const reportTaskStatusByDate = (values) => {
+
+    return ( dispatch, getState ) => {
+
+        const { startDate, endDate, project } = getState().reportsReducer.searchBy
+
+        const searchUrl = `/upcoming-task/task/report-task-status?startDate=${startDate}&endDate=${endDate}&project=${project}`
+
+        const { searchBy } = getState().reportsReducer
+
+        return get(searchUrl)
+            .then(data => {
+                dispatch({
+                    type: REPORTS_TASK_STATUS_BY_DATE,
+                    payload: {
+                        reportTaskStatus: data,
+                        searchBy: {
+                            ...searchBy,
+                            startDate,
+                            endDate,
+                            project
+                        }
+                    }
+                })
+            })
+            .catch(err => console.log(err))
+    }
+}
+
+
+export const changeSearchField = (val, fieldName="startDate") => {
+    return (dispatch, getState) => {
+
+        const reportsReducer = getState().reportsReducer
+
+        const searchBy = reportsReducer.searchBy
+
+        if (val instanceof moment) {
+            val = moment(val).format("YYYY-MMM-DD")
+        }
+
+        dispatch({
+            type: REPORT_CHANGE_DATE,
+            payload: {
+                searchBy: {
+                    ...searchBy,
+                    [fieldName]: val
+                }
+            }
+        })
     }
 }

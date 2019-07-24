@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import moment from 'moment'
 import { Select, Form, DatePicker, Button } from 'antd';
 
-import { searchBy } from '../../../actions/reportsActions';
+import { searchByTaskTypeSummary } from '../../../actions/reportsActions';
 import { DateRange } from '../DateRange'
 
 const { Option } = Select;
@@ -26,8 +26,15 @@ export const SearchByForm = (props) => {
 
     return (
         <Fragment>
-            <Form layout="inline" onSubmit={ e => handleSubmit(e, "4") }>
+            <Form layout="inline">
                 <DateRange {...props}/>
+
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" onClick={ () => dispatch(searchByTaskTypeSummary())}>
+                        Search
+                    </Button>
+                </Form.Item>
+
             </Form>
         </Fragment>
     )

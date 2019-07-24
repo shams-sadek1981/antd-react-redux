@@ -121,7 +121,10 @@ export const TaskList = (props) => {
             render: (text, record) => (
                 <div>
                     <Progress type="circle" percent={record.percent} width={50} />
-                    &nbsp;{record.completedAt && moment(record.completedAt).format('DD-MMM-YYYY')}
+                    &nbsp;
+                    <span style={{ fontSize: '10pt'}}>
+                        {record.completedAt && moment(record.completedAt).format('DD-MMM-YYYY')}
+                    </span>
                 </div>
             )
         },

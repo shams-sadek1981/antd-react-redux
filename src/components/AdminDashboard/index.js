@@ -85,7 +85,7 @@ class AdminDashboard extends Component {
                     onClick={evt => { console.log(evt) }}
                     forceFit
                 >
-                    <Axis name="projectName"/>
+                    <Axis name="projectName" />
                     <Axis name="estHour" />
                     <Legend position="bottom" dy={-20} />
                     <Tooltip />
@@ -93,7 +93,7 @@ class AdminDashboard extends Component {
                         position="projectName*estHour"
                         color="projectName"
                     >
-                        <Label content="estHour"/>
+                        <Label content="estHour" />
                     </Geom>
                 </Chart>
             </div>

@@ -3,9 +3,9 @@ import React, { Component, Fragment } from 'react'
 import { Form, Select, Row, Col, Divider, Tabs } from 'antd';
 
 import { SearchByForm } from './SearchByForm'
-import { UserDetailsReport } from './UserDetailsReport'
+import { TaskDetailsReport } from './TaskDetailsReport'
 
-export const UserReport = (props) => {
+export const TaskStatusReport = (props) => {
 
     const { handleSubmit } = props
 
@@ -13,7 +13,7 @@ export const UserReport = (props) => {
         <Fragment>
             <Row gutter={24}>
                 <Col span={24}>
-                    <SearchByForm {...props} />
+                    <SearchByForm {...props} handleSubmit={ handleSubmit } />
                 </Col>
             </Row>
 
@@ -21,7 +21,7 @@ export const UserReport = (props) => {
 
             <Row gutter={24} >
                 <Col span={24}>
-                    <UserDetailsReport {...props} />
+                    <TaskDetailsReport {...props} />
                 </Col>
             </Row>
         </Fragment>

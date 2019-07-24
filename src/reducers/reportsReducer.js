@@ -5,7 +5,9 @@ import {
     REPORTS_PROJECT_SUMMARY,
     REPORTS_TASK_TYPE_SUMMARY,
     REPORTS_SUBTASK_SUMMARY,
-    REPORTS_SET_DATE_RANGE
+    REPORTS_SET_DATE_RANGE,
+    REPORTS_TASK_STATUS_BY_DATE,
+    REPORT_CHANGE_DATE
 } from '../actions/reportsActions'
 
 //-- Initialize State
@@ -13,8 +15,9 @@ const initialState = {
     tabKey: "1",
     searchBy: {
         name: 'all',
+        project: null,
         startDate: null,
-        endDate: null,
+        endDate: null
     },
     data: {
         result: [],
@@ -25,6 +28,9 @@ const initialState = {
             result: []
         },
         subTaskData: {
+            result: []
+        },
+        reportTaskStatus: {
             result: []
         }
     },
@@ -40,12 +46,16 @@ const initialState = {
     subTaskSummary: {
         result: []
     },
+    reportTaskStatus: {
+        result: []
+    }
 }
 
 const reportsReducer = (state = initialState, action) => {
 
     switch (action.type) {
 
+        case REPORT_CHANGE_DATE:
         case REPORTS_SET_DATE_RANGE:
             return Object.assign({}, state, {
                 searchBy: action.payload.searchBy,
@@ -84,6 +94,12 @@ const reportsReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 searchBy: action.payload.searchBy,
                 subTaskSummary: action.payload.subTaskSummary,
+            })
+
+        case REPORTS_TASK_STATUS_BY_DATE:
+            return Object.assign({}, state, {
+                searchBy: action.payload.searchBy,
+                reportTaskStatus: action.payload.reportTaskStatus,
             })
 
     }
