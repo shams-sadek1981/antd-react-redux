@@ -36,8 +36,11 @@ export const setDateRange = (startDate, endDate) => {
         const reports = getState().reportsReducer
         const { name } = reports.searchBy
 
-        const startDate = moment().startOf('month').format("YYYY-MMM-DD")
-        const endDate = moment().endOf('month').format("YYYY-MMM-DD")
+        //-- Subtract 7 for official report
+        const presentDate = moment().subtract(7, "days")
+
+        const startDate = moment(presentDate).startOf('month').format("YYYY-MMM-DD")
+        const endDate = moment(presentDate).endOf('month').format("YYYY-MMM-DD")
         
         // console.log(startDate)
 
@@ -274,6 +277,12 @@ export const changeSearchField = (val, fieldName="startDate") => {
         if (val instanceof moment) {
             val = moment(val).format("YYYY-MMM-DD")
         }
+        
+        if ( typeof val == 'Object') {
+            val = val.key
+        }
+
+
 
         dispatch({
             type: REPORT_CHANGE_DATE,

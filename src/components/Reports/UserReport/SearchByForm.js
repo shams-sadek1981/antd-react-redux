@@ -33,34 +33,26 @@ export const SearchByForm = (props) => {
             <Form layout="inline">
 
                 <Form.Item label="Select User">
-                    {getFieldDecorator('userName', {
-                        initialValue: reports.searchBy.name,
-                        rules: [{ required: true, message: 'Please select user' }],
-                    })(
-                        <Select
-                            showSearch
-                            style={{ width: 200 }}
-                            placeholder="Select a person"
-                            optionFilterProp="children"
-                            onChange={ val => dispatch(changeSearchField(val, 'userName'))}
-                            // onFocus={handleFocus}
-                            // onBlur={handleBlur}
-                            filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                        >
-                            <Option value="all" key={-1}>ALL User</Option>
-                            {
-                                users.allUser.map((item, index) =>
-                                    <Option value={item.name} key={index}>{item.name}</Option>
-                                )
-                            }
-                        </Select>
-                    )}
+                    <Select
+                        showSearch
+                        style={{ width: 200 }}
+                        placeholder="Select a person"
+                        defaultValue={reports.searchBy.userName}
+                        onChange={val => dispatch(changeSearchField(val, 'userName'))}
+                    >
+                        <Option value="all" key={-1}>ALL User</Option>
+                        {
+                            users.allUser.map((item, index) =>
+                                <Option value={item.name} key={index}>{item.name}</Option>
+                            )
+                        }
+                    </Select>
                 </Form.Item>
 
-                <DateRange {...props}/>
+                <DateRange {...props} />
 
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" onClick={ () => dispatch(searchBy())}>
+                    <Button type="primary" htmlType="submit" onClick={() => dispatch(searchBy())}>
                         Search
                     </Button>
                 </Form.Item>

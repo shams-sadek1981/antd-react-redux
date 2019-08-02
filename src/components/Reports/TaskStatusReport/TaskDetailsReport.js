@@ -25,20 +25,24 @@ export const TaskDetailsReport = (props) => {
             <table className="user-details-table report-table">
                 <thead>
                     <tr>
-                        <th style={{ width: "10%"}}>Completed_At</th>
                         <th>Task Name</th>
-                        <th>Task Type</th>
-                        <th style={{ width: '10%'}}>Est._Hour</th>
+                        <th style={{ width: "9%"}}>Working_Range</th>
+                        <th style={{ width: "8%"}}>Completed</th>
+                        <th style={{ width: "10%"}}>Task Type</th>
+                        <th style={{ width: '8%'}}>Est._Hour</th>
                     </tr>
                 </thead>
 
                 <tbody>
-
                     {
                         reports.reportTaskStatus.result.map((item, index) => (
                             <tr key={index}>
-                                <td>{item.completedAt}</td>
                                 <td><TaskDescription item={item}/></td>
+                                <td>
+                                    <div>{item.startDate}</div>
+                                    <div>{item.endDate}</div>
+                                </td>
+                                <td>{item.completedAt}</td>
                                 <td>{item.taskType}</td>
                                 <td style={{ textAlign: 'right' }}>{item.estHour}</td>
                             </tr>
@@ -46,7 +50,7 @@ export const TaskDetailsReport = (props) => {
                     }
 
                     <tr>
-                        <td colSpan="3" style={{ textAlign: 'right' }}>Total = </td>
+                        <td colSpan="4" style={{ textAlign: 'right' }}>Total = </td>
                         <td style={{ textAlign: 'right' }}>{reports.reportTaskStatus.totalEst}</td>
                     </tr>
                 </tbody>

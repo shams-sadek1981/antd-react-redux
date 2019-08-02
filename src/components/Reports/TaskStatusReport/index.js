@@ -5,6 +5,9 @@ import { Form, Select, Row, Col, Divider, Tabs } from 'antd';
 import { SearchByForm } from './SearchByForm'
 import { TaskDetailsReport } from './TaskDetailsReport'
 
+import ButtonOne from './HOC/ButtonOne'
+
+
 export const TaskStatusReport = (props) => {
 
     const { handleSubmit } = props

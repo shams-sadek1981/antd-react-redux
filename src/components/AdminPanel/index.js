@@ -89,6 +89,13 @@ class AdminPanel extends Component {
                                     <span>Report</span>
                                 </NavLink>
                             </Menu.Item>
+                            
+                            <Menu.Item key="7" onClick={() => dispatch(changeSelectedKeys(7))}>
+                                <NavLink to={`${url}/upload`}>
+                                    <Icon type="snippets" />
+                                    <span>Upload</span>
+                                </NavLink>
+                            </Menu.Item>
 
                             <Menu.Item key="6">
                                 <Icon type="logout" />

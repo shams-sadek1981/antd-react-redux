@@ -7,6 +7,7 @@ import UpcomingTask from '../UpcomingTask'
 import AdminDashboard from '../AdminDashboard'
 import Release from '../Release'
 import Reports from '../Reports'
+import UploadFile from '../UploadFile'
 
 export const AdminRoutes = (props) => {
     
@@ -19,6 +20,7 @@ export const AdminRoutes = (props) => {
             <Route path={`${path}/upcoming-task`} component={UpcomingTask} />
             <Route path={`${path}/release`} component={Release} />
             <Route path={`${path}/reports`} component={Reports} />
+            <Route path={`${path}/upload`} component={UploadFile} />
             <Route path={`${path}/customer`} render={() => <h2>Customers</h2>} />
             <Route render={() => <h2>Not Found Admin Panel child component</h2>} />
         </Switch>

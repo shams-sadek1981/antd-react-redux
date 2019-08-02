@@ -12,10 +12,10 @@ import {
 
 //-- Initialize State
 const initialState = {
-    tabKey: "1",
+    tabKey: "6",
     searchBy: {
         name: 'all',
-        project: null,
+        project: 'Dokan',
         startDate: null,
         endDate: null
     },

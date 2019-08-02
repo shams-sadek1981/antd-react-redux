@@ -11,11 +11,7 @@ export const TaskDescription = (props) => {
 
     return (
         <Fragment>
-            <div style={{ fontSize: '11pt', float: 'left'}}>{item.taskName}</div>
-            <div style={{ float: 'right', fontSize: '10pt'}}>
-                { startDate }~{endDate}
-            </div>
-            <div style={{ clear: 'left'}}></div>
+            <div style={{ fontSize: '11pt'}}>{item.taskName}</div>
             <div>
                 {
                     item.subTasks.map((doc, index) => (

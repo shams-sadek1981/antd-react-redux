@@ -36,6 +36,12 @@ const initialState = {
             to: '/admin-panel/reports',
             breadcrumb: ['Admin Panel','Report']
         },
+        {
+            keyNo:7,
+            label: 'Upload',
+            to: '/admin-panel/upload',
+            breadcrumb: ['Admin Panel','Upload']
+        },
     ]
 }
 

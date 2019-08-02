@@ -32,36 +32,25 @@ export const SearchByForm = (props) => {
     return (
         <Fragment>
             <Form layout="inline">
-
                 <Form.Item label="Select Project">
-                    {getFieldDecorator('project', {
-                        initialValue: reports.searchBy.project,
-                        rules: [{ required: true, message: 'Please select project' }],
-                    })(
-                        <Select
-                            showSearch
-                            style={{ width: 250 }}
-                            placeholder="Select a project"
-                            optionFilterProp="children"
-                            onChange={ val => dispatch( changeSearchField(val, 'project'))}
-                            // onFocus={handleFocus}
-                            // onBlur={handleBlur}
-                            filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                        >
-                            <Option value="all" key={-1}>All Project</Option>
-                            {
-                                projects.projectList.map((item, index) =>
-                                    <Option value={item.name} key={index}>{item.name}</Option>
-                                )
-                            }
-                        </Select>
-                    )}
+                    <Select
+                        defaultValue={ reports.searchBy.project }
+                        style={{ width: 250 }}
+                        showSearch
+                        onChange={val => dispatch(changeSearchField(val, 'project'))}
+                    >
+                        {
+                            projects.projectList.map((item, index) =>
+                                <Option value={item.name} key={index}>{item.name}</Option>
+                            )
+                        }
+                    </Select>
                 </Form.Item>
 
-                <DateRange {...props}/>
+                <DateRange {...props} />
 
                 <Form.Item>
-                    <Button type="primary" onClick={ () => dispatch(reportTaskStatusByDate())}>
+                    <Button type="primary" onClick={() => dispatch(reportTaskStatusByDate())}>
                         Search
                     </Button>
                 </Form.Item>
@@ -70,3 +59,22 @@ export const SearchByForm = (props) => {
         </Fragment>
     )
 }
+
+{/* <Select
+                        showSearch
+                        style={{ width: 250 }}
+                        placeholder="Select a project"
+                        optionFilterProp="children"
+                        defaultValue={{ key: 'all' }}
+                        onChange={val => dispatch(changeSearchField(val, 'project'))}
+                        // onFocus={handleFocus}
+                        // onBlur={handleBlur}
+                        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                        <Option value="all" key={-1}>All Project</Option>
+                        {
+                            projects.projectList.map((item, index) =>
+                                <Option value={item.name} key={index}>{item.name}</Option>
+                            )
+                        }
+                    </Select> */}
