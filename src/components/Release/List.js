@@ -3,10 +3,10 @@ import moment from 'moment'
 import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm, Button } from 'antd';
 
 import {
-    editItem, removeItem, updateTask, updateStatus, changePagination
+    editItem, removeItem, updateTask, updateStatus, changePagination,loadTaskByRelease
 } from '../../actions/releaseActions';
-
 import { _ChangeLog } from './_ChangeLog'
+import { TaskList } from './TaskList'
 
 
 export const List = (props) => {
@@ -139,9 +139,12 @@ export const List = (props) => {
                 onChange={ handleTableChange }
                 columns={columns}
                 dataSource={data} size="small"
+                onExpand = { (expended, record) => dispatch(loadTaskByRelease(record.version))}
                 expandedRowRender={record =>
                     <div style={{ margin: 0 }}>
                         <_ChangeLog {...props} description={record.description} />
+                        
+                        <TaskList {...props} version={record.version}/>
                     </div>
                 }
             />

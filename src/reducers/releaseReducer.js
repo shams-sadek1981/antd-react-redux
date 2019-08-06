@@ -11,7 +11,8 @@ import {
     RELEASE_UPDATE_ITEM,
     RELEASE_CAL_EST_HOUR,
     RELEASE_SEARCH_BY,
-    RELEASE_CHANGE_PAGINATION
+    RELEASE_CHANGE_PAGINATION,
+    RELEASE_BY_UPCOMING_TASK
 } from '../actions/releaseActions'
 
 
@@ -29,6 +30,7 @@ const initialState = {
         text: '',
         status: false
     },
+    taskList:[],
     spinning: false,
     list: [],
     modal: {
@@ -111,6 +113,11 @@ const upcomingTaskReducer = (state = initialState, action) => {
         case RELEASE_CHANGE_PAGINATION:
             return Object.assign({}, state, {
                 pagination: action.payload.pagination
+            })
+            
+        case RELEASE_BY_UPCOMING_TASK:
+            return Object.assign({}, state, {
+                taskList: action.payload.taskList
             })
     }
 

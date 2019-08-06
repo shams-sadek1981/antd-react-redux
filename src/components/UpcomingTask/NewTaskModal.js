@@ -168,7 +168,10 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                                             <Option value={null}>Select Version</Option>
                                             {
                                                 upcomingTask.releaseList.map((item, index) =>
-                                                    <Option value={item.version} key={index}>{item.version}  #{item.releaseDate}</Option>
+                                                    <Option value={item.version} key={index}>
+                                                        <span style={{ color: 'blue'}}>{item.version}</span>
+                                                        <span style={{ paddingLeft: '5px'}}>{item.releaseDate}</span>
+                                                    </Option>
                                                 )
                                             }
                                         </Select>

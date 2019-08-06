@@ -15,14 +15,9 @@ export const RELEASE_SAVE_NEW_ITEM = "RELEASE_SAVE_NEW_ITEM"
 export const RELEASE_EDIT_ITEM = "RELEASE_EDIT_ITEM"
 export const RELEASE_UPDATE_ITEM = "RELEASE_UPDATE_ITEM"
 
-
-
 export const RELEASE_SPINNING = "RELEASE_SPINNING"
 
 export const RELEASE_TOGGLE_MODAL_VISIBLE = "RELEASE_TOGGLE_MODAL_VISIBLE"
-
-
-
 
 export const RELEASE_REMOVE_TASK = "RELEASE_REMOVE_TASK"
 
@@ -30,8 +25,9 @@ export const RELEASE_CAL_EST_HOUR = "RELEASE_CAL_EST_HOUR"
 
 export const RELEASE_SEARCH_BY = "RELEASE_SEARCH_BY"
 
-
 export const RELEASE_CHANGE_PAGINATION = "RELEASE_CHANGE_PAGINATION"
+
+export const RELEASE_BY_UPCOMING_TASK = "RELEASE_BY_UPCOMING_TASK"
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -219,6 +215,38 @@ const getResult = (current, pageSize, project, status, text) => {
 
     return get(searchUrl)
         .then(data => data)
+        .catch(err => console.log(err))
+}
+
+
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * get upcoming task by release
+ * ----------------------------------------------------------------------------------------------------
+ */
+export const loadTaskByRelease = (version) => (dispatch, getState) => {
+
+    const { taskList: oldTaskList } = getState().releaseReducer
+
+    const searchUrl = `/release/upcoming-task?version=${version}`
+
+    return get(searchUrl)
+        .then(data => {
+
+            const newTaskList = data.result
+
+            const otherTaskList = oldTaskList.filter( item => item.release != version)
+
+            dispatch({
+                type: RELEASE_BY_UPCOMING_TASK,
+                payload: {
+                    taskList: [
+                        ...otherTaskList,
+                        ...newTaskList
+                    ]
+                }
+            })
+        })
         .catch(err => console.log(err))
 }
 
