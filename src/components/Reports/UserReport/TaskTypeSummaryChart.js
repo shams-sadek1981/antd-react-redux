@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Form, Select, Row, Col, Divider, Tabs } from 'antd';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label, LabelList } from "recharts"
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label, LabelList, Text } from "recharts"
 
 export const TaskTypeSummaryChart = (props) => {
 
@@ -21,8 +21,7 @@ export const TaskTypeSummaryChart = (props) => {
                 >
                     <CartesianGrid strokeDasharray="3 3" />
                     
-                    <XAxis dataKey="taskType" >
-                        {/* <Label value="Task Type" offset={0} position="top" /> */}
+                    <XAxis dataKey="taskType" interval={0} width={30} angle={-15}>
                     </XAxis>
 
                     <YAxis>
@@ -34,6 +33,7 @@ export const TaskTypeSummaryChart = (props) => {
                     <Legend />
                     <Bar dataKey="estHour" fill="#A64CA6">
                         <LabelList dataKey="estHour" position="top" />
+                        {/* <LabelList dataKey="taskType" position="bottom" /> */}
                     </Bar>
                 </BarChart>
             }

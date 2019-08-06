@@ -9,7 +9,8 @@ import {
     UPCOMING_TASK_SEARCH_BY,
     UPCOMING_TASK_SEARCH_BY_RESULT,
     UPCOMING_TASK_CHANGE_TABKEY,
-    UPCOMING_TASK_CHANGE_PAGINATION
+    UPCOMING_TASK_CHANGE_PAGINATION,
+    UPCOMING_TASK_LOAD_RELEASE
 } from '../actions/upcomingTaskActions'
 
 import {
@@ -48,6 +49,7 @@ const initialState = {
         modalVisible: false,
         modalTitle: 'Create a new task',
         okText: 'Create',
+        release: 'Pro v2.3.4',
         EditInfo: {
             taskName: '',
             description: '',
@@ -57,6 +59,9 @@ const initialState = {
             assignedUser: ''
         }
     },
+    releaseList: [{
+        version: 'Pro v2.3.4'
+    }],
     subTaskModal: {
         modalVisible: false,
         taskId: '',
@@ -165,6 +170,11 @@ const upcomingTaskReducer = (state = initialState, action) => {
         case UPCOMING_TASK_CHANGE_PAGINATION:
             return Object.assign({}, state, {
                 pagination: action.payload.pagination
+            })
+
+        case UPCOMING_TASK_LOAD_RELEASE:
+            return Object.assign({}, state, {
+                releaseList: action.payload.releaseList
             })
     }
 

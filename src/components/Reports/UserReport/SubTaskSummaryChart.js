@@ -20,9 +20,8 @@ export const SubTaskSummaryChart = (props) => {
                     layout="horizontal"
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="subTask" >
-                        
-                    </XAxis>
+
+                    <XAxis dataKey="subTask" interval={0} width={30} angle={-15}></XAxis>
 
                     <YAxis>
                         <Label value="SubTask" offset={30} position="top" />

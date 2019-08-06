@@ -62,7 +62,8 @@ export const TaskList = (props) => {
             completedHour: item.completedHour,
             dueHour: item.dueHour,
             percent: item.percent,
-            userColor
+            release: item.release,
+            userColor,
         }
     })
 
@@ -159,7 +160,9 @@ export const TaskList = (props) => {
                 let color = 'orange'
                 if (typeof (findItem) != 'undefined') color = findItem.color
 
-                return <Tag color={color}>{record.taskType}</Tag>
+                return <div>
+                        <Tag color={color}>{record.taskType}</Tag>
+                    </div> 
             }
         },
         {
@@ -170,6 +173,9 @@ export const TaskList = (props) => {
             render: (text, record) =>
                 <div style={{ color: 'green' }}>
                     {record.projectName}
+                    <div style={{ color: 'blue'}}>
+                        { record.release}
+                    </div>
                 </div>
         },
         {

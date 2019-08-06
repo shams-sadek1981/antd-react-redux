@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import moment from 'moment'
 import {
-    Button, Modal, Form, Input, Radio, Icon, Select, DatePicker, Switch
+    Button, Modal, Form, Input, Radio, Icon, Select, DatePicker, Switch, Row, Col
 } from 'antd';
 
 
@@ -21,7 +21,7 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
 
             const { getFieldDecorator } = form;
 
-            const { dispatch, upcomingTask, users, project, taskType } = this.props
+            const { dispatch, upcomingTask, users, project, taskType, release } = this.props
 
             // check hasMultiTask
             let editMode = false
@@ -30,7 +30,7 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
             }
 
             let hasMultiTask = false
-            if (upcomingTask.modal.EditInfo.description){
+            if (upcomingTask.modal.EditInfo.description) {
                 const descriptionToTasks = upcomingTask.modal.EditInfo.description.split(/\r\n|\n|\r/);
                 if (editMode && descriptionToTasks.length > 1) {
                     hasMultiTask = true
@@ -58,7 +58,7 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                                 initialValue: upcomingTask.modal.EditInfo.taskName,
                                 rules: [{ required: true, message: 'Please input the task name!' }],
                             })(
-                                <Input autoComplete="off" autoFocus/>
+                                <Input autoComplete="off" autoFocus />
                             )}
                         </Form.Item>
 
@@ -140,16 +140,42 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                             )}
                         </Form.Item>
 
-                        {editMode &&
-                            <Form.Item label="Completed At">
-                                {getFieldDecorator('completedAt', {
-                                    ...completedAt
-                                    // initialValue: startDate,
-                                })(
-                                    <DatePicker format={dateFormat} />
-                                )}
-                            </Form.Item>
-                        }
+                        <Row gutter={24}>
+                            <Col span={10}>
+                                {editMode &&
+                                    <Form.Item label="Completed At">
+                                        {getFieldDecorator('completedAt', {
+                                            ...completedAt
+                                            // initialValue: startDate,
+                                        })(
+                                            <DatePicker format={dateFormat} />
+                                        )}
+                                    </Form.Item>
+                                }
+                            </Col>
+
+                            <Col span={14}>
+                                <Form.Item label="Select Version">
+                                    {getFieldDecorator('release', {
+                                        initialValue: upcomingTask.modal.EditInfo.release,
+                                        // rules: [{ required: true, message: 'Please select release' }],
+                                    })(
+                                        <Select
+                                            showSearch
+                                            // style={{ width: 200 }}
+                                            placeholder="Select a release"
+                                        >
+                                            <Option value={null}>Select Version</Option>
+                                            {
+                                                upcomingTask.releaseList.map((item, index) =>
+                                                    <Option value={item.version} key={index}>{item.version}  #{item.releaseDate}</Option>
+                                                )
+                                            }
+                                        </Select>
+                                    )}
+                                </Form.Item>
+                            </Col>
+                        </Row>
 
                     </Form>
                 </Modal>

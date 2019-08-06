@@ -20,9 +20,7 @@ export const ProjectSummaryChart = (props) => {
                     layout="horizontal"
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="projectName" >
-                        
-                    </XAxis>
+                    <XAxis dataKey="projectName" interval={0} width={30} angle={-15}></XAxis>
 
                     <YAxis>
                         <Label value="Project Name" offset={30} position="top" />

@@ -155,6 +155,7 @@ const mapStateToProps = state => ({
     users: state.userReducer,
     project: state.projectReducer,
     taskType: state.taskTypeReducer,
+    release: state.releaseReducer,
 })
 
 

@@ -30,6 +30,8 @@ export const UPCOMING_TASK_SEARCH_BY_RESULT = "UPCOMING_TASK_SEARCH_BY_RESULT"
 
 export const UPCOMING_TASK_CHANGE_PAGINATION = "UPCOMING_TASK_CHANGE_PAGINATION"
 
+export const UPCOMING_TASK_LOAD_RELEASE = "UPCOMING_LOAD_RELEASE"
+
 
 const openNotificationWithIcon = (type, message, description) => {
     notification[type]({
@@ -396,10 +398,10 @@ export const loadUpcomingTask = () => {
 
         //-- load user
         dispatch(loadUser())
-        
+
         //-- load project
         dispatch(getAllProject())
-        
+
         //-- load task-type
         dispatch(getAllTaskType())
 
@@ -423,6 +425,9 @@ export const editTask = (id) => {
 
         const findTask = taskList.find(item => item._id == id)
 
+        //-- load project releated release
+        dispatch(loadRelease(findTask.projectName))
+
         dispatch({
             type: UPCOMING_TASK_EDIT_TASK,
             payload: {
@@ -438,6 +443,40 @@ export const editTask = (id) => {
     }
 }
 
+
+/**
+ * ----------------------------------------------------------------------------------------
+ * load release data for task editing period
+ * ----------------------------------------------------------------------------------------
+ * 
+ */
+export const loadRelease = projectName => (dispatch, getState) => {
+
+    const current = 1
+    const pageSize = 10
+    const status = false
+
+    const searchUrl = `/release?page=${current}&pageSize=${pageSize}&project=${projectName}&status=${status}&text=`
+
+    return get(searchUrl)
+        .then(data => {
+
+            const releaseList = data.result.map( item => {
+                return {
+                    version: item.version,
+                    releaseDate: moment(item.releaseDate).format("DD-MMM-YYYY"),
+                }
+            })
+
+            dispatch({
+                type: UPCOMING_TASK_LOAD_RELEASE,
+                payload: {
+                    releaseList
+                }
+            })
+        })
+        .catch(err => console.log(err))
+}
 
 /**
  * -------------------------------------------------------------------------------------------------
