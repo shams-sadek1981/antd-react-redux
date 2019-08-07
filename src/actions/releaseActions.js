@@ -224,7 +224,7 @@ const getResult = (current, pageSize, project, status, text) => {
  * get upcoming task by release
  * ----------------------------------------------------------------------------------------------------
  */
-export const loadTaskByRelease = (version) => (dispatch, getState) => {
+export const loadTaskByRelease = version => (dispatch, getState) => {
 
     const { taskList: oldTaskList } = getState().releaseReducer
 
@@ -248,6 +248,27 @@ export const loadTaskByRelease = (version) => (dispatch, getState) => {
             })
         })
         .catch(err => console.log(err))
+}
+
+/**
+ * -------------------------------------------------------------------------------------------------
+ * Delete Task from release/version
+ * -------------------------------------------------------------------------------------------------
+ */
+export const deleteTaskFromRelease = item => (dispatch, getState) => {
+
+    const { _id, release } = item
+
+    const newValues = { release: null }
+
+        put('/upcoming-task/update/' + _id, newValues)
+            .then(data => {
+
+                dispatch(loadTaskByRelease(release))
+
+
+            })
+            .catch(err => console.log(err))
 }
 
 
