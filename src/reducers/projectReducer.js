@@ -10,22 +10,7 @@ const initialState = {
             name: 'WPUF',
             description: 'User Frontend'
         },
-    ],
-    projects: [
-        'All Plugin',
-        'Dokan',
-        'Dokan App',
-        'WP ERP',
-        'wePOS',
-        'Project Manager',
-        'weForms',
-        'weMail',
-        'WPUF',
-        "Appsero",
-        "WCCT",
-        "Bnimoy",
-        "bedIQ"
-    ],
+    ]
 }
 
 const projectReducer = (state=initialState, action ) => {

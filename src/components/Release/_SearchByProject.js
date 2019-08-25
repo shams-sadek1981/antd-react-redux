@@ -18,7 +18,7 @@ function handleFocus() {
 
 export const _SearchByProject = (props) => {
 
-    const { dispatch, release, projects } = props
+    const { dispatch, release, project } = props
 
     const handleChange = (projectName) => {
         dispatch(searchBy('project', projectName))
@@ -39,8 +39,8 @@ export const _SearchByProject = (props) => {
 
                 <Option value="all" key={-1}>ALL Project</Option>
             {
-                projects.projects.map( (project, index) =>
-                    <Option value={project} key={index}>{project}</Option>
+                project.projectList.map( (project, index) =>
+                    <Option value={project.name} key={index}>{project.name}</Option>
                 )
             }
             </Select>
