@@ -17,9 +17,11 @@ import {
 } from '../../actions/releaseActions'
 import { getAllProject } from '../../actions/projectActions';
 
+import styles from './styles.module.less'
 
 const { TabPane } = Tabs;
 const Search = Input.Search;
+
 
 class Release extends Component {
 
@@ -61,7 +63,7 @@ class Release extends Component {
         const { size } = this.state;
 
         return (
-            <Fragment>
+            <div className={styles.release}>
 
                 {release.modal.modalVisible &&
                     <NewModal
@@ -71,7 +73,6 @@ class Release extends Component {
                         onCreate={this.handleCreate}
                     />
                 }
-
 
                 {/* ##### Search Header ##### */}
                 <SearchHeader {...this.props}/>
@@ -95,14 +96,14 @@ class Release extends Component {
                         <List {...this.props} />
                     </TabPane>
                 </Tabs>
-            </Fragment >
+            </div>
         )
     }
 }
 
 const mapStateToProps = state => ({
     release: state.releaseReducer,
-    project: state.projectReducer
+    projects: state.projectReducer
 })
 
 

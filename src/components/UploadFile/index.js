@@ -8,12 +8,19 @@ import axios from 'axios'
 import styles from './styles.module.css'
 
 import {
-    Button, Modal, Form, Input, Radio, Icon, Select, Upload
+    Button, Modal, Form, Input, Radio, Icon, Select, Upload, notification
 } from 'antd';
 const { Option } = Select;
 
 const bearer = localStorage.getItem('token');
 axios.defaults.headers.common['Authorization'] = bearer;
+
+const openNotificationWithIcon = (type, message, description) => {
+    notification[type]({
+        message: message,
+        description: description
+    });
+};
 
 class UploadFile extends Component {
 
@@ -32,6 +39,7 @@ class UploadFile extends Component {
         axios.post(url, formData)
             .then(res => {
                 console.log(res)
+                openNotificationWithIcon('success', 'Upload', 'File Uploaded Successfully')
             })
             .catch(err => console.log(err))
     }

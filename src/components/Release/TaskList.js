@@ -14,9 +14,14 @@ export const TaskList = (props) => {
 
     return (
         <Fragment>
-            <Timeline>
+            
+            { taskListByRelease.length > 0 &&
+                <h4>Task List...</h4>
+            }
+
+            <ul>
                 {taskListByRelease.map((item, index) => (
-                    <Timeline.Item key={index}>
+                    <li key={index}>
                         <div>
                             <div style={{ float: 'left' }}>
                                 {++index}. {item.taskName}
@@ -34,10 +39,11 @@ export const TaskList = (props) => {
                         </div>
                         <Progress
                             percent={item.percent}
-                            status="active" size="small" strokeWidth={3} />
-                    </Timeline.Item>
+                            status="active" size="small" strokeWidth={2}
+                        />
+                    </li>
                 ))}
-            </Timeline>
+            </ul>
         </Fragment>
     )
 }

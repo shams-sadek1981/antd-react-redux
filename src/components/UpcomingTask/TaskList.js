@@ -56,6 +56,7 @@ export const TaskList = (props) => {
             projectName: item.projectName,
             assignedBy: item.assignedBy,
             completedAt: item.completedAt,
+            createdAt: item.createdAt,
             maxCompletedAt: item.maxCompletedAt,
             startAt: item.startAt,
             estHour: item.estHour,
@@ -200,7 +201,7 @@ export const TaskList = (props) => {
                 size="small"
                 expandedRowRender={record =>
                     <div style={{ margin: 0 }}>
-                        <_SubTaskView {...props} taskId={record._id} subTasks={record.subTasks} des={record.description} />
+                        <_SubTaskView {...props} record={record} taskId={record._id} subTasks={record.subTasks} des={record.description} />
                     </div>
                 }
             />
