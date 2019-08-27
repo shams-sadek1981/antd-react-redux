@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { NavLink, BrowserRouter, withRouter } from 'react-router-dom'
 import {
     Form, Icon, Input, Button, Checkbox, Row, Col, notification
 } from 'antd';
 
 import { get, post, postWithoutToken } from '../../functions'
 import Cookies from 'universal-cookie';
+
+import { userLogin } from '../../actions/userActions'
 
 //-- initialize cookies
 const cookies = new Cookies();
@@ -36,6 +38,7 @@ const manageCookie = (values) => {
 }
 
 class LoginForm extends React.Component {
+    
     handleSubmit = (e) => {
         e.preventDefault();
 
@@ -50,18 +53,7 @@ class LoginForm extends React.Component {
                 }
 
                 //-- check user info
-                postWithoutToken('/users/login', userInfo)
-                    .then( async data => {
-                        //-- manage cookie
-                        manageCookie(values)
-
-                        //-- set token in local storage
-                        await localStorage.setItem('token', data.token)
-
-                        this.props.history.push('/admin-panel')
-                    })
-                    .catch(err => openNotificationWithIcon('error', err.message, 'Your password or email is mismatch'))
-
+                this.props.dispatch( userLogin (this.props.history, userInfo, values))
             }
         });
     }
@@ -75,7 +67,8 @@ class LoginForm extends React.Component {
                         <Form.Item>
                             {getFieldDecorator('email', {
                                 rules: [{ required: true, message: 'Please input your email!' }],
-                                initialValue: cookies.get('email')
+                                initialValue: 'ashraf@gmail.com'
+                                // initialValue: cookies.get('email')
                             })(
                                 <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
                             )}
@@ -83,7 +76,8 @@ class LoginForm extends React.Component {
                         <Form.Item>
                             {getFieldDecorator('password', {
                                 rules: [{ required: true, message: 'Please input your Password!' }],
-                                initialValue: cookies.get('password')
+                                initialValue: '123456'
+                                // initialValue: cookies.get('password')
                             })(
                                 <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
                             )}
@@ -115,4 +109,4 @@ const mapStateToProps = state => ({
 
 
 const loginForm = Form.create()(LoginForm)
-export default connect(mapStateToProps)(loginForm)
+export default withRouter(connect(mapStateToProps)(loginForm))

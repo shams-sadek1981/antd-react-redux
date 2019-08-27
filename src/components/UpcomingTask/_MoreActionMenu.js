@@ -8,7 +8,7 @@ import {
 
 export const _MoreActionMenu = (props) => {
 
-    const { record, dispatch } = props
+    const { record, dispatch, users } = props
 
     const confirm = (id) => {
         dispatch(removeTask(id))
@@ -21,6 +21,12 @@ export const _MoreActionMenu = (props) => {
             running: checked
         }))
     }
+
+    const deletePermission = users.permissions.find( element => {
+        return element.permissionName == 'delete_upcoming_task'
+    })
+
+    console.log('users.permissions', deletePermission)
 
     const menu = (
         <Menu>
@@ -53,24 +59,27 @@ export const _MoreActionMenu = (props) => {
                 </a>
             </Menu.Item>
 
-            <Menu.Item>
-                <Row>
-                    <Col span={10}>
-                        <Popconfirm title="Are you sure to delete this task?"
-                            onConfirm={(e) => confirm(record._id)}
-                            okText="Yes" cancelText="No">
+            {
+                ( deletePermission ) &&
+                <Menu.Item>
+                    <Row>
+                        <Col span={10}>
+                            <Popconfirm title="Are you sure to delete this task?"
+                                onConfirm={(e) => confirm(record._id)}
+                                okText="Yes" cancelText="No">
 
-                            <a href="javascript:;">
-                                <Icon type="delete" theme="twoTone" />
-                            </a>
-                        </Popconfirm>
-                    </Col>
+                                <a href="javascript:;">
+                                    <Icon type="delete" theme="twoTone" />
+                                </a>
+                            </Popconfirm>
+                        </Col>
 
-                    <Col span={14}>
-                        Delete
+                        <Col span={14}>
+                            Delete
                     </Col>
-                </Row>
-            </Menu.Item>
+                    </Row>
+                </Menu.Item>
+            }
         </Menu>
     );
 

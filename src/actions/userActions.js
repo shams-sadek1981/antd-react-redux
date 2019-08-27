@@ -2,7 +2,11 @@ import {
     notification
 } from 'antd';
 
-import { get, post, put, deleteMethod } from '../functions'
+import axios from 'axios'
+
+import { get, post, put, deleteMethod, postWithoutToken } from '../functions'
+import Cookies from 'universal-cookie';
+import { BrowserRouter, browserHistory } from 'react-router-dom'
 
 //-- Define action names
 export const ADD_USER = "ADD_USER"
@@ -18,6 +22,7 @@ export const USER_SEARCH_BY = "USER_SEARCH_BY"
 export const USER_SPINNING = "USER_SPINNING"
 export const USER_SEARCH_BY_RESULT = "USER_SEARCH_BY_RESULT"
 export const USER_CHANGE_PAGINATION = "USER_CHANGE_PAGINATION"
+export const USER_SET_PERMISSIONS = "USER_SET_PERMISSIONS"
 
 const openNotificationWithIcon = (type, message, description) => {
     notification[type]({
@@ -26,6 +31,68 @@ const openNotificationWithIcon = (type, message, description) => {
     });
 };
 
+//-- initialize cookies
+const cookies = new Cookies();
+
+const manageCookie = (values) => {
+
+    const { email, password, remember } = values
+
+    if (remember) {
+        cookies.set('password', password, { path: '/login' });
+        cookies.set('email', email, { path: '/login' });
+        cookies.set('remember', remember, { path: '/login' });
+    }
+    // else{
+    //     cookies.remove('email', { path: '/login' });
+    //     cookies.remove('password', { path: '/login' });
+    //     cookies.remove('remember', { path: '/login' });
+    // }
+}
+
+export const getPermissions = () => (dispatch, getState) => {
+    
+    const url =  process.env.REACT_APP_HOST + '/users/permissions'
+    const token = localStorage.getItem('token')
+
+    axios.get(url, {
+        headers: {
+            Authorization: token //the token is a variable which holds the token
+        }
+    }).then(result => {
+            dispatch({
+                type: USER_SET_PERMISSIONS,
+                payload: {
+                    permissions: result.data.permissions,
+                    userInfo: result.data.userInfo,
+                }
+            })
+        }).catch(err => console.log(err))
+}
+
+/**
+ * 
+ * @param {*} history 
+ * @param {*} userInfo 
+ * @param {*} values 
+ */
+export const userLogin = (history, userInfo, values) => (dispatch, getState) => {
+
+    postWithoutToken('/users/login', userInfo)
+        .then(async data => {
+
+            //-- set token in local storage
+            await localStorage.setItem('token', data.token)
+
+            //-- manage cookie
+            await manageCookie(values)
+
+
+            await history.push('/admin-panel')
+
+        })
+        .catch(err => openNotificationWithIcon('error', err.message, 'Your password or email is mismatch'))
+}
 
 export const handleSubmit = (values) => {
     return (dispatch, getState) => {
@@ -120,14 +187,14 @@ export const updateUser = (values) => {
         const { _id } = modal.userEditInfo
 
         put('/users/update/' + _id, values)
-            .then( data => {
+            .then(data => {
 
-                const findIndex = userList.findIndex( item => item._id == _id)
+                const findIndex = userList.findIndex(item => item._id == _id)
 
                 let newUserList = [
-                    ...userList.slice(0,findIndex),
+                    ...userList.slice(0, findIndex),
                     data,
-                    ...userList.slice(findIndex+1)
+                    ...userList.slice(findIndex + 1)
                 ]
 
                 //-- Step-1
@@ -300,7 +367,7 @@ export const userSearchByResult = () => {
         const { text } = searchBy
 
 
-        getTaskResult( current, pageSize, text )
+        getTaskResult(current, pageSize, text)
             .then(data => {
 
                 dispatch({

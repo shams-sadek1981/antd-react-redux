@@ -11,7 +11,8 @@ import {
     USER_SEARCH_BY,
     USER_SEARCH_BY_RESULT,
     USER_SPINNING,
-    USER_CHANGE_PAGINATION
+    USER_CHANGE_PAGINATION,
+    USER_SET_PERMISSIONS
 } from '../actions/userActions'
 
 
@@ -59,7 +60,11 @@ const initialState = {
         {
             name: 'HR'
         },
-    ]
+    ],
+    permissions: [],
+    userInfo: {
+        name: ''
+    }
 }
 
 const userReducer = (state = initialState, action) => {
@@ -110,6 +115,12 @@ const userReducer = (state = initialState, action) => {
         case USER_CHANGE_PAGINATION:
             return Object.assign({}, state, {
                 pagination: action.payload.pagination
+            })
+
+        case USER_SET_PERMISSIONS:
+            return Object.assign({}, state, {
+                permissions: action.payload.permissions,
+                userInfo: action.payload.userInfo
             })
     }
 

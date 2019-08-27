@@ -5,6 +5,7 @@ import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 
 import './adminPanel.less'
 import { changeSelectedKeysByPath, changeSelectedKeys } from '../../actions/adminPanelActions'
+import { getPermissions } from '../../actions/userActions'
 import { AdminRoutes } from './AdminRoutes'
 
 const {
@@ -18,9 +19,12 @@ class AdminPanel extends Component {
         collapsed: false,
     };
 
-    componentDidMount() {
+    componentDidMount = async () => {
+        await this.props.dispatch( getPermissions() )
+
         const runningPath = this.props.location.pathname
         this.props.dispatch(changeSelectedKeysByPath(runningPath))
+        
     }
 
     toggle = () => {
@@ -36,8 +40,14 @@ class AdminPanel extends Component {
     }
 
     render() {
-        const { adminPanel, dispatch } = this.props
+        const { adminPanel, dispatch, users } = this.props
         const { path, url } = this.props.match
+
+        let userName = ''
+        
+        if (users.userInfo) {
+            userName = users.userInfo.name
+        }
 
         return (
             <div id="admin-panel">
@@ -48,7 +58,7 @@ class AdminPanel extends Component {
                         collapsible
                         collapsed={this.state.collapsed}
                     >
-                        <div className="logo" />
+                        <div className="logo">{ userName }</div>
                         <Menu
                             theme="dark"
                             mode="inline"
@@ -133,7 +143,8 @@ class AdminPanel extends Component {
 
 
 const mapStateToProps = state => ({
-    adminPanel: state.adminPanelReducer
+    adminPanel: state.adminPanelReducer,
+    users: state.userReducer,
 })
 
 export default withRouter(connect(mapStateToProps)(AdminPanel))

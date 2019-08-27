@@ -18,7 +18,7 @@ import {
     changeTabKey
 } from '../../actions/upcomingTaskActions'
 
-import { loadUser } from '../../actions/userActions'
+import { loadUser, getPermissions } from '../../actions/userActions'
 
 import { handleSubTaskSubmit } from '../../actions/task/subTaskActions'
 
@@ -33,8 +33,11 @@ class UpcomingTask extends Component {
 
     };
 
-    componentDidMount = () => {
+    componentDidMount = async () => {
+        await this.props.dispatch( getPermissions() )
+
         this.props.dispatch(loadUser())
+        
         this.props.dispatch(loadUpcomingTask())
     }
 

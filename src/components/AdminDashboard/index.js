@@ -20,9 +20,10 @@ const cols = {
 
 class AdminDashboard extends Component {
 
-    componentDidMount = () => {
+    componentDidMount = async () => {
+        // await console.log(localStorage.getItem('token'))
         this.props.dispatch(userSummaryLoading())
-        this.props.dispatch(projectSummaryLoading())
+        await this.props.dispatch(projectSummaryLoading())
     }
 
     render() {
@@ -47,7 +48,7 @@ class AdminDashboard extends Component {
                 <h1> User Summary </h1>
                 <Chart
                     width={userWidth}
-                    // height={400}
+                    height={500}
                     data={userSummaryList}
                     scale={cols}
                     forceFit
