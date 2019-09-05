@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 
 import todoReducer from './todoReducer'
 import userReducer from './userReducer'
+import userRoleReducer from './userRoleReducer'
 import homeLayoutReducer from './homeLayoutReducer'
 import customerReducer from './customerReducer'
 import upcomingTaskReducer from './upcomingTaskReducer'
@@ -15,6 +16,7 @@ import taskTypeReducer from './taskTypeReducer'
 const rootReducer = combineReducers({
     todoReducer,
     userReducer,
+    userRoleReducer,
     homeLayoutReducer,
     customerReducer,
     upcomingTaskReducer,

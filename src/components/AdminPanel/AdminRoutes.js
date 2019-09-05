@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 
 import AboutUs from '../AboutUs/'
 import User from '../User'
+import UserRole from '../UserRole'
 import UpcomingTask from '../UpcomingTask'
 import AdminDashboard from '../AdminDashboard'
 import Release from '../Release'
@@ -17,6 +18,7 @@ export const AdminRoutes = (props) => {
         <Switch>
             <Route exact path={`${path}`} component={AdminDashboard} />
             <Route path={`${path}/users`} component={User} />
+            <Route path={`${path}/users-role`} component={UserRole} />
             <Route path={`${path}/upcoming-task`} component={UpcomingTask} />
             <Route path={`${path}/release`} component={Release} />
             <Route path={`${path}/reports`} component={Reports} />

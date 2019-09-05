@@ -19,7 +19,18 @@ export const NewUserModal = Form.create({ name: 'form_in_modal' })(
 
             const { getFieldDecorator } = form;
 
-            const { dispatch, users } = this.props
+            const { dispatch, users, userRole } = this.props
+
+
+            function handleChange(value) {
+                console.log(`selected ${value}`);
+            }
+
+            let selectedRoles = []
+            users.modal.userEditInfo.roles.forEach(item => {
+                selectedRoles.push(item.roleName)
+            })
+
             return (
                 <Modal
                     visible={users.modal.modalVisible}
@@ -38,7 +49,7 @@ export const NewUserModal = Form.create({ name: 'form_in_modal' })(
                                 <Input />
                             )}
                         </Form.Item>
-                        
+
                         <Form.Item label="Select Department">
                             {getFieldDecorator('department', {
                                 initialValue: users.modal.userEditInfo.department,
@@ -84,6 +95,31 @@ export const NewUserModal = Form.create({ name: 'form_in_modal' })(
                                 <Input />
                             )}
                         </Form.Item>
+
+
+                        {
+                            (users.modal.okText == 'Update') &&
+                            <Form.Item label="Select Role">
+                                {getFieldDecorator('roles', {
+                                    initialValue: selectedRoles,
+                                    // rules: [{ required: true, message: 'Please select role' }],
+                                })(
+                                    <Select
+                                        mode="multiple"
+                                        showSearch
+                                        placeholder="Select a role"
+                                        onChange={handleChange}
+                                    >
+                                        {
+                                            userRole.roleList.map((item, index) =>
+                                                <Option value={item.name} key={index}>{item.name}</Option>
+                                            )
+                                        }
+                                    </Select>
+                                )}
+                            </Form.Item>
+                        }
+
                     </Form>
                 </Modal>
             );

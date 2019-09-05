@@ -50,12 +50,12 @@ const manageCookie = (values) => {
     // }
 }
 
-export const getPermissions = () => (dispatch, getState) => {
+export const getPermissions = () => async (dispatch, getState) => {
     
-    const url =  process.env.REACT_APP_HOST + '/users/permissions'
-    const token = localStorage.getItem('token')
+    const url =  await process.env.REACT_APP_HOST + '/users/permissions'
+    const token = await localStorage.getItem('token')
 
-    axios.get(url, {
+    await axios.get(url, {
         headers: {
             Authorization: token //the token is a variable which holds the token
         }
@@ -63,7 +63,7 @@ export const getPermissions = () => (dispatch, getState) => {
             dispatch({
                 type: USER_SET_PERMISSIONS,
                 payload: {
-                    permissions: result.data.permissions,
+                    permissions: result.data.userInfo.permissions,
                     userInfo: result.data.userInfo,
                 }
             })
@@ -228,6 +228,7 @@ export const addNewUser = () => {
             email: '',
             password: '',
             mobile: '',
+            roles: []
         }
 
         dispatch({

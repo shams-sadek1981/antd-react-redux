@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 
 const bearer = localStorage.getItem('token');
@@ -22,6 +22,25 @@ export const PrivateRoute = ({ component: Component, ...rest }) => {
             }
         />
     );
+}
+
+
+/**
+ * ------------------------------------------------------------------------------------------
+ * Handle Permission Component
+ * ------------------------------------------------------------------------------------------
+ */
+export const handlePermission = (props, permissionName) => {
+
+    const { users } = props
+
+    const permission = users.permissions.indexOf( permissionName )
+
+    if ( permission == -1) {
+        return false
+    }
+
+    return true
 }
 
 

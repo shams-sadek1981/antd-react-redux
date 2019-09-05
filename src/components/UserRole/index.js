@@ -5,17 +5,23 @@ import { withRouter } from 'react-router-dom'
 import { Tabs, Radio, Form, Modal, Button, Icon } from 'antd';
 
 import { AddUser } from './AddUser'
-import { UserList } from './UserList'
-import { NewUserModal } from './NewUserModal'
+import { List } from './List'
+import { AssignPermission } from './AssignPermission'
+import { NewRoleModal } from './NewRoleModal'
 
 import { SearchHeader } from './SearchHeader'
 
-import { handleSubmit, changeDefaultActiveKey, addNewUser, userSearchByResult } from '../../actions/userActions'
-import { userRoleSearchByResult } from '../../actions/userRoleActions'
+import {
+    handleSubmit,
+    changeDefaultActiveKey,
+    addNewRole,
+    userRoleSearchByResult,
+    getUserPermissionList
+} from '../../actions/userRoleActions'
 
 const { TabPane } = Tabs;
 
-class User extends Component {
+class UserRole extends Component {
 
     state = {
         size: 'small',
@@ -23,7 +29,7 @@ class User extends Component {
     };
 
     componentDidMount = () => {
-        this.props.dispatch(userSearchByResult())
+        this.props.dispatch(getUserPermissionList())
         this.props.dispatch(userRoleSearchByResult())
     }
 
@@ -52,7 +58,7 @@ class User extends Component {
 
     render() {
 
-        const { dispatch } = this.props
+        const { dispatch, userRole } = this.props
         const { size } = this.state;
 
         return (
@@ -60,7 +66,7 @@ class User extends Component {
 
                 <SearchHeader {...this.props}/>
 
-                <NewUserModal
+                <NewRoleModal
                     {...this.props}
                     wrappedComponentRef={this.saveFormRef}
                     // onCancel={this.handleCancel}
@@ -69,12 +75,16 @@ class User extends Component {
 
 
                 <Tabs
-                    activeKey={this.props.users.defaultActiveKey}
+                    activeKey={ userRole.defaultActiveKey}
                     size={size}
                     onChange={(key) => dispatch(changeDefaultActiveKey(key))}
                 >
-                    <TabPane tab="User List" key="1"><UserList {...this.props} /></TabPane>
-                    {/* <TabPane tab="New User" key="2"><AddUser {...this.props} /></TabPane> */}
+                    <TabPane tab="User Role List" key="1">
+                        <List {...this.props} />
+                    </TabPane>
+                    <TabPane tab="Assign Permission" key="2">
+                        <AssignPermission {...this.props} />
+                    </TabPane>
                 </Tabs>
             </Fragment>
         )
@@ -82,11 +92,10 @@ class User extends Component {
 }
 
 const mapStateToProps = state => ({
-    users: state.userReducer,
     userRole: state.userRoleReducer
 })
 
 
-const WrappedUser = Form.create({ name: 'user' })(User);
+const WrappedUser = Form.create({ name: 'user_role' })(UserRole);
 
 export default withRouter(connect(mapStateToProps)(WrappedUser));

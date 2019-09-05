@@ -6,6 +6,8 @@ import {
     editTask, removeTask, updateTask, changePagination, updateRunningTask, updateTaskRate
 } from '../../actions/upcomingTaskActions';
 
+import { handlePermission } from '../../functions'
+
 export const _MoreActionMenu = (props) => {
 
     const { record, dispatch, users } = props
@@ -21,12 +23,6 @@ export const _MoreActionMenu = (props) => {
             running: checked
         }))
     }
-
-    const deletePermission = users.permissions.find( element => {
-        return element.permissionName == 'delete_upcoming_task'
-    })
-
-    console.log('users.permissions', deletePermission)
 
     const menu = (
         <Menu>
@@ -46,6 +42,9 @@ export const _MoreActionMenu = (props) => {
                 </Row>
             </Menu.Item>
 
+
+            {
+                ( handlePermission(props, 'update_upcoming_task') ) &&
             <Menu.Item>
                 <a onClick={() => dispatch(editTask(record._id))} href="javascript:;">
                     <Row>
@@ -58,9 +57,11 @@ export const _MoreActionMenu = (props) => {
                     </Row>
                 </a>
             </Menu.Item>
+            }
+
 
             {
-                ( deletePermission ) &&
+                ( handlePermission(props, 'delete_upcoming_task') ) &&
                 <Menu.Item>
                     <Row>
                         <Col span={10}>
@@ -80,6 +81,7 @@ export const _MoreActionMenu = (props) => {
                     </Row>
                 </Menu.Item>
             }
+
         </Menu>
     );
 

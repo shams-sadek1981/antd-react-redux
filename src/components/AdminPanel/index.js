@@ -20,11 +20,11 @@ class AdminPanel extends Component {
     };
 
     componentDidMount = async () => {
-        await this.props.dispatch( getPermissions() )
+        await this.props.dispatch(getPermissions())
 
-        const runningPath = this.props.location.pathname
+        const runningPath = await this.props.location.pathname
         this.props.dispatch(changeSelectedKeysByPath(runningPath))
-        
+
     }
 
     toggle = () => {
@@ -43,12 +43,6 @@ class AdminPanel extends Component {
         const { adminPanel, dispatch, users } = this.props
         const { path, url } = this.props.match
 
-        let userName = ''
-        
-        if (users.userInfo) {
-            userName = users.userInfo.name
-        }
-
         return (
             <div id="admin-panel">
                 <Layout>
@@ -56,64 +50,36 @@ class AdminPanel extends Component {
                         className="no-print"
                         trigger={null}
                         collapsible
-                        collapsed={this.state.collapsed}
+                        collapsed={this.props.collapsed}
                     >
-                        <div className="logo">{ userName }</div>
+                        <div className="logo">{users.userInfo.name}</div>
                         <Menu
                             theme="dark"
                             mode="inline"
                             selectedKeys={adminPanel.selectedKeys}
                         >
 
-                            <Menu.Item key="1" onClick={() => dispatch(changeSelectedKeys(1))}>
-                                <NavLink to={`${url}`} exact>
-                                    <Icon type="bar-chart" />
-                                    <span>Dashboard</span>
-                                </NavLink>
-                            </Menu.Item>
+                            {
+                                adminPanel.menus.map((item, index) => (
+                                    <Menu.Item key={item.keyNo} onClick={() => dispatch(changeSelectedKeys(item.keyNo))}>
+                                        <NavLink to={item.to} exact={item.exact}>
+                                            <Icon type={item.iconType} />
+                                            <span>{item.label}</span>
+                                        </NavLink>
+                                    </Menu.Item>
+                                ))
+                            }
 
-                            <Menu.Item key="2" onClick={() => dispatch(changeSelectedKeys(2))}>
-                                <NavLink to={`${url}/users`}>
-                                    <Icon type="user" />
-                                    <span>Users</span>
+                            <Menu.Item onClick={() => this.logout() }>
+                                <NavLink to="/login">
+                                    <Icon type='logout'/>
+                                    <span>Logout</span>
                                 </NavLink>
-                            </Menu.Item>
-
-                            <Menu.Item key="3" onClick={() => dispatch(changeSelectedKeys(3))}>
-                                <NavLink to={`${url}/upcoming-task`}>
-                                    <Icon type="unordered-list" />
-                                    <span>Upcoming Task</span>
-                                </NavLink>
-                            </Menu.Item>
-
-                            <Menu.Item key="4" onClick={() => dispatch(changeSelectedKeys(4))}>
-                                <NavLink to={`${url}/release`}>
-                                    <Icon type="issues-close" />
-                                    <span>Release</span>
-                                </NavLink>
-                            </Menu.Item>
-
-                            <Menu.Item key="5" onClick={() => dispatch(changeSelectedKeys(5))}>
-                                <NavLink to={`${url}/reports`}>
-                                    <Icon type="snippets" />
-                                    <span>Report</span>
-                                </NavLink>
-                            </Menu.Item>
-                            
-                            <Menu.Item key="7" onClick={() => dispatch(changeSelectedKeys(7))}>
-                                <NavLink to={`${url}/upload`}>
-                                    <Icon type="snippets" />
-                                    <span>Upload</span>
-                                </NavLink>
-                            </Menu.Item>
-
-                            <Menu.Item key="6">
-                                <Icon type="logout" />
-                                <span onClick={() => this.logout()}>Logout</span>
                             </Menu.Item>
 
                         </Menu>
                     </Sider>
+
                     <Layout>
                         <Header
                             className="no-print"
@@ -125,7 +91,7 @@ class AdminPanel extends Component {
                                 onClick={this.toggle}
                             />
                         </Header>
-                        
+
 
                         <Content style={{
                             margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280,
