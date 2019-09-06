@@ -51,8 +51,15 @@ const manageCookie = (values) => {
 }
 
 export const getPermissions = () => async (dispatch, getState) => {
+
+    //-- check access token validity & redirect
+    await get('/users/permissions').then(data => data).catch(err => {
+        localStorage.removeItem('token')
+        window.location.href = process.env.REACT_APP_FRONTEND_URL + '/login'
+    })
+
     
-    const url =  await process.env.REACT_APP_HOST + '/users/permissions'
+    const url = await process.env.REACT_APP_HOST + '/users/permissions'
     const token = await localStorage.getItem('token')
 
     await axios.get(url, {
@@ -60,25 +67,27 @@ export const getPermissions = () => async (dispatch, getState) => {
             Authorization: token //the token is a variable which holds the token
         }
     }).then(result => {
-            dispatch({
-                type: USER_SET_PERMISSIONS,
-                payload: {
-                    permissions: result.data.userInfo.permissions,
-                    userInfo: result.data.userInfo,
-                }
-            })
-        }).catch(err => console.log(err))
+        dispatch({
+            type: USER_SET_PERMISSIONS,
+            payload: {
+                permissions: result.data.userInfo.permissions,
+                userInfo: result.data.userInfo,
+            }
+        })
+    }).catch(err => console.log(err))
 }
 
 /**
- * 
+ * ------------------------------------------------------------------------------------
+ * Login User
+ * ------------------------------------------------------------------------------------
  * @param {*} history 
  * @param {*} userInfo 
  * @param {*} values 
  */
-export const userLogin = (history, userInfo, values) => (dispatch, getState) => {
+export const userLogin = (history, userInfo, values) => async (dispatch, getState) => {
 
-    postWithoutToken('/users/login', userInfo)
+    await postWithoutToken('/users/login', userInfo)
         .then(async data => {
 
             //-- set token in local storage
@@ -88,7 +97,9 @@ export const userLogin = (history, userInfo, values) => (dispatch, getState) => 
             await manageCookie(values)
 
 
-            await history.push('/admin-panel')
+            
+            // await history.push('/admin-panel')
+            window.location.href = process.env.REACT_APP_FRONTEND_URL + '/admin-panel';
 
         })
         .catch(err => openNotificationWithIcon('error', err.message, 'Your password or email is mismatch'))
@@ -182,7 +193,7 @@ export const editUser = (id) => {
 export const updateUser = (values) => {
     return (dispatch, getState) => {
 
-        const { modal, userList } = getState().userReducer
+        const { modal, userList, pagination } = getState().userReducer
 
         const { _id } = modal.userEditInfo
 
@@ -202,6 +213,7 @@ export const updateUser = (values) => {
                     type: UPDATE_USER,
                     payload: {
                         userList: newUserList,
+                        pagination
                     }
                 })
 
@@ -251,17 +263,19 @@ export const saveUser = (values) => {
 
     return (dispatch, getState) => {
 
-        let { userList } = getState().userReducer
+        let { userList, pagination } = getState().userReducer
 
         post('/users/signup', values)
             .then(data => {
 
-                userList.push(data.user)
+                // userList.push(data.user)
+                userList = [ data.user, ...userList ]
 
                 dispatch({
                     type: ADD_USER,
                     payload: {
-                        userList
+                        userList,
+                        pagination
                     }
                 })
 
@@ -293,7 +307,7 @@ export const removeUser = (id) => {
 
     return (dispatch, getState) => {
 
-        let { userList } = getState().userReducer
+        let { userList, pagination } = getState().userReducer
 
         deleteMethod('/users/delete/' + id)
             .then(data => {
@@ -303,7 +317,8 @@ export const removeUser = (id) => {
                 dispatch({
                     type: REMOVE_USER,
                     payload: {
-                        userList: newUserList
+                        userList: newUserList,
+                        pagination
                     }
                 })
             })

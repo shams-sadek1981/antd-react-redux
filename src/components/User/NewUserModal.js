@@ -46,7 +46,7 @@ export const NewUserModal = Form.create({ name: 'form_in_modal' })(
                                 initialValue: users.modal.userEditInfo.name,
                                 rules: [{ required: true, message: 'Please input the user name!' }],
                             })(
-                                <Input />
+                                <Input autoComplete="off"/>
                             )}
                         </Form.Item>
 
@@ -74,7 +74,7 @@ export const NewUserModal = Form.create({ name: 'form_in_modal' })(
                                 initialValue: users.modal.userEditInfo.email,
                                 rules: [{ required: true, message: 'Please input the user email!' }],
                             })(
-                                <Input />
+                                <Input autoComplete="off"/>
                             )}
                         </Form.Item>
 
@@ -92,7 +92,7 @@ export const NewUserModal = Form.create({ name: 'form_in_modal' })(
                                 initialValue: users.modal.userEditInfo.mobile,
                                 rules: [{ required: true, message: 'Please input the mobile no!' }],
                             })(
-                                <Input />
+                                <Input autoComplete="off"/>
                             )}
                         </Form.Item>
 

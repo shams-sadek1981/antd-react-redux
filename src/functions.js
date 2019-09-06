@@ -3,15 +3,21 @@ import { Route, Redirect } from 'react-router-dom'
 
 const bearer = localStorage.getItem('token');
 
+/**
+ * -------------------------------------------------------------------------------------------
+ * Private Route & Redirect
+ * -------------------------------------------------------------------------------------------
+ * 
+ * @param {*} param0 
+ */
 export const PrivateRoute = ({ component: Component, ...rest }) => {
-
     return (
         <Route
             {...rest}
             render={props =>
-                localStorage.getItem('token') ? (
-                    <Component {...props} />
-                ) : (
+                localStorage.getItem('token') ?
+                    (<Component {...props} />) :
+                    (
                         <Redirect
                             to={{
                                 pathname: "/login",
@@ -21,7 +27,7 @@ export const PrivateRoute = ({ component: Component, ...rest }) => {
                     )
             }
         />
-    );
+    )
 }
 
 
@@ -34,9 +40,9 @@ export const handlePermission = (props, permissionName) => {
 
     const { users } = props
 
-    const permission = users.permissions.indexOf( permissionName )
+    const permission = users.permissions.indexOf(permissionName)
 
-    if ( permission == -1) {
+    if (permission == -1) {
         return false
     }
 
@@ -88,7 +94,7 @@ export const get = (url) => {
 
 
 //-- DELETE Method
-export const deleteMethod = (url, data={}) => {
+export const deleteMethod = (url, data = {}) => {
 
     const apiUrl = process.env.REACT_APP_HOST + url;
 

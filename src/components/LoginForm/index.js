@@ -37,6 +37,7 @@ const manageCookie = (values) => {
     }
 }
 
+
 class LoginForm extends React.Component {
     
     handleSubmit = (e) => {

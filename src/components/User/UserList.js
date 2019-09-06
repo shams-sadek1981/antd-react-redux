@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 
-import { Table, Divider, Tag, Icon } from 'antd';
+import { Table, Divider, Tag, Icon, Popconfirm } from 'antd';
 
 import { removeUser, editUser, changePagination } from '../../actions/userActions';
 
@@ -41,10 +41,15 @@ export const UserList = (props) => {
 
                     <Divider type="vertical" />
 
-                    <a onClick={() => dispatch(removeUser(record._id))} href="javascript:;">
-                        <Icon type="delete" theme="twoTone" />
-                    </a>
-                    
+                    <Popconfirm title="Are you sure to delete this user?"
+                        onConfirm={(e) => dispatch(removeUser(record._id))}
+                        okText="Yes" cancelText="No">
+
+                        <a href="javascript:;">
+                            <Icon type="delete" theme="twoTone" />
+                        </a>
+                    </Popconfirm>
+
                 </span>
             ),
         }

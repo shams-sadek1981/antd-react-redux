@@ -20,6 +20,7 @@ class AdminPanel extends Component {
     };
 
     componentDidMount = async () => {
+
         await this.props.dispatch(getPermissions())
 
         const runningPath = await this.props.location.pathname

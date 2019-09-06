@@ -13,10 +13,6 @@ export const List = (props) => {
         // dispatch(changePagination(pagination))
     }
 
-    const confirm = (id) => {
-        dispatch(removeRole(id))
-    }
-
     const columns = [
         {
             title: 'Name',
@@ -40,8 +36,8 @@ export const List = (props) => {
 
                     <Divider type="vertical" />
 
-                    <Popconfirm title="Are you sure to delete this task?"
-                        onConfirm={(e) => confirm(record._id)}
+                    <Popconfirm title="Are you sure to delete this role?"
+                        onConfirm={(e) => dispatch( removeRole(record._id) )}
                         okText="Yes" cancelText="No">
 
                         <a href="javascript:;">
