@@ -59,22 +59,3 @@ export const SearchByForm = (props) => {
         </Fragment>
     )
 }
-
-{/* <Select
-                        showSearch
-                        style={{ width: 250 }}
-                        placeholder="Select a project"
-                        optionFilterProp="children"
-                        defaultValue={{ key: 'all' }}
-                        onChange={val => dispatch(changeSearchField(val, 'project'))}
-                        // onFocus={handleFocus}
-                        // onBlur={handleBlur}
-                        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                    >
-                        <Option value="all" key={-1}>All Project</Option>
-                        {
-                            projects.projectList.map((item, index) =>
-                                <Option value={item.name} key={index}>{item.name}</Option>
-                            )
-                        }
-                    </Select> */}

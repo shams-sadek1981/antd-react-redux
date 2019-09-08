@@ -11,6 +11,7 @@ import adminDashboardReducer from './adminDashboardReducer'
 import adminPanelReducer from './adminPanelReducer'
 import reportsReducer from './reportsReducer'
 import projectReducer from './projectReducer'
+import publicHolidayReducer from './publicHolidayReducer'
 import taskTypeReducer from './taskTypeReducer'
 
 const rootReducer = combineReducers({
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
     adminPanelReducer,
     reportsReducer,
     projectReducer,
+    publicHolidayReducer,
     taskTypeReducer
 })
 

@@ -36,6 +36,13 @@ const initialState = {
             iconType: 'project'
         },
         {
+            keyNo:10,
+            label: 'Public Holiday',
+            to: '/admin-panel/public-holiday',
+            breadcrumb: ['Admin Panel','Public Holiday'],
+            iconType: 'snippets'
+        },
+        {
             keyNo:3,
             label: 'Upcoming Task',
             to: '/admin-panel/upcoming-task',
