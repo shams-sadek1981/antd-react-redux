@@ -40,7 +40,7 @@ export const SearchByForm = (props) => {
                         onChange={val => dispatch(changeSearchField(val, 'project'))}
                     >
                         {
-                            projects.projectList.map((item, index) =>
+                            projects.list.map((item, index) =>
                                 <Option value={item.name} key={index}>{item.name}</Option>
                             )
                         }

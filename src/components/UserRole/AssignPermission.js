@@ -59,6 +59,7 @@ export const AssignPermission = (props) => {
                 <CheckboxGroup
                     options={ userRole.plainOptions}
                     value={ userRole.roleItem.checkedList }
+                    name={ userRole.roleItem.checkedList }
                     onChange={ (checkedList) => dispatch( permissionOnChange(checkedList) ) }
                 />
             </div>

@@ -112,7 +112,7 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                                     placeholder="Select a project"
                                 >
                                     {
-                                        project.projectList.map((item, index) =>
+                                        project.list.map((item, index) =>
                                             <Option value={item.name} key={index}>{item.name}</Option>
                                         )
                                     }

@@ -26,7 +26,14 @@ const initialState = {
             label: 'User Role',
             to: '/admin-panel/users-role',
             breadcrumb: ['Admin Panel','User Role'],
-            iconType: 'user'
+            iconType: 'control'
+        },
+        {
+            keyNo:9,
+            label: 'Project',
+            to: '/admin-panel/project',
+            breadcrumb: ['Admin Panel','Project'],
+            iconType: 'project'
         },
         {
             keyNo:3,
@@ -40,7 +47,7 @@ const initialState = {
             label: 'Release',
             to: '/admin-panel/release',
             breadcrumb: ['Admin Panel','Release'],
-            iconType: 'bar-chart'
+            iconType: 'highlight'
         },
         {
             keyNo:5,
@@ -54,7 +61,7 @@ const initialState = {
             label: 'Upload',
             to: '/admin-panel/upload',
             breadcrumb: ['Admin Panel','Upload'],
-            iconType: 'bar-chart'
+            iconType: 'upload'
         }
     ]
 }

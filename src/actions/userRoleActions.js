@@ -336,6 +336,8 @@ export const getUserPermissionList = () => (dispatch, getState) => {
  */
 export const permissionOnChange = (checkedList) => (dispatch, getState) => {
 
+    console.log('checkedList', checkedList)
+
     const permissionList = checkedList.map( item => ({
         permissionName: item
     }))

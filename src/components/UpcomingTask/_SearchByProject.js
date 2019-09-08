@@ -40,7 +40,7 @@ export const _SearchByProject = (props) => {
 
                 <Option value="all" key={-1}>ALL Project</Option>
             {
-                project.projectList.map( (project, index) =>
+                project.list.map( (project, index) =>
                     <Option value={project.name} key={index}>{project.name}</Option>
                 )
             }

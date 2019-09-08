@@ -122,6 +122,9 @@ export const handleSubmit = (values) => {
 }
 
 
+/**
+ * 
+ */
 export const toggleModalVisible = () => {
     return (dispatch, getState) => {
 
@@ -414,6 +417,11 @@ export const toggleSpinning = (booleanValue) => {
     }
 }
 
+/**
+ * 
+ * @param {*} fieldName 
+ * @param {*} value 
+ */
 export const searchBy = (fieldName, value) => {
     return (dispatch, getState) => {
 
