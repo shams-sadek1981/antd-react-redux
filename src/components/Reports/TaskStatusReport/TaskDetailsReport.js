@@ -27,7 +27,7 @@ export const TaskDetailsReport = (props) => {
                     <tr>
                         <th>Task Name</th>
                         <th style={{ width: "9%"}}>Working_Range</th>
-                        <th style={{ width: "8%"}}>Completed</th>
+                        <th style={{ width: "9%"}}>Completed</th>
                         <th style={{ width: "10%"}}>Task Type</th>
                         <th style={{ width: '8%'}}>Est._Hour</th>
                     </tr>

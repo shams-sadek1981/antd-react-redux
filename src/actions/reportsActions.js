@@ -37,7 +37,7 @@ export const setDateRange = (startDate, endDate) => {
         const { name } = reports.searchBy
 
         //-- Subtract 7 for official report
-        const presentDate = moment().subtract(7, "days")
+        const presentDate = moment().subtract(10, "days")
 
         const startDate = moment(presentDate).startOf('month').format("YYYY-MMM-DD")
         const endDate = moment(presentDate).endOf('month').format("YYYY-MMM-DD")
