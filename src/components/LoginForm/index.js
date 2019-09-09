@@ -69,7 +69,7 @@ class LoginForm extends React.Component {
                         <Form.Item>
                             {getFieldDecorator('email', {
                                 rules: [{ required: true, message: 'Please input your email!' }],
-                                initialValue: 'ashraf@gmail.com'
+                                initialValue: ''
                                 // initialValue: cookies.get('email')
                             })(
                                 <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
@@ -78,7 +78,7 @@ class LoginForm extends React.Component {
                         <Form.Item>
                             {getFieldDecorator('password', {
                                 rules: [{ required: true, message: 'Please input your Password!' }],
-                                initialValue: '123456'
+                                initialValue: ''
                                 // initialValue: cookies.get('password')
                             })(
                                 <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
