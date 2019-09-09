@@ -97,9 +97,8 @@ export const userLogin = (history, userInfo, values) => async (dispatch, getStat
             await manageCookie(values)
 
 
-            
             // await history.push('/admin-panel')
-            window.location.href = process.env.REACT_APP_FRONTEND_URL + '/admin-panel';
+            window.location.href = window.location.origin + '/admin-panel';
 
         })
         .catch(err => openNotificationWithIcon('error', err.message, 'Your password or email is mismatch'))
