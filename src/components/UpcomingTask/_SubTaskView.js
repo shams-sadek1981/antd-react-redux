@@ -10,6 +10,8 @@ import {
     updateSubTaskStatus,
 } from '../../actions/task/subTaskActions';
 
+import { handlePermission } from '../../functions'
+
 import './style.less'
 
 const data = [
@@ -63,9 +65,9 @@ export const _SubTaskView = (props) => {
             key: 'refLink',
             render: (text, record) => (
                 record.refLink &&
-                    <a href={record.refLink} target="_blank">
-                        <Icon type="link" style={{ fontSize: '17px', color: '#08c' }} />
-                    </a>
+                <a href={record.refLink} target="_blank">
+                    <Icon type="link" style={{ fontSize: '17px', color: '#08c' }} />
+                </a>
             )
         },
         {
@@ -104,18 +106,26 @@ export const _SubTaskView = (props) => {
             align: "right",
             render: (text, record) => (
                 <div>
-                    <Icon type="edit" theme="twoTone"
-                        onClick={() => dispatch(editSubTask(taskId, record._id))}
-                    />
-                    &nbsp;
-                    <Popconfirm title="Are you sure delete this subTask?"
-                        onConfirm={(e) => confirm(record._id)}
-                        okText="Yes" cancelText="No">
+                    {
+                        (handlePermission(props, 'upcoming_task_subtask_update')) &&
+                        <Icon type="edit" theme="twoTone"
+                            onClick={() => dispatch(editSubTask(taskId, record._id))}
+                        />
+                    }
 
-                        <a href="javascript:;">
-                            <Icon type="delete" theme="twoTone" />
-                        </a>
-                    </Popconfirm>
+                    &nbsp;
+
+                    {
+                        (handlePermission(props, 'upcoming_task_subtask_delete')) &&
+                        <Popconfirm title="Are you sure delete this subTask?"
+                            onConfirm={(e) => confirm(record._id)}
+                            okText="Yes" cancelText="No">
+
+                            <a href="javascript:;">
+                                <Icon type="delete" theme="twoTone" />
+                            </a>
+                        </Popconfirm>
+                    }
                 </div>
             ),
         }
@@ -139,14 +149,17 @@ export const _SubTaskView = (props) => {
     return (
         <div id="sub-task-list">
             <a href="javascript:;" style={{ fontSize: '13px', cursor: 'pointer' }}
-                onClick={() => dispatch(addNewSubTask(taskId))}>
+                onClick={() => {
+                    (handlePermission(props, 'upcoming_task_subtask_create')) &&
+                        dispatch(addNewSubTask(taskId))
+                }}>
                 <Icon type="plus-circle" /> Sub Task
             </a>
             &nbsp;
             <span style={{ marginLeft: "10px" }}>{des}</span>
             <Table dataSource={dataSource} columns={columns} size="small" />
-            <span style={{ color: "#C6C0C0"}}>Task ID: { taskId} </span>,
-            <span style={{ color: "#C6C0C0", paddingLeft: '5px'}}>CreatedAt: { createdAt} </span>
+            <span style={{ color: "#C6C0C0" }}>Task ID: {taskId} </span>,
+            <span style={{ color: "#C6C0C0", paddingLeft: '5px' }}>CreatedAt: {createdAt} </span>
         </div>
     )
 }

@@ -12,6 +12,8 @@ import {
     updateTaskRate
 } from '../../actions/upcomingTaskActions';
 
+import { handlePermission } from '../../functions'
+
 import { toggleSubtaskModalVisible } from '../../actions/task/subTaskActions';
 
 import { _SubTaskView } from './_SubTaskView'
@@ -75,7 +77,11 @@ export const TaskList = (props) => {
             key: 'taskName',
             render: (text, record) =>
                 <div>
-                    <a href="javascript:;" onClick={() => dispatch(editTask(record._id))}>
+                    <a href="javascript:;" onClick={ () => {
+                                
+                                ( handlePermission(props, 'upcoming_task_update') ) &&
+                                dispatch(editTask(record._id))
+                            }}>
                         {
                             (record.running == true)
                                 ? <span>{text}</span>

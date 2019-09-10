@@ -44,7 +44,7 @@ export const _MoreActionMenu = (props) => {
 
 
             {
-                ( handlePermission(props, 'update_upcoming_task') ) &&
+                ( handlePermission(props, 'upcoming_task_update') ) &&
             <Menu.Item>
                 <a onClick={() => dispatch(editTask(record._id))} href="javascript:;">
                     <Row>
@@ -61,7 +61,7 @@ export const _MoreActionMenu = (props) => {
 
 
             {
-                ( handlePermission(props, 'delete_upcoming_task') ) &&
+                ( handlePermission(props, 'upcoming_task_delete') ) &&
                 <Menu.Item>
                     <Row>
                         <Col span={10}>

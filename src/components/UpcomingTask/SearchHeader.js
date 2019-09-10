@@ -10,6 +10,8 @@ import {
 import { _SearchByUser } from './_SearchByUser'
 import { _SearchByProject } from './_SearchByProject'
 
+import { handlePermission } from '../../functions'
+
 const { Option } = Select;
 const Search = Input.Search;
 
@@ -29,12 +31,15 @@ export const SearchHeader = (props) => {
         <Fragment>
             <Row>
                 <Col span={3}>
-                    <Button
-                        type="primary"
-                        onClick={() => dispatch(addNewTask())}
-                    >
-                        <Icon type="plus-circle" />New Task
-                    </Button>
+                    {
+                        ( handlePermission(props, 'upcoming_task_create') ) &&
+                        <Button
+                            type="primary"
+                            onClick={() => dispatch(addNewTask())}
+                        >
+                            <Icon type="plus-circle" />New Task
+                        </Button>
+                    }
                 </Col>
 
                 <Col span={3}>
@@ -58,7 +63,7 @@ export const SearchHeader = (props) => {
                 <Col span={5}>
                     <Search
                         placeholder="input search text"
-                        defaultValue={ upcomingTask.searchBy.text }
+                        defaultValue={upcomingTask.searchBy.text}
                         onSearch={value => dispatch(searchBy('text', value))}
                         style={{ width: 200 }}
                         autoFocus

@@ -8,6 +8,8 @@ import { changeSelectedKeysByPath, changeSelectedKeys } from '../../actions/admi
 import { getPermissions } from '../../actions/userActions'
 import { AdminRoutes } from './AdminRoutes'
 
+import { handlePermission } from '../../functions'
+
 const {
     Header, Footer, Sider, Content,
 } = Layout;
@@ -59,9 +61,10 @@ class AdminPanel extends Component {
                             mode="inline"
                             selectedKeys={adminPanel.selectedKeys}
                         >
-
                             {
                                 adminPanel.menus.map((item, index) => (
+
+                                    ( handlePermission(this.props, item.permission) ) &&
                                     <Menu.Item key={item.keyNo} onClick={() => dispatch(changeSelectedKeys(item.keyNo))}>
                                         <NavLink to={item.to} exact={item.exact}>
                                             <Icon type={item.iconType} />
