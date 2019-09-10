@@ -31,6 +31,40 @@ export const PrivateRoute = ({ component: Component, ...rest }) => {
 }
 
 
+
+/**
+ * -------------------------------------------------------------------------------------------
+ * Permission Route & Redirect
+ * -------------------------------------------------------------------------------------------
+ * 
+ * @param {*} param0 
+ */
+export const PermissionRoute = ({ component: Component, ...rest }) => {
+
+    return (
+        <Route
+            {...rest}
+            render={ props => {
+
+                const { permissionName, users } = rest
+
+                return handlePermission({ users }, permissionName) ?
+                    (<Component {...props} />) :
+                    (
+                        <Redirect
+                            to={{
+                                pathname: "/admin-panel",
+                                state: { from: props.location }
+                            }}
+                        />
+                    )
+            }
+            }
+        />
+    )
+}
+
+
 /**
  * ------------------------------------------------------------------------------------------
  * Handle Permission Component

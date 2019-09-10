@@ -11,6 +11,7 @@ import {
     projectSummaryLoading
 } from '../../actions/adminDashboardActions'
 
+
 import { ProjectSummaryChart } from './ProjectSummaryChart'
 
 const cols = {
@@ -22,6 +23,7 @@ class AdminDashboard extends Component {
 
     componentDidMount = async () => {
         // await console.log(localStorage.getItem('token'))
+
         this.props.dispatch(userSummaryLoading())
         await this.props.dispatch(projectSummaryLoading())
     }

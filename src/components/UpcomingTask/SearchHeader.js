@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import { Route } from 'react-router-dom'
 
 import { Select, Button, Icon, Row, Col, Input } from 'antd';
 
@@ -15,24 +16,19 @@ import { handlePermission } from '../../functions'
 const { Option } = Select;
 const Search = Input.Search;
 
-function handleBlur() {
-    console.log('blur');
-}
-
-function handleFocus() {
-    console.log('focus');
-}
 
 export const SearchHeader = (props) => {
 
-    const { dispatch, upcomingTask, searchInput } = props
+    const { dispatch, upcomingTask, searchInput, match } = props
+
+    console.log('ABC:', match)
 
     return (
         <Fragment>
             <Row>
                 <Col span={3}>
                     {
-                        ( handlePermission(props, 'upcoming_task_create') ) &&
+                        (handlePermission(props, 'upcoming_task_create')) &&
                         <Button
                             type="primary"
                             onClick={() => dispatch(addNewTask())}

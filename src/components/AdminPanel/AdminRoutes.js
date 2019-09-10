@@ -12,22 +12,33 @@ import Release from '../Release'
 import Reports from '../Reports'
 import UploadFile from '../UploadFile'
 
+import { PermissionRoute } from '../../functions'
+
 export const AdminRoutes = (props) => {
     
     const { path, url } = props.match
-
+    const { users } = props
+    
     return (
         <Switch>
             <Route exact path={`${path}`} component={AdminDashboard} />
-            <Route path={`${path}/users`} component={User} />
-            <Route path={`${path}/users-role`} component={UserRole} />
-            <Route path={`${path}/project`} component={Project} />
-            <Route path={`${path}/public-holiday`} component={PublicHoliday} />
-            <Route path={`${path}/upcoming-task`} component={UpcomingTask} />
-            <Route path={`${path}/release`} component={Release} />
-            <Route path={`${path}/reports`} component={Reports} />
-            <Route path={`${path}/upload`} component={UploadFile} />
-            <Route path={`${path}/customer`} render={() => <h2>Customers</h2>} />
+            
+            <PermissionRoute path={`${path}/users`} component={User} permissionName="menu_user" users={users}/>
+
+            <PermissionRoute path={`${path}/users-role`} component={UserRole} permissionName="menu_user_role" users={users}/>
+            
+            <PermissionRoute path={`${path}/project`} component={Project} permissionName="menu_project" users={users}/>
+            
+            <PermissionRoute path={`${path}/public-holiday`} component={PublicHoliday} permissionName="menu_public_holiday" users={users}/>
+            
+            <PermissionRoute path={`${path}/upcoming-task`} component={UpcomingTask} permissionName="menu_upcoming_task" users={users}/>
+            
+            <PermissionRoute path={`${path}/release`} component={Release} permissionName="menu_release" users={users}/>
+            
+            <PermissionRoute path={`${path}/reports`} component={Reports} permissionName="menu_reports" users={users}/>
+            
+            <PermissionRoute path={`${path}/upload`} component={UploadFile} permissionName="menu_upload" users={users}/>
+
             <Route render={() => <h2>Not Found Admin Panel child component</h2>} />
         </Switch>
     )
