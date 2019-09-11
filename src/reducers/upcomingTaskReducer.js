@@ -31,7 +31,7 @@ const initialState = {
         pageSize: 10
     },
     searchBy: {
-        project: 'all',
+        project: ['all'],
         name: 'all',
         text: '',
         completedAt: null,

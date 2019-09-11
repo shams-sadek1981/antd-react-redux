@@ -33,7 +33,8 @@ const initialState = {
             password: '',
             mobile: '',
             department: '',
-            roles: []
+            roles: [],
+            projects: []
         },
     },
     pagination: {

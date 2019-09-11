@@ -12,6 +12,7 @@ import { SearchHeader } from './SearchHeader'
 
 import { handleSubmit, changeDefaultActiveKey, addNewUser, userSearchByResult } from '../../actions/userActions'
 import { userRoleSearchByResult } from '../../actions/userRoleActions'
+import { getAllProject } from '../../actions/projectActions'
 
 const { TabPane } = Tabs;
 
@@ -25,6 +26,7 @@ class User extends Component {
     componentDidMount = () => {
         this.props.dispatch(userSearchByResult())
         this.props.dispatch(userRoleSearchByResult())
+        this.props.dispatch(getAllProject())
     }
 
 
@@ -83,7 +85,8 @@ class User extends Component {
 
 const mapStateToProps = state => ({
     users: state.userReducer,
-    userRole: state.userRoleReducer
+    userRole: state.userRoleReducer,
+    project: state.projectReducer
 })
 
 

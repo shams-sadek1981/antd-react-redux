@@ -19,16 +19,22 @@ export const NewUserModal = Form.create({ name: 'form_in_modal' })(
 
             const { getFieldDecorator } = form;
 
-            const { dispatch, users, userRole } = this.props
-
+            const { dispatch, users, userRole, project } = this.props
 
             function handleChange(value) {
                 console.log(`selected ${value}`);
             }
 
+            //-- get Selected Roles
             let selectedRoles = []
             users.modal.userEditInfo.roles.forEach(item => {
                 selectedRoles.push(item.roleName)
+            })
+
+            //-- get Selected Projects
+            let selectedProjects = []
+            users.modal.userEditInfo.projects.forEach(item => {
+                selectedProjects.push(item.projectName)
             })
 
             return (
@@ -46,7 +52,7 @@ export const NewUserModal = Form.create({ name: 'form_in_modal' })(
                                 initialValue: users.modal.userEditInfo.name,
                                 rules: [{ required: true, message: 'Please input the user name!' }],
                             })(
-                                <Input autoComplete="off"/>
+                                <Input autoComplete="off" />
                             )}
                         </Form.Item>
 
@@ -74,7 +80,7 @@ export const NewUserModal = Form.create({ name: 'form_in_modal' })(
                                 initialValue: users.modal.userEditInfo.email,
                                 rules: [{ required: true, message: 'Please input the user email!' }],
                             })(
-                                <Input autoComplete="off"/>
+                                <Input autoComplete="off" />
                             )}
                         </Form.Item>
 
@@ -92,32 +98,55 @@ export const NewUserModal = Form.create({ name: 'form_in_modal' })(
                                 initialValue: users.modal.userEditInfo.mobile,
                                 rules: [{ required: true, message: 'Please input the mobile no!' }],
                             })(
-                                <Input autoComplete="off"/>
+                                <Input autoComplete="off" />
                             )}
                         </Form.Item>
 
 
                         {
                             (users.modal.okText == 'Update') &&
-                            <Form.Item label="Select Role">
-                                {getFieldDecorator('roles', {
-                                    initialValue: selectedRoles,
-                                    // rules: [{ required: true, message: 'Please select role' }],
-                                })(
-                                    <Select
-                                        mode="multiple"
-                                        showSearch
-                                        placeholder="Select a role"
-                                        onChange={handleChange}
-                                    >
-                                        {
-                                            userRole.roleList.map((item, index) =>
-                                                <Option value={item.name} key={index}>{item.name}</Option>
-                                            )
-                                        }
-                                    </Select>
-                                )}
-                            </Form.Item>
+                            <Fragment>
+
+                                <Form.Item label="Select Role">
+                                    {getFieldDecorator('roles', {
+                                        initialValue: selectedRoles,
+                                        // rules: [{ required: true, message: 'Please select role' }],
+                                    })(
+                                        <Select
+                                            mode="multiple"
+                                            showSearch
+                                            placeholder="Select a role"
+                                            onChange={handleChange}
+                                        >
+                                            {
+                                                userRole.roleList.map((item, index) =>
+                                                    <Option value={item.name} key={index}>{item.name}</Option>
+                                                )
+                                            }
+                                        </Select>
+                                    )}
+                                </Form.Item>
+
+                                <Form.Item label="Select Project">
+                                    {getFieldDecorator('projects', {
+                                        initialValue: selectedProjects,
+                                        // rules: [{ required: true, message: 'Please select role' }],
+                                    })(
+                                        <Select
+                                            mode="multiple"
+                                            showSearch
+                                            placeholder="Select a project"
+                                            onChange={handleChange}
+                                        >
+                                            {
+                                                project.list.map((item, index) =>
+                                                    <Option value={item.name} key={index}>{item.name}</Option>
+                                                )
+                                            }
+                                        </Select>
+                                    )}
+                                </Form.Item>
+                            </Fragment>
                         }
 
                     </Form>

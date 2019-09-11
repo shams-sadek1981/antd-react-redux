@@ -58,7 +58,6 @@ export const getPermissions = () => async (dispatch, getState) => {
         window.location.href = process.env.REACT_APP_FRONTEND_URL + '/login'
     })
 
-    
     const url = await process.env.REACT_APP_HOST + '/users/permissions'
     const token = await localStorage.getItem('token')
 

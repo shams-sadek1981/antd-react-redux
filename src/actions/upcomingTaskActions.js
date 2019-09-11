@@ -8,6 +8,7 @@ import { get, post, put, deleteMethod } from '../functions'
 import { loadUser } from './userActions'
 import { getAllProject } from './projectActions'
 import { getAllTaskType } from './taskTypeActions'
+import { array } from 'prop-types';
 
 //-- Define action names
 export const UPCOMING_TASK_CHANGE_TABKEY = "UPCOMING_TASK_CHANGE_TABKEY"
@@ -204,7 +205,7 @@ const setObjForSearchResult = (obj) => {
 
     // //-- set status
     if (Object.entries(obj).length > 0) {
-        console.log("obj", obj)
+        // console.log("obj", obj)
         setObj = {
             ...setObj,
             ...obj
@@ -233,7 +234,20 @@ const setObjForSearchResult = (obj) => {
 
 const getTaskResult = (current, pageSize, name, project, completedAt, text, running) => {
 
-    const searchUrl = `/upcoming-task/search-running?page=${current}&pageSize=${pageSize}&name=${name}&project=${project}&completedAt=${completedAt}&text=${text}&running=${running}`
+    let newProjectParams = ''
+
+    if (Array.isArray(project)) {
+        project.forEach(item => {
+            newProjectParams += "project=" + item + "&"
+        })
+    } else {
+        newProjectParams = "project=" + project
+    }
+
+    // console.log('Project Params:', newProjectParams)
+
+    // const searchUrl = `/upcoming-task/search-running?page=${current}&pageSize=${pageSize}&name=${name}&project=${project}&completedAt=${completedAt}&text=${text}&running=${running}`
+    const searchUrl = `/upcoming-task/search-running?page=${current}&pageSize=${pageSize}&name=${name}&${newProjectParams}&completedAt=${completedAt}&text=${text}&running=${running}`
 
     return get(searchUrl)
         .then(data => data)
@@ -241,39 +255,92 @@ const getTaskResult = (current, pageSize, name, project, completedAt, text, runn
 }
 
 
+function getProjectByPermission(userInfo, project) {
+
+    let newProjectList = ['all']
+    if (userInfo.projects.length > 0) {
+        if (project[0] == 'all') {
+            userInfo.projects.forEach(item => newProjectList.push(item.projectName))
+            project = newProjectList
+        }
+    }
+
+    return project
+
+}
 /**
  * ------------------------------------------------------------------------------------------
  * Task Result
  * ------------------------------------------------------------------------------------------
  */
-export const upcomingTaskSearchByResult = () => {
-    return (dispatch, getState) => {
+export const upcomingTaskSearchByResult = () => (dispatch, getState) => {
 
-        let { searchBy, pagination } = getState().upcomingTaskReducer
-        let { current, pageSize } = pagination
-        const { name, project, text, completedAt, running } = searchBy
+    let { searchBy, pagination } = getState().upcomingTaskReducer
+    const { userInfo } = getState().userReducer
 
-        getTaskResult(current, pageSize, name, project, completedAt, text, running)
-            .then(data => {
-                // console.log(data)
+    let { current, pageSize } = pagination
+    let { name, project, text, completedAt, running } = searchBy
 
-                dispatch({
-                    type: UPCOMING_TASK_SEARCH_BY_RESULT,
-                    payload: {
-                        taskList: data.result,
-                        pagination: data.pagination,
-                        "totalEstHour": data.totalEstHour,
-                        "totalSubTask": data.totalSubTask,
-                        "userName": data.userName,
-                        "userEstHour": data.userEstHour,
-                        "userTotalSubTask": data.userTotalSubTask,
-                    }
-                })
-
-            }).catch(err => console.log(err))
+    //-- set permission by project
+    let newProjectList = []
+    if (userInfo.projects.length > 0) {
+        // console.log('Get Project', project)
+        if (project[0] == 'all') {
+            userInfo.projects.forEach( item => newProjectList.push(item.projectName))
+            project = newProjectList
+        }
     }
+    // console.log('HHHHHHHHHHH:', project)
+    
+    // project = getProjectByPermission(userInfo, project)
+
+    getTaskResult(current, pageSize, name, project, completedAt, text, running)
+        .then(data => {
+            // console.log(data)
+
+            dispatch({
+                type: UPCOMING_TASK_SEARCH_BY_RESULT,
+                payload: {
+                    taskList: data.result,
+                    pagination: data.pagination,
+                    "totalEstHour": data.totalEstHour,
+                    "totalSubTask": data.totalSubTask,
+                    "userName": data.userName,
+                    "userEstHour": data.userEstHour,
+                    "userTotalSubTask": data.userTotalSubTask,
+                }
+            })
+
+            //-- filter by project
+            dispatch(filterProjectByUser())
+
+        }).catch(err => console.log(err))
 }//-- end function
 
+
+//-- Filter by Project
+export const filterProjectByUser = () => (dispatch, getState) => {
+
+    const user = getState().userReducer
+
+    let newList = []
+    if (user.userInfo.projects.length > 0) {
+
+        newList = user.userInfo.projects.map(item => ({
+            _id: item._id,
+            name: item.projectName
+        }))
+
+        dispatch({
+            type: "PROJECT_LOAD",
+            payload: {
+                list: newList
+            }
+        })
+    }
+
+
+}
 
 
 //-- Handle Submit
@@ -384,33 +451,34 @@ export const toggleModalVisible = () => {
  * Load Upcoming Task...
  * ----------------------------------------------------------------------------------------------------
  */
-export const loadUpcomingTask = () => {
-    return (dispatch, getState) => {
+export const loadUpcomingTask = () => (dispatch, getState) => {
 
-        const upcomingTask = getState().upcomingTaskReducer
-        const { tabKey, pagination } = upcomingTask
-        const { current } = pagination
+    const upcomingTask = getState().upcomingTaskReducer
+    const { tabKey, pagination } = upcomingTask
+    const { current } = pagination
 
-        // let status = false
-        // if (tabKey == 2) {
-        //     status = true
-        // }
+    // let status = false
+    // if (tabKey == 2) {
+    //     status = true
+    // }
 
-        //-- load user
-        dispatch(loadUser())
+    //-- load project
+    dispatch(getAllProject())
 
-        //-- load project
-        dispatch(getAllProject())
-
-        //-- load task-type
-        dispatch(getAllTaskType())
+    //-- load user
+    dispatch(loadUser())
 
 
-        //-- Load Result
-        dispatch(upcomingTaskSearchByResult())
+    //-- load task-type
+    dispatch(getAllTaskType())
 
-    }
+
+    //-- Load Result
+    dispatch(upcomingTaskSearchByResult())
+
 }
+
+
 
 
 /**
@@ -461,7 +529,7 @@ export const loadRelease = projectName => (dispatch, getState) => {
     return get(searchUrl)
         .then(data => {
 
-            const releaseList = data.result.map( item => {
+            const releaseList = data.result.map(item => {
                 return {
                     version: item.version,
                     releaseDate: moment(item.releaseDate).format("DD-MMM-YYYY"),
