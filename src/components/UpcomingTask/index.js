@@ -39,6 +39,21 @@ class UpcomingTask extends Component {
         this.props.dispatch(loadUser())
         
         this.props.dispatch(loadUpcomingTask())
+
+        console.log("shouldComponentDidMount")
+    }
+
+    // ReactJS Component Updating Methods
+    shouldComponentUpdate(){
+        console.log("shouldComponentUpdate")
+        return true
+    }
+    componentDidUpdate(){
+        console.log("componentDidUpdate")
+    }
+    // ReactJS Component Unmounting Methods
+    componentWillUnmount(){
+        console.log("componentWillUnmount")
     }
 
     //-- Modal form submit

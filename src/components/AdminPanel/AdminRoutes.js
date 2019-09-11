@@ -31,7 +31,7 @@ export const AdminRoutes = (props) => {
             
             <PermissionRoute path={`${path}/public-holiday`} component={PublicHoliday} permissionName="menu_public_holiday" users={users}/>
             
-            <PermissionRoute path={`${path}/upcoming-task`} component={UpcomingTask} permissionName="menu_upcoming_task" users={users}/>
+            <Route path={`${path}/upcoming-task`} component={UpcomingTask} />
             
             <PermissionRoute path={`${path}/release`} component={Release} permissionName="menu_release" users={users}/>
             

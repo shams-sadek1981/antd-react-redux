@@ -63,7 +63,7 @@ class Release extends Component {
         const { size } = this.state;
 
         return (
-            <div className={styles.release}>
+            <div className={styles.wrapper}>
 
                 {release.modal.modalVisible &&
                     <NewModal

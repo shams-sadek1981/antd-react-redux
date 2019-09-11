@@ -7,6 +7,7 @@ import { removeRole, editRole,
     checkAllOnChange,
     permissionOnChange } from '../../actions/userRoleActions';
 
+
 const { Option } = Select;
 
 const CheckboxGroup = Checkbox.Group;
@@ -45,7 +46,7 @@ export const AssignPermission = (props) => {
 
             <Divider/>
 
-            <div>
+            <div className="user_role_checkbox">
                 <div style={{ borderBottom: '1px solid #E9E9E9' }}>
                     <Checkbox
                         indeterminate={userRole.indeterminate}

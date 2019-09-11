@@ -10,6 +10,7 @@ import { AssignPermission } from './AssignPermission'
 import { NewRoleModal } from './NewRoleModal'
 
 import { SearchHeader } from './SearchHeader'
+import styles from './styles.module.less'
 
 import {
     handleSubmit,
@@ -18,6 +19,15 @@ import {
     userRoleSearchByResult,
     getUserPermissionList
 } from '../../actions/userRoleActions'
+
+import { Checkbox } from 'antd';
+
+import './styles.css'
+
+const CheckboxGroup = Checkbox.Group;
+
+const plainOptions = ['Apple', 'Pear', 'Orange'];
+const defaultCheckedList = ['Apple', 'Orange'];
 
 const { TabPane } = Tabs;
 
@@ -43,7 +53,7 @@ class UserRole extends Component {
             }
 
             console.log('Received values of form: ', values);
-            
+
             this.props.dispatch(handleSubmit(values))
 
             form.resetFields();
@@ -62,9 +72,9 @@ class UserRole extends Component {
         const { size } = this.state;
 
         return (
-            <Fragment>
+            <div className={styles.wrapper}>
 
-                <SearchHeader {...this.props}/>
+                <SearchHeader {...this.props} />
 
                 <NewRoleModal
                     {...this.props}
@@ -75,7 +85,7 @@ class UserRole extends Component {
 
 
                 <Tabs
-                    activeKey={ userRole.defaultActiveKey}
+                    activeKey={userRole.defaultActiveKey}
                     size={size}
                     onChange={(key) => dispatch(changeDefaultActiveKey(key))}
                 >
@@ -86,7 +96,7 @@ class UserRole extends Component {
                         <AssignPermission {...this.props} />
                     </TabPane>
                 </Tabs>
-            </Fragment>
+            </div>
         )
     }
 }

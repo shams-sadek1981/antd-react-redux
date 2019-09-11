@@ -21,8 +21,6 @@ export const SearchHeader = (props) => {
 
     const { dispatch, upcomingTask, searchInput, match } = props
 
-    console.log('ABC:', match)
-
     return (
         <Fragment>
             <Row>
