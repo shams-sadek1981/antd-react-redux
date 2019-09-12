@@ -108,8 +108,11 @@ export const changeTabKey = (value) => {
         //-- step-3 fetch data from API
         const current = 1
         const completedAt = searchByCompletedAt
-        const { name, project, text } = searchBy
+        let { name, project, text } = searchBy
 
+        //-- set Project (array) Search By for user permission
+        const { userInfo } = getState().userReducer
+        project = getProjectSearchBy(userInfo, project)
 
         getTaskResult(current, pageSize, name, project, completedAt, text, running)
             .then(data => {
@@ -255,7 +258,8 @@ const getTaskResult = (current, pageSize, name, project, completedAt, text, runn
 }
 
 
-function getProjectByPermission(userInfo, project) {
+//-- Set Project Search By
+function getProjectSearchBy(userInfo, project) {
 
     let newProjectList = ['all']
     if (userInfo.projects.length > 0) {
@@ -282,17 +286,17 @@ export const upcomingTaskSearchByResult = () => (dispatch, getState) => {
     let { name, project, text, completedAt, running } = searchBy
 
     //-- set permission by project
-    let newProjectList = []
-    if (userInfo.projects.length > 0) {
-        // console.log('Get Project', project)
-        if (project[0] == 'all') {
-            userInfo.projects.forEach( item => newProjectList.push(item.projectName))
-            project = newProjectList
-        }
-    }
+    // let newProjectList = []
+    // if (userInfo.projects.length > 0) {
+    //     // console.log('Get Project', project)
+    //     if (project[0] == 'all') {
+    //         userInfo.projects.forEach( item => newProjectList.push(item.projectName))
+    //         project = newProjectList
+    //     }
+    // }
     // console.log('HHHHHHHHHHH:', project)
     
-    // project = getProjectByPermission(userInfo, project)
+    project = getProjectSearchBy(userInfo, project)
 
     getTaskResult(current, pageSize, name, project, completedAt, text, running)
         .then(data => {

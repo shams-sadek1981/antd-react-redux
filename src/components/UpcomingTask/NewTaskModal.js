@@ -155,28 +155,30 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                             </Col>
 
                             <Col span={14}>
-                                <Form.Item label="Select Version">
-                                    {getFieldDecorator('release', {
-                                        initialValue: upcomingTask.modal.EditInfo.release,
-                                        // rules: [{ required: true, message: 'Please select release' }],
-                                    })(
-                                        <Select
-                                            showSearch
-                                            // style={{ width: 200 }}
-                                            placeholder="Select a release"
-                                        >
-                                            <Option value={null}>Select Version</Option>
-                                            {
-                                                upcomingTask.releaseList.map((item, index) =>
-                                                    <Option value={item.version} key={index}>
-                                                        <span style={{ color: 'blue'}}>{item.version}</span>
-                                                        <span style={{ paddingLeft: '5px'}}>{item.releaseDate}</span>
-                                                    </Option>
-                                                )
-                                            }
-                                        </Select>
-                                    )}
-                                </Form.Item>
+                                {editMode &&
+                                    <Form.Item label="Select Version">
+                                        {getFieldDecorator('release', {
+                                            initialValue: upcomingTask.modal.EditInfo.release,
+                                            // rules: [{ required: true, message: 'Please select release' }],
+                                        })(
+                                            <Select
+                                                showSearch
+                                                // style={{ width: 200 }}
+                                                placeholder="Select a release"
+                                            >
+                                                <Option value={null}>Select Version</Option>
+                                                {
+                                                    upcomingTask.releaseList.map((item, index) =>
+                                                        <Option value={item.version} key={index}>
+                                                            <span style={{ color: 'blue' }}>{item.version}</span>
+                                                            <span style={{ paddingLeft: '5px' }}>{item.releaseDate}</span>
+                                                        </Option>
+                                                    )
+                                                }
+                                            </Select>
+                                        )}
+                                    </Form.Item>
+                                }
                             </Col>
                         </Row>
 
