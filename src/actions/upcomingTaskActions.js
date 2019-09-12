@@ -73,8 +73,9 @@ export const changePagination = (pagination) => {
  * Step-2 => searchBy: { status: true/false } true=completed task, false=incomplete task
  * Step-3 =>fetch data from API
  */
-export const changeTabKey = (value) => {
-    return (dispatch, getState) => {
+export const changeTabKey = (value) => (dispatch, getState) => {
+
+        dispatch(toggleSpinning(true))
 
         const { searchBy, pagination } = getState().upcomingTaskReducer
         const { pageSize } = pagination
@@ -133,8 +134,9 @@ export const changeTabKey = (value) => {
                         "userTotalSubTask": data.userTotalSubTask,
                     }
                 })
+
+                dispatch(toggleSpinning(false))
             })
-    }
 }//-- end
 
 
@@ -155,12 +157,11 @@ export const toggleSpinning = (booleanValue) => {
     }
 }
 
-export const searchBy = (fieldName, value) => {
-    return (dispatch, getState) => {
+export const searchBy = (fieldName, value) => async (dispatch, getState) => {
 
-        dispatch(toggleSpinning(true))
+        await dispatch(toggleSpinning(true))
 
-        let { searchBy, pagination, tabKey } = getState().upcomingTaskReducer
+        let { searchBy, pagination, tabKey } = await getState().upcomingTaskReducer
         const { current } = pagination
         const { name, project, text, status } = searchBy
 
@@ -175,7 +176,7 @@ export const searchBy = (fieldName, value) => {
             current: 1
         }
 
-        dispatch({
+        await dispatch({
             type: UPCOMING_TASK_SEARCH_BY,
             payload: {
                 searchBy,
@@ -185,12 +186,10 @@ export const searchBy = (fieldName, value) => {
 
 
         //-- Load Result
-        dispatch(upcomingTaskSearchByResult({ status, tabKey }))
+        await dispatch(upcomingTaskSearchByResult({ status, tabKey }))
 
 
         dispatch(toggleSpinning(false))
-
-    }
 }//-- end
 
 
@@ -235,7 +234,7 @@ const setObjForSearchResult = (obj) => {
  * @param {*} text 
  */
 
-const getTaskResult = (current, pageSize, name, project, completedAt, text, running) => {
+const getTaskResult = async (current, pageSize, name, project, completedAt, text, running) => {
 
     let newProjectParams = ''
 
@@ -252,7 +251,7 @@ const getTaskResult = (current, pageSize, name, project, completedAt, text, runn
     // const searchUrl = `/upcoming-task/search-running?page=${current}&pageSize=${pageSize}&name=${name}&project=${project}&completedAt=${completedAt}&text=${text}&running=${running}`
     const searchUrl = `/upcoming-task/search-running?page=${current}&pageSize=${pageSize}&name=${name}&${newProjectParams}&completedAt=${completedAt}&text=${text}&running=${running}`
 
-    return get(searchUrl)
+    return await get(searchUrl)
         .then(data => data)
         .catch(err => console.log(err))
 }
@@ -277,7 +276,7 @@ function getProjectSearchBy(userInfo, project) {
  * Task Result
  * ------------------------------------------------------------------------------------------
  */
-export const upcomingTaskSearchByResult = () => (dispatch, getState) => {
+export const upcomingTaskSearchByResult = () => async (dispatch, getState) => {
 
     let { searchBy, pagination } = getState().upcomingTaskReducer
     const { userInfo } = getState().userReducer
@@ -285,20 +284,10 @@ export const upcomingTaskSearchByResult = () => (dispatch, getState) => {
     let { current, pageSize } = pagination
     let { name, project, text, completedAt, running } = searchBy
 
-    //-- set permission by project
-    // let newProjectList = []
-    // if (userInfo.projects.length > 0) {
-    //     // console.log('Get Project', project)
-    //     if (project[0] == 'all') {
-    //         userInfo.projects.forEach( item => newProjectList.push(item.projectName))
-    //         project = newProjectList
-    //     }
-    // }
-    // console.log('HHHHHHHHHHH:', project)
     
-    project = getProjectSearchBy(userInfo, project)
+    project = await getProjectSearchBy(userInfo, project)
 
-    getTaskResult(current, pageSize, name, project, completedAt, text, running)
+    await getTaskResult(current, pageSize, name, project, completedAt, text, running)
         .then(data => {
             // console.log(data)
 
