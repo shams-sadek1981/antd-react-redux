@@ -23,6 +23,7 @@ export const USER_SPINNING = "USER_SPINNING"
 export const USER_SEARCH_BY_RESULT = "USER_SEARCH_BY_RESULT"
 export const USER_CHANGE_PAGINATION = "USER_CHANGE_PAGINATION"
 export const USER_SET_PERMISSIONS = "USER_SET_PERMISSIONS"
+export const USER_PASSWORD_MODAL_TOGGLE_VISIBLE = "USER_PASSWORD_MODAL_TOGGLE_VISIBLE"
 
 const openNotificationWithIcon = (type, message, description) => {
     notification[type]({
@@ -119,6 +120,20 @@ export const handleSubmit = (values) => {
     }
 }
 
+export const handlePasswordSubmit = (values) => (dispatch, getState) => {
+
+    const { modalPassword } = getState().userReducer
+
+    const { _id } = modalPassword.userEditInfo
+
+    put('/users/update-password/' + _id, values)
+        .then(data => {
+
+            dispatch(togglePasswordModalVisible())
+        })
+
+}
+
 
 /**
  * 
@@ -138,6 +153,28 @@ export const toggleModalVisible = () => {
             }
         })
     }
+}
+
+/**
+ * Password Modal toggle visible
+ */
+export const togglePasswordModalVisible = (id) => (dispatch, getState) => {
+
+    const { userList, modalPassword } = getState().userReducer
+
+    const findUser = userList.find(item => item._id == id)
+
+
+    dispatch({
+        type: USER_PASSWORD_MODAL_TOGGLE_VISIBLE,
+        payload: {
+            modalPassword: {
+                ...modalPassword,
+                modalVisible: !modalPassword.modalVisible,
+                userEditInfo: findUser
+            }
+        }
+    })
 }
 
 export const changeLoggedIn = () => {
@@ -270,7 +307,7 @@ export const saveUser = (values) => {
             .then(data => {
 
                 // userList.push(data.user)
-                userList = [ data.user, ...userList ]
+                userList = [data.user, ...userList]
 
                 dispatch({
                     type: ADD_USER,

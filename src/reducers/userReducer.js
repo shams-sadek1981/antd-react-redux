@@ -12,7 +12,8 @@ import {
     USER_SEARCH_BY_RESULT,
     USER_SPINNING,
     USER_CHANGE_PAGINATION,
-    USER_SET_PERMISSIONS
+    USER_SET_PERMISSIONS,
+    USER_PASSWORD_MODAL_TOGGLE_VISIBLE
 } from '../actions/userActions'
 
 
@@ -23,6 +24,12 @@ const initialState = {
     logStatus: 'Log Out',
     allUser: [],
     userList: [],
+    modalPassword: {
+        modalVisible: false,
+        userEditInfo: {
+            password: ''
+        },
+    },
     modal: {
         modalVisible: false,
         modalTitle: 'Create a new user',
@@ -30,7 +37,6 @@ const initialState = {
         userEditInfo: {
             name: '',
             email: '',
-            password: '',
             mobile: '',
             department: '',
             roles: [],
@@ -107,6 +113,11 @@ const userReducer = (state = initialState, action) => {
         case TOGGLE_USER_MODAL_VISIBLE:
             return Object.assign({}, state, {
                 modal: action.payload.modal
+            })
+
+        case USER_PASSWORD_MODAL_TOGGLE_VISIBLE:
+            return Object.assign({}, state, {
+                modalPassword: action.payload.modalPassword
             })
 
         case USER_SPINNING:

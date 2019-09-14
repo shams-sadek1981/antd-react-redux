@@ -7,10 +7,11 @@ import { Tabs, Radio, Form, Modal, Button, Icon } from 'antd';
 import { AddUser } from './AddUser'
 import { UserList } from './UserList'
 import { NewUserModal } from './NewUserModal'
+import { PasswordModal } from './PasswordModal'
 
 import { SearchHeader } from './SearchHeader'
 
-import { handleSubmit, changeDefaultActiveKey, addNewUser, userSearchByResult } from '../../actions/userActions'
+import { handleSubmit, handlePasswordSubmit, changeDefaultActiveKey, addNewUser, userSearchByResult } from '../../actions/userActions'
 import { userRoleSearchByResult } from '../../actions/userRoleActions'
 import { getAllProject } from '../../actions/projectActions'
 
@@ -39,8 +40,27 @@ class User extends Component {
             }
 
             console.log('Received values of form: ', values);
-            
+
             this.props.dispatch(handleSubmit(values))
+
+            form.resetFields();
+
+        });
+    }
+
+    /**
+     * ----------- Password Submit ----------
+     */
+    handlePasswordCreate = () => {
+        const form = this.formRef.props.form;
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+
+            // console.log('Received values of form: ', values);
+
+            this.props.dispatch(handlePasswordSubmit(values))
 
             form.resetFields();
 
@@ -52,22 +72,36 @@ class User extends Component {
         this.formRef = formRef;
     }
 
+
     render() {
 
-        const { dispatch } = this.props
+        const { dispatch, users } = this.props
         const { size } = this.state;
 
         return (
             <Fragment>
 
-                <SearchHeader {...this.props}/>
+                <SearchHeader {...this.props} />
 
-                <NewUserModal
-                    {...this.props}
-                    wrappedComponentRef={this.saveFormRef}
-                    // onCancel={this.handleCancel}
-                    onCreate={this.handleCreate}
-                />
+                {
+                    users.modal.modalVisible &&
+                    <NewUserModal
+                        {...this.props}
+                        wrappedComponentRef={this.saveFormRef}
+                        // onCancel={this.handleCancel}
+                        onCreate={this.handleCreate}
+                    />
+                }
+
+                {
+                    users.modalPassword.modalVisible &&
+                    <PasswordModal
+                        {...this.props}
+                        wrappedComponentRef={this.saveFormRef}
+                        // onCancel={this.handleCancel}
+                        onCreate={this.handlePasswordCreate}
+                    />
+                }
 
 
                 <Tabs

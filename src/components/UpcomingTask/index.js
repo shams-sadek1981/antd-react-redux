@@ -41,24 +41,8 @@ class UpcomingTask extends Component {
         
         this.props.dispatch(loadUpcomingTask())
 
-        // console.log("shouldComponentDidMount")
     }
 
-    // ReactJS Component Updating Methods
-    // shouldComponentUpdate(){
-    //     console.log("shouldComponentUpdate")
-    //     this.props.dispatch(filterProjectByUser())
-    //     return true
-    // }
-    // componentDidUpdate(){
-    //     console.log("componentDidUpdate")
-        
-    // }
-    // // ReactJS Component Unmounting Methods
-    // componentWillUnmount(){
-        // console.log("componentWillUnmount")
-        
-    // }
 
     //-- Modal form submit
     handleCreate = () => {
@@ -67,8 +51,7 @@ class UpcomingTask extends Component {
             if (err) {
                 return;
             }
-
-            console.log('Received values of form: ', values);
+            // console.log('Received values of form: ', values);
 
             this.props.dispatch(handleSubmit(values))
 

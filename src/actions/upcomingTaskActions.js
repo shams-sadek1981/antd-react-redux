@@ -31,7 +31,9 @@ export const UPCOMING_TASK_SEARCH_BY_RESULT = "UPCOMING_TASK_SEARCH_BY_RESULT"
 
 export const UPCOMING_TASK_CHANGE_PAGINATION = "UPCOMING_TASK_CHANGE_PAGINATION"
 
-export const UPCOMING_TASK_LOAD_RELEASE = "UPCOMING_LOAD_RELEASE"
+export const UPCOMING_TASK_LOAD_RELEASE = "UPCOMING_TASK_LOAD_RELEASE"
+
+export const UPCOMING_TASK_NEWLY_ADDED = "UPCOMING_TASK_NEWLY_ADDED"
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -41,6 +43,45 @@ const openNotificationWithIcon = (type, message, description) => {
     });
 };
 
+/**
+ * ------------------------------------------------------------------------------------------
+ * Task Result
+ * ------------------------------------------------------------------------------------------
+ */
+export const upcomingTaskSearchByResult = () => async (dispatch, getState) => {
+
+    let { searchBy, pagination } = getState().upcomingTaskReducer
+    const { userInfo } = getState().userReducer
+
+    let { current, pageSize } = pagination
+    let { name, project, text, completedAt, running, newlyAdded } = searchBy
+
+
+    project = await getProjectSearchBy(userInfo, project)
+
+    await getTaskResult(current, pageSize, name, project, completedAt, text, running, newlyAdded)
+        .then(data => {
+
+            dispatch({
+                type: UPCOMING_TASK_SEARCH_BY_RESULT,
+                payload: {
+                    taskList: data.result,
+                    pagination: data.pagination,
+                    "totalEstHour": data.totalEstHour,
+                    "totalSubTask": data.totalSubTask,
+                    "userName": data.userName,
+                    "userEstHour": data.userEstHour,
+                    "userTotalSubTask": data.userTotalSubTask,
+                }
+            })
+
+            //-- filter by project
+            dispatch(filterProjectByUser())
+
+            dispatch(toggleSpinning(false))
+
+        }).catch(err => console.log(err))
+}//-- end function
 
 //-- Change Pagination (Table Pagination)
 export const changePagination = (pagination) => {
@@ -63,6 +104,27 @@ export const changePagination = (pagination) => {
 }
 
 
+//-- Toggle Newly Added
+export const toggleNewlyAdded = () => (dispatch, getState) => {
+
+    dispatch(toggleSpinning(true))
+
+    const { searchBy } = getState().upcomingTaskReducer
+
+    dispatch({
+        type: UPCOMING_TASK_NEWLY_ADDED,
+        payload: {
+            searchBy: {
+                ...searchBy,
+                newlyAdded: !searchBy.newlyAdded
+            }
+        }
+    })
+
+    //-- get Result
+    dispatch(upcomingTaskSearchByResult())
+
+}
 
 /**
  * ----------------------------------------------------------------------------------------------------
@@ -75,68 +137,84 @@ export const changePagination = (pagination) => {
  */
 export const changeTabKey = (value) => (dispatch, getState) => {
 
-        dispatch(toggleSpinning(true))
+    dispatch(toggleSpinning(true))
 
-        const { searchBy, pagination } = getState().upcomingTaskReducer
-        const { pageSize } = pagination
-        // console.log(value, pageSize)
+    const { searchBy, pagination } = getState().upcomingTaskReducer
+    const { pageSize } = pagination
+    
 
-        let searchByCompletedAt = false
-        let running = false
-        switch (value) {
-            case "1":
-                searchByCompletedAt = null
-                running = false
-                break;
+    let searchByCompletedAt = false
+    let running = false
+    let newlyAdded = false
+    switch (value) {
+        case "1":
+            searchByCompletedAt = null
+            running = false
+            newlyAdded = true
+            break;
 
-            case "2":
-                searchByCompletedAt = true
-                break;
+        case "2":
+            searchByCompletedAt = true
+            break;
 
-            case "3":
-                searchByCompletedAt = null
-                running = true
-                break;
+        case "3":
+            searchByCompletedAt = null
+            running = true
+            break;
+    }
+
+    const newSearchBy = {
+        ...searchBy,
+        completedAt: searchByCompletedAt,
+        running,
+        newlyAdded
+    }
+
+
+    //-- step-3 fetch data from API
+    const current = 1
+    const completedAt = searchByCompletedAt
+    let { name, project, text } = searchBy
+
+    //-- set Project (array) Search By for user permission
+    const { userInfo } = getState().userReducer
+    project = getProjectSearchBy(userInfo, project)
+
+    dispatch({
+        type: UPCOMING_TASK_CHANGE_TABKEY,
+        payload: {
+            tabKey: value,
+            searchBy: newSearchBy
         }
-
-        const newSearchBy = {
-            ...searchBy,
-            completedAt: searchByCompletedAt,
-            running
-        }
+    })
 
 
-        //-- step-3 fetch data from API
-        const current = 1
-        const completedAt = searchByCompletedAt
-        let { name, project, text } = searchBy
+    //-- get Result
+    dispatch(upcomingTaskSearchByResult())
+    
 
-        //-- set Project (array) Search By for user permission
-        const { userInfo } = getState().userReducer
-        project = getProjectSearchBy(userInfo, project)
+    // getTaskResult(current, pageSize, name, project, completedAt, text, running, newlyAdded)
+    //     .then(data => {
+    //         dispatch({
+    //             type: UPCOMING_TASK_CHANGE_TABKEY,
+    //             payload: {
+    //                 tabKey: value,
+    //                 searchBy: newSearchBy,
+    //                 pagination: {
+    //                     ...data.pagination,
+    //                     current: 1 //-- set current while changing tabkey
+    //                 },
+    //                 taskList: data.result,
+    //                 "totalEstHour": data.totalEstHour,
+    //                 "totalSubTask": data.totalSubTask,
+    //                 "userName": data.userName,
+    //                 "userEstHour": data.userEstHour,
+    //                 "userTotalSubTask": data.userTotalSubTask,
+    //             }
+    //         })
 
-        getTaskResult(current, pageSize, name, project, completedAt, text, running)
-            .then(data => {
-                dispatch({
-                    type: UPCOMING_TASK_CHANGE_TABKEY,
-                    payload: {
-                        tabKey: value,
-                        searchBy: newSearchBy,
-                        pagination: {
-                            ...data.pagination,
-                            current: 1 //-- set current while changing tabkey
-                        },
-                        taskList: data.result,
-                        "totalEstHour": data.totalEstHour,
-                        "totalSubTask": data.totalSubTask,
-                        "userName": data.userName,
-                        "userEstHour": data.userEstHour,
-                        "userTotalSubTask": data.userTotalSubTask,
-                    }
-                })
-
-                dispatch(toggleSpinning(false))
-            })
+    //         dispatch(toggleSpinning(false))
+    //     })
 }//-- end
 
 
@@ -159,37 +237,36 @@ export const toggleSpinning = (booleanValue) => {
 
 export const searchBy = (fieldName, value) => async (dispatch, getState) => {
 
-        await dispatch(toggleSpinning(true))
+    await dispatch(toggleSpinning(true))
 
-        let { searchBy, pagination, tabKey } = await getState().upcomingTaskReducer
-        const { current } = pagination
-        const { name, project, text, status } = searchBy
+    let { searchBy, pagination, tabKey } = await getState().upcomingTaskReducer
+    const { current } = pagination
+    const { name, project, text, status } = searchBy
 
-        //-- set Search by
-        searchBy = {
-            ...searchBy,
-            [fieldName]: value
+    //-- set Search by
+    searchBy = {
+        ...searchBy,
+        [fieldName]: value
+    }
+
+    pagination = {
+        ...pagination,
+        current: 1
+    }
+
+    await dispatch({
+        type: UPCOMING_TASK_SEARCH_BY,
+        payload: {
+            searchBy,
+            pagination
         }
-
-        pagination = {
-            ...pagination,
-            current: 1
-        }
-
-        await dispatch({
-            type: UPCOMING_TASK_SEARCH_BY,
-            payload: {
-                searchBy,
-                pagination
-            }
-        })
+    })
 
 
-        //-- Load Result
-        await dispatch(upcomingTaskSearchByResult({ status, tabKey }))
+    //-- Load Result
+    dispatch(upcomingTaskSearchByResult())
 
 
-        dispatch(toggleSpinning(false))
 }//-- end
 
 
@@ -234,7 +311,7 @@ const setObjForSearchResult = (obj) => {
  * @param {*} text 
  */
 
-const getTaskResult = async (current, pageSize, name, project, completedAt, text, running) => {
+const getTaskResult = async (current, pageSize, name, project, completedAt, text, running, newlyAdded) => {
 
     let newProjectParams = ''
 
@@ -245,11 +322,8 @@ const getTaskResult = async (current, pageSize, name, project, completedAt, text
     } else {
         newProjectParams = "project=" + project
     }
-
-    // console.log('Project Params:', newProjectParams)
-
-    // const searchUrl = `/upcoming-task/search-running?page=${current}&pageSize=${pageSize}&name=${name}&project=${project}&completedAt=${completedAt}&text=${text}&running=${running}`
-    const searchUrl = `/upcoming-task/search-running?page=${current}&pageSize=${pageSize}&name=${name}&${newProjectParams}&completedAt=${completedAt}&text=${text}&running=${running}`
+    
+    const searchUrl = `/upcoming-task/search-running?page=${current}&pageSize=${pageSize}&name=${name}&${newProjectParams}&completedAt=${completedAt}&text=${text}&running=${running}&newlyAdded=${newlyAdded}`
 
     return await get(searchUrl)
         .then(data => data)
@@ -271,44 +345,7 @@ function getProjectSearchBy(userInfo, project) {
     return project
 
 }
-/**
- * ------------------------------------------------------------------------------------------
- * Task Result
- * ------------------------------------------------------------------------------------------
- */
-export const upcomingTaskSearchByResult = () => async (dispatch, getState) => {
 
-    let { searchBy, pagination } = getState().upcomingTaskReducer
-    const { userInfo } = getState().userReducer
-
-    let { current, pageSize } = pagination
-    let { name, project, text, completedAt, running } = searchBy
-
-    
-    project = await getProjectSearchBy(userInfo, project)
-
-    await getTaskResult(current, pageSize, name, project, completedAt, text, running)
-        .then(data => {
-            // console.log(data)
-
-            dispatch({
-                type: UPCOMING_TASK_SEARCH_BY_RESULT,
-                payload: {
-                    taskList: data.result,
-                    pagination: data.pagination,
-                    "totalEstHour": data.totalEstHour,
-                    "totalSubTask": data.totalSubTask,
-                    "userName": data.userName,
-                    "userEstHour": data.userEstHour,
-                    "userTotalSubTask": data.userTotalSubTask,
-                }
-            })
-
-            //-- filter by project
-            dispatch(filterProjectByUser())
-
-        }).catch(err => console.log(err))
-}//-- end function
 
 
 //-- Filter by Project
@@ -365,7 +402,7 @@ export const handleSubmit = (values) => {
 export const addNewTask = () => {
     return (dispatch, getState) => {
 
-        const { modal } = getState().upcomingTaskReducer
+        const { modal, searchBy } = getState().upcomingTaskReducer
 
         const EditInfo = {
             taskName: '',
@@ -384,32 +421,42 @@ export const addNewTask = () => {
                     okText: 'Create',
                     EditInfo,
                     modalVisible: true
+                },
+                searchBy: {
+                    ...searchBy,
+                    newlyAdded: true
                 }
             }
         })
+
+
+
+        //-- change into Todo tab
+        dispatch(changeTabKey("1"))
 
     }
 }
 
 
 //-- Save New Task
-export const saveNewTask = (values) => {
+export const saveNewTask = (values) => (dispatch, getState) => {
 
-    return (dispatch, getState) => {
+    let { taskList } = getState().upcomingTaskReducer
 
-        let { taskList } = getState().upcomingTaskReducer
+    //-- set User Name
+    const { userInfo } = getState().userReducer
+    values.createdBy = userInfo.name
 
-        post('/upcoming-task/create', values)
-            .then(data => {
+    post('/upcoming-task/create', values)
+        .then(data => {
 
-                dispatch(toggleModalVisible())
+            dispatch(toggleModalVisible())
 
-                dispatch(loadUpcomingTask())
+            dispatch(loadUpcomingTask())
 
 
-            })
-            .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
-    }
+        })
+        .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
 }
 
 
@@ -544,34 +591,35 @@ export const loadRelease = projectName => (dispatch, getState) => {
  * Update Task
  * -------------------------------------------------------------------------------------------------
  */
-export const updateTask = (values) => {
+export const updateTask = (values) => (dispatch, getState) => {
 
-    return (dispatch, getState) => {
 
-        let newValues = values
+    //-- get User Name from userInfo
+    const { userInfo } = getState().userReducer
 
-        if (values.completedAt != null) {
-            newValues = {
-                ...values,
-                completedAt: moment(values.completedAt).format('YYYY-MM-DD')
-            }
+    let newValues = { ...values, updatedBy: userInfo.name }
+
+
+    if (values.completedAt != null) {
+        newValues = {
+            ...values,
+            completedAt: moment(values.completedAt).format('YYYY-MM-DD'),
         }
-
-
-        const { modal } = getState().upcomingTaskReducer
-
-        const { _id } = modal.EditInfo
-
-        put('/upcoming-task/update/' + _id, newValues)
-            .then(data => {
-
-                dispatch(toggleModalVisible())
-
-                dispatch(loadUpcomingTask())
-
-            })
-            .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
     }
+
+    const { modal } = getState().upcomingTaskReducer
+
+    const { _id } = modal.EditInfo
+
+    put('/upcoming-task/update/' + _id, newValues)
+        .then(data => {
+
+            dispatch(toggleModalVisible())
+
+            dispatch(loadUpcomingTask())
+
+        })
+        .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
 }
 
 /**

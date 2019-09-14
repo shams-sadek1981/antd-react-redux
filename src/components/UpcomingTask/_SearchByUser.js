@@ -9,11 +9,11 @@ const { Option } = Select;
 
 
 function handleBlur() {
-    console.log('blur');
+    // console.log('blur');
 }
 
 function handleFocus() {
-    console.log('focus');
+    // console.log('focus');
 }
 
 export const _SearchByUser = (props) => {

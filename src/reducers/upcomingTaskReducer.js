@@ -10,7 +10,8 @@ import {
     UPCOMING_TASK_SEARCH_BY_RESULT,
     UPCOMING_TASK_CHANGE_TABKEY,
     UPCOMING_TASK_CHANGE_PAGINATION,
-    UPCOMING_TASK_LOAD_RELEASE
+    UPCOMING_TASK_LOAD_RELEASE,
+    UPCOMING_TASK_NEWLY_ADDED
 } from '../actions/upcomingTaskActions'
 
 import {
@@ -35,7 +36,8 @@ const initialState = {
         name: 'all',
         text: '',
         completedAt: null,
-        running: false
+        running: false,
+        newlyAdded: true
     },
     spinning: false,
     taskList: [],
@@ -122,6 +124,11 @@ const upcomingTaskReducer = (state = initialState, action) => {
             })
 
         case UPCOMING_TASK_ADD_NEW_TASK:
+            return Object.assign({}, state, {
+                modal: action.payload.modal,
+                searchBy: action.payload.searchBy
+            })
+
         case UPCOMING_TASK_EDIT_TASK:
         case UPCOMING_TASK_TOGGLE_MODAL_VISIBLE:
             return Object.assign({}, state, {
@@ -148,17 +155,23 @@ const upcomingTaskReducer = (state = initialState, action) => {
                 subTaskModal: action.payload.subTaskModal
             })
 
+        // case UPCOMING_TASK_CHANGE_TABKEY:
+        //     return Object.assign({}, state, {
+        //         tabKey: action.payload.tabKey,
+        //         searchBy: action.payload.searchBy,
+        //         pagination: action.payload.pagination,
+        //         taskList: action.payload.taskList,
+        //         totalEstHour: action.payload.totalEstHour,
+        //         totalSubTask: action.payload.totalSubTask,
+        //         userName: action.payload.userName,
+        //         userEstHour: action.payload.userEstHour,
+        //         userTotalSubTask: action.payload.userTotalSubTask
+        //     })
+
         case UPCOMING_TASK_CHANGE_TABKEY:
             return Object.assign({}, state, {
                 tabKey: action.payload.tabKey,
-                searchBy: action.payload.searchBy,
-                pagination: action.payload.pagination,
-                taskList: action.payload.taskList,
-                totalEstHour: action.payload.totalEstHour,
-                totalSubTask: action.payload.totalSubTask,
-                userName: action.payload.userName,
-                userEstHour: action.payload.userEstHour,
-                userTotalSubTask: action.payload.userTotalSubTask
+                searchBy: action.payload.searchBy
             })
 
         case UPCOMING_TASK_SEARCH_BY:
@@ -175,6 +188,11 @@ const upcomingTaskReducer = (state = initialState, action) => {
         case UPCOMING_TASK_LOAD_RELEASE:
             return Object.assign({}, state, {
                 releaseList: action.payload.releaseList
+            })
+
+        case UPCOMING_TASK_NEWLY_ADDED:
+            return Object.assign({}, state, {
+                searchBy: action.payload.searchBy
             })
     }
 

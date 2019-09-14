@@ -40,7 +40,7 @@ export const addNewSubTask = (taskId) => {
 
         const { subTaskModal, taskList } = getState().upcomingTaskReducer
 
-        const task = taskList.find( item => item._id == taskId)
+        const task = taskList.find(item => item._id == taskId)
 
         const EditInfo = {
             taskName: task.taskName,
@@ -72,46 +72,44 @@ export const addNewSubTask = (taskId) => {
  * Sub Task Create
  * ----------------------------------------------------------------------------------------------------
  */
-export const saveNewSubTask = (values) => {
+export const saveNewSubTask = (values) => (dispatch, getState) => {
 
-    return (dispatch, getState) => {
+    const { subTaskModal } = getState().upcomingTaskReducer
+    const { userInfo } = getState().userReducer
+    const { taskId } = subTaskModal
 
-        const { subTaskModal } = getState().upcomingTaskReducer
-        const { taskId } = subTaskModal
-
-        //-- set new values
-        let newValues = values
-        if (values.startDate != undefined) {
-            newValues = {
-                ...values,
-                startDate: moment(values.startDate).format("YYYY-MM-DD")
-            }
+    //-- set new values
+    let newValues = { ...values, createdBy: userInfo.name }
+    if (values.startDate != undefined) {
+        newValues = {
+            ...values,
+            startDate: moment(values.startDate).format("YYYY-MM-DD")
         }
-        
-        if (values.dueDate != undefined) {
-            newValues = {
-                ...values,
-                dueDate: moment(values.dueDate).format("YYYY-MM-DD")
-            }
-        }
-        
-        if (values.completedAt != undefined) {
-            newValues = {
-                ...values,
-                completedAt: moment(values.completedAt).format("YYYY-MM-DD")
-            }
-        }
-
-        post('/upcoming-task/subtask/create/' + taskId, newValues)
-            .then(data => {
-
-                dispatch(toggleSubtaskModalVisible())
-
-                dispatch(loadUpcomingTask())
-
-            })
-            .catch(err => console.log(err))
     }
+
+    if (values.dueDate != undefined) {
+        newValues = {
+            ...values,
+            dueDate: moment(values.dueDate).format("YYYY-MM-DD")
+        }
+    }
+
+    if (values.completedAt != undefined) {
+        newValues = {
+            ...values,
+            completedAt: moment(values.completedAt).format("YYYY-MM-DD")
+        }
+    }
+
+    post('/upcoming-task/subtask/create/' + taskId, newValues)
+        .then(data => {
+
+            dispatch(toggleSubtaskModalVisible())
+
+            dispatch(loadUpcomingTask())
+
+        })
+        .catch(err => console.log(err))
 }
 
 
@@ -189,22 +187,22 @@ export const updateSubTaskStatus = (values) => {
 }
 
 
-export const updateSubTask = (values) => {
+export const updateSubTask = (values) => (dispatch, getState) => {
 
-    return (dispatch, getState) => {
+    const { userInfo } = getState().userReducer
+    const newValues = { ...values, updatedBy: userInfo.name }
 
-        const subTaskId = values._id
+    const subTaskId = values._id
 
-        put(`/upcoming-task/subtask/update/${subTaskId}`, values)
-            .then(data => {
+    put(`/upcoming-task/subtask/update/${subTaskId}`, newValues)
+        .then(data => {
 
-                dispatch(toggleSubtaskModalVisible())
+            dispatch(toggleSubtaskModalVisible())
 
-                dispatch(loadUpcomingTask())
+            dispatch(loadUpcomingTask())
 
-            })
-            .catch(err => console.log(err))
-    }
+        })
+        .catch(err => console.log(err))
 }
 
 

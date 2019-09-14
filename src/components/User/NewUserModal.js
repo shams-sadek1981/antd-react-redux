@@ -33,9 +33,11 @@ export const NewUserModal = Form.create({ name: 'form_in_modal' })(
 
             //-- get Selected Projects
             let selectedProjects = []
-            users.modal.userEditInfo.projects.forEach(item => {
-                selectedProjects.push(item.projectName)
-            })
+            if (Array.isArray(users.modal.userEditInfo.projects)) {
+                users.modal.userEditInfo.projects.forEach(item => {
+                    selectedProjects.push(item.projectName)
+                })
+            }
 
             return (
                 <Modal
@@ -81,15 +83,6 @@ export const NewUserModal = Form.create({ name: 'form_in_modal' })(
                                 rules: [{ required: true, message: 'Please input the user email!' }],
                             })(
                                 <Input autoComplete="off" />
-                            )}
-                        </Form.Item>
-
-                        <Form.Item label="Password">
-                            {getFieldDecorator('password', {
-                                initialValue: '123456',
-                                rules: [{ required: true, message: 'Please input the user password!' }],
-                            })(
-                                <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
                             )}
                         </Form.Item>
 

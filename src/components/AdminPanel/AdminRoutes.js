@@ -23,7 +23,8 @@ export const AdminRoutes = (props) => {
         <Switch>
             <Route exact path={`${path}`} component={AdminDashboard} />
             
-            <PermissionRoute path={`${path}/users`} component={User} permissionName="menu_user" users={users}/>
+            <Route path={`${path}/users`} component={User}/>
+            {/* <PermissionRoute path={`${path}/users`} component={User} permissionName="menu_user" users={users}/> */}
 
             <PermissionRoute path={`${path}/users-role`} component={UserRole} permissionName="menu_user_role" users={users}/>
             

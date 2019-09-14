@@ -17,22 +17,20 @@ export const _MoreActionMenu = (props) => {
     }
 
     const onRunningChange = (_id, checked) => {
-        console.log(`switch to ${checked}`);
         dispatch(updateRunningTask({
             _id,
-            running: checked
+            running: !checked
         }))
     }
 
     const menu = (
         <Menu>
             <Menu.Item style={{ width: "130px" }}>
-                <Row>
+                <Row onClick={() => onRunningChange(record._id, record.running)}>
                     <Col span={10}>
                         <Switch
                             size="small"
                             checked={record.running}
-                            onChange={(value) => onRunningChange(record._id, value)}
                         />
                     </Col>
 
@@ -44,24 +42,24 @@ export const _MoreActionMenu = (props) => {
 
 
             {
-                ( handlePermission(props, 'upcoming_task_update') ) &&
-            <Menu.Item>
-                <a onClick={() => dispatch(editTask(record._id))} href="javascript:;">
-                    <Row>
-                        <Col span={10}>
-                            <Icon type="edit" theme="twoTone" />
+                (handlePermission(props, 'upcoming_task_update')) &&
+                <Menu.Item>
+                    <a onClick={() => dispatch(editTask(record._id))} href="javascript:;">
+                        <Row>
+                            <Col span={10}>
+                                <Icon type="edit" theme="twoTone" />
+                            </Col>
+                            <Col span={12}>
+                                Edit
                         </Col>
-                        <Col span={12}>
-                            Edit
-                        </Col>
-                    </Row>
-                </a>
-            </Menu.Item>
+                        </Row>
+                    </a>
+                </Menu.Item>
             }
 
 
             {
-                ( handlePermission(props, 'upcoming_task_delete') ) &&
+                (handlePermission(props, 'upcoming_task_delete')) &&
                 <Menu.Item>
                     <Row>
                         <Col span={10}>
@@ -77,7 +75,7 @@ export const _MoreActionMenu = (props) => {
 
                         <Col span={14}>
                             Delete
-                    </Col>
+                        </Col>
                     </Row>
                 </Menu.Item>
             }

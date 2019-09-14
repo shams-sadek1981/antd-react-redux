@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 
 import { Table, Divider, Tag, Icon, Popconfirm } from 'antd';
 
-import { removeUser, editUser, changePagination } from '../../actions/userActions';
+import { removeUser, editUser, togglePasswordModalVisible, changePagination } from '../../actions/userActions';
 
 
 export const UserList = (props) => {
@@ -21,6 +21,11 @@ export const UserList = (props) => {
             render: text => <a href="javascript:;">{text}</a>,
         },
         {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
+        },
+        {
             title: 'Mobile',
             dataIndex: 'mobile',
             key: 'mobile',
@@ -35,6 +40,13 @@ export const UserList = (props) => {
             key: 'action',
             render: (text, record) => (
                 <span>
+                    
+                    <a onClick={() => dispatch(togglePasswordModalVisible(record._id))} href="javascript:;">
+                        <Icon type="key" />
+                    </a>
+
+                    <Divider type="vertical" />
+
                     <a onClick={() => dispatch(editUser(record._id))} href="javascript:;">
                         <Icon type="edit" theme="twoTone" />
                     </a>
@@ -61,6 +73,7 @@ export const UserList = (props) => {
             _id: item._id,
             key: index,
             name: item.name,
+            email: item.email,
             mobile: item.mobile,
             department: item.department
         }
