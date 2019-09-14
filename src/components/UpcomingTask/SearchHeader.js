@@ -44,8 +44,8 @@ export const SearchHeader = (props) => {
                 <Col span={2}>
                     <div>
                         <Switch
-                            checkedChildren="Latested"
-                            unCheckedChildren="System"
+                            checkedChildren="Latest"
+                            unCheckedChildren="Default"
                             checked={upcomingTask.searchBy.newlyAdded}
                             onChange={ (checked) => dispatch(toggleNewlyAdded())} />
                     </div>

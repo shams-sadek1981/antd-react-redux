@@ -57,6 +57,7 @@ export const TaskList = (props) => {
             taskType: item.taskType,
             projectName: item.projectName,
             assignedBy: item.assignedBy,
+            createdBy: item.createdBy,
             completedAt: item.completedAt,
             createdAt: item.createdAt,
             maxCompletedAt: item.maxCompletedAt,
@@ -77,11 +78,11 @@ export const TaskList = (props) => {
             key: 'taskName',
             render: (text, record) =>
                 <div>
-                    <a href="javascript:;" onClick={ () => {
-                                
-                                ( handlePermission(props, 'upcoming_task_update') ) &&
-                                dispatch(editTask(record._id))
-                            }}>
+                    <a href="javascript:;" onClick={() => {
+
+                        (handlePermission(props, 'upcoming_task_update')) &&
+                            dispatch(editTask(record._id))
+                    }}>
                         {
                             (record.running == true)
                                 ? <span>{text}</span>
@@ -96,24 +97,24 @@ export const TaskList = (props) => {
 
                         <Divider type="vertical" />
                         <Rate allowHalf onChange={value => handleRateChange(record._id, value)} value={record.rate} style={{ fontSize: '13px' }} />
-                        {record.assignedBy &&
-                            <Fragment>
-                                <Divider type="vertical" />
-                                <span><Icon type="like" /> {record.assignedBy}</span>
-                            </Fragment>
-                        }
+
+                        <Fragment>
+                            <Divider type="vertical" />
+                            <span><Icon type="like" /> {record.createdBy}</span>
+                        </Fragment>
+
 
                         {/* Start Date & maxCompletedAt */}
                         <div style={{ float: 'right', color: 'gray' }}>
 
-                            { record.startAt && 
-                                <span style={{ fontStyle: 'italic'}}>
+                            {record.startAt &&
+                                <span style={{ fontStyle: 'italic' }}>
                                     {moment(record.startAt).format('DD-MMM-YYYY')}/
                                 </span>
                             }
 
-                            { record.maxCompletedAt &&
-                                <span style={{ fontStyle: 'italic'}}>
+                            {record.maxCompletedAt &&
+                                <span style={{ fontStyle: 'italic' }}>
                                     {moment(record.maxCompletedAt).format('DD-MMM-YYYY')}
                                 </span>
                             }
@@ -130,7 +131,7 @@ export const TaskList = (props) => {
                 <div>
                     <Progress type="circle" percent={record.percent} width={50} />
                     &nbsp;
-                    <span style={{ fontSize: '10pt'}}>
+                    <span style={{ fontSize: '10pt' }}>
                         {record.completedAt && moment(record.completedAt).format('DD-MMM-YYYY')}
                     </span>
                 </div>
@@ -168,8 +169,8 @@ export const TaskList = (props) => {
                 if (typeof (findItem) != 'undefined') color = findItem.color
 
                 return <div>
-                        <Tag color={color}>{record.taskType}</Tag>
-                    </div> 
+                    <Tag color={color}>{record.taskType}</Tag>
+                </div>
             }
         },
         {
@@ -180,8 +181,8 @@ export const TaskList = (props) => {
             render: (text, record) =>
                 <div style={{ color: 'green' }}>
                     {record.projectName}
-                    <div style={{ color: 'blue'}}>
-                        { record.release}
+                    <div style={{ color: 'blue' }}>
+                        {record.release}
                     </div>
                 </div>
         },

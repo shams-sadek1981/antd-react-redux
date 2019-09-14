@@ -26,7 +26,7 @@ const data = [
 export const _SubTaskView = (props) => {
 
     const { dispatch, taskId, subTasks, des } = props
-    const { createdAt } = props.record
+    const { createdAt, assignedBy } = props.record
 
     const confirm = (subTaskId) => {
         dispatch(deleteSubTask(taskId, subTaskId))
@@ -160,6 +160,7 @@ export const _SubTaskView = (props) => {
             <Table dataSource={dataSource} columns={columns} size="small" />
             <span style={{ color: "#C6C0C0" }}>Task ID: {taskId} </span>,
             <span style={{ color: "#C6C0C0", paddingLeft: '5px' }}>CreatedAt: {createdAt} </span>
+            <span style={{ color: "#C6C0C0", paddingLeft: '5px' }}>Assigned By: {assignedBy} </span>
         </div>
     )
 }

@@ -171,7 +171,8 @@ const upcomingTaskReducer = (state = initialState, action) => {
         case UPCOMING_TASK_CHANGE_TABKEY:
             return Object.assign({}, state, {
                 tabKey: action.payload.tabKey,
-                searchBy: action.payload.searchBy
+                searchBy: action.payload.searchBy,
+                pagination: action.payload.pagination
             })
 
         case UPCOMING_TASK_SEARCH_BY:

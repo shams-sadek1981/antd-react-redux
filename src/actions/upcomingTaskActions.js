@@ -184,7 +184,11 @@ export const changeTabKey = (value) => (dispatch, getState) => {
         type: UPCOMING_TASK_CHANGE_TABKEY,
         payload: {
             tabKey: value,
-            searchBy: newSearchBy
+            searchBy: newSearchBy,
+            pagination: {
+                ...pagination,
+                current: 1 //-- set current while changing tabkey
+            },
         }
     })
 
