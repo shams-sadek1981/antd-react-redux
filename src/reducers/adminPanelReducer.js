@@ -24,6 +24,14 @@ const initialState = {
             permission: 'menu_user'
         },
         {
+            keyNo:11,
+            label: 'User Report',
+            to: '/admin-panel/user-report',
+            breadcrumb: ['Admin Panel','User Report'],
+            iconType: 'bar-chart',
+            permission: 'menu_upcoming_task'
+        },
+        {
             keyNo:8,
             label: 'User Role',
             to: '/admin-panel/users-role',

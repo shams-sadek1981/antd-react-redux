@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 
 import AboutUs from '../AboutUs/'
 import User from '../User'
+import UserPersonalReport from '../UserPersonalReport'
 import UserRole from '../UserRole'
 import Project from '../Project'
 import PublicHoliday from '../PublicHoliday'
@@ -23,8 +24,9 @@ export const AdminRoutes = (props) => {
         <Switch>
             <Route exact path={`${path}`} component={AdminDashboard} />
             
-            <Route path={`${path}/users`} component={User}/>
-            {/* <PermissionRoute path={`${path}/users`} component={User} permissionName="menu_user" users={users}/> */}
+            <PermissionRoute path={`${path}/users`} component={User} permissionName="menu_user" users={users}/>
+            
+            <Route path={`${path}/user-report`} component={UserPersonalReport}/>
 
             <PermissionRoute path={`${path}/users-role`} component={UserRole} permissionName="menu_user_role" users={users}/>
             

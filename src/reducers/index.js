@@ -13,6 +13,7 @@ import reportsReducer from './reportsReducer'
 import projectReducer from './projectReducer'
 import publicHolidayReducer from './publicHolidayReducer'
 import taskTypeReducer from './taskTypeReducer'
+import reportPersonalReducer from './reportPersonalReducer'
 
 const rootReducer = combineReducers({
     todoReducer,
@@ -27,7 +28,8 @@ const rootReducer = combineReducers({
     reportsReducer,
     projectReducer,
     publicHolidayReducer,
-    taskTypeReducer
+    taskTypeReducer,
+    reportPersonalReducer
 })
 
 export default rootReducer
