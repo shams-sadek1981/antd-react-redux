@@ -12,6 +12,7 @@ import AdminDashboard from '../AdminDashboard'
 import Release from '../Release'
 import Reports from '../Reports'
 import UploadFile from '../UploadFile'
+import ChangePassword from '../ChangePassword'
 
 import { PermissionRoute } from '../../functions'
 
@@ -41,6 +42,8 @@ export const AdminRoutes = (props) => {
             <PermissionRoute path={`${path}/reports`} component={Reports} permissionName="menu_reports" users={users}/>
             
             <PermissionRoute path={`${path}/upload`} component={UploadFile} permissionName="menu_upload" users={users}/>
+
+            <Route path={`${path}/change-password`} component={ChangePassword}/>
 
             <Route render={() => <h2>Not Found Admin Panel child component</h2>} />
         </Switch>

@@ -120,30 +120,34 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                             )}
                         </Form.Item>
 
-                        <Form.Item label="Assigned By">
-                            {getFieldDecorator('assignedBy', {
-                                initialValue: upcomingTask.modal.EditInfo.assignedBy,
-                                // rules: [{ required: true, message: 'Please select user' }],
-                            })(
-                                <Select
-                                    showSearch
-                                    // style={{ width: 200 }}
-                                    placeholder="Select a user"
-                                >
-                                    {
-                                        users.allUser.map((item, index) => (
-                                            <Option value={item.name} key={index}>{item.name}</Option>
-                                        ))
-                                    }
+                        {
+                            editMode &&
 
-                                </Select>
-                            )}
-                        </Form.Item>
+                            <Form.Item label="Assigned By">
+                                {getFieldDecorator('assignedBy', {
+                                    initialValue: upcomingTask.modal.EditInfo.assignedBy,
+                                    // rules: [{ required: true, message: 'Please select user' }],
+                                })(
+                                    <Select
+                                        showSearch
+                                        // style={{ width: 200 }}
+                                        placeholder="Select a user"
+                                    >
+                                        {
+                                            users.allUser.map((item, index) => (
+                                                <Option value={item.name} key={index}>{item.name}</Option>
+                                            ))
+                                        }
 
+                                    </Select>
+                                )}
+                            </Form.Item>
+                        }
+                        
                         <Row gutter={24}>
                             <Col span={10}>
                                 {editMode &&
-                                    <Form.Item label="Completed At">
+                                    <Form.Item label="Closing Date">
                                         {getFieldDecorator('completedAt', {
                                             ...completedAt
                                             // initialValue: startDate,

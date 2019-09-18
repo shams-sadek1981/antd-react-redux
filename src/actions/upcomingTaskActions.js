@@ -241,6 +241,8 @@ export const toggleSpinning = (booleanValue) => {
 
 export const searchBy = (fieldName, value) => async (dispatch, getState) => {
 
+    console.log('value:', value)
+
     await dispatch(toggleSpinning(true))
 
     let { searchBy, pagination, tabKey } = await getState().upcomingTaskReducer

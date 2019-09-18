@@ -26,6 +26,12 @@ export const SearchHeader = (props) => {
     //     console.log(`switch to ${checked}`);
     // }
 
+    const searchByTextBlur = e => {
+        if ( ! e.target.value ) {
+            dispatch(searchBy('text', ''))
+        }
+    }
+
     return (
         <Fragment>
             <Row>
@@ -74,6 +80,7 @@ export const SearchHeader = (props) => {
                         placeholder="input search text"
                         defaultValue={upcomingTask.searchBy.text}
                         onSearch={value => dispatch(searchBy('text', value))}
+                        onBlur={ searchByTextBlur }
                         style={{ width: 200 }}
                         autoFocus
                     />

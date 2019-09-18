@@ -86,7 +86,15 @@ const initialState = {
             breadcrumb: ['Admin Panel','Upload'],
             iconType: 'upload',
             permission: 'menu_upload'
-        }
+        },
+        // {
+        //     keyNo:12,
+        //     label: 'Change Password',
+        //     to: '/admin-panel/change-password',
+        //     breadcrumb: ['Admin Panel','Change Password'],
+        //     iconType: 'key',
+        //     permission: 'menu_upcoming_task'
+        // },
     ]
 }
 
