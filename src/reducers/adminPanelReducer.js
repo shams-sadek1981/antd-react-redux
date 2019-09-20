@@ -29,7 +29,7 @@ const initialState = {
             to: '/admin-panel/user-report',
             breadcrumb: ['Admin Panel','User Report'],
             iconType: 'bar-chart',
-            permission: 'menu_upcoming_task'
+            permission: 'menu_user_report'
         },
         {
             keyNo:8,

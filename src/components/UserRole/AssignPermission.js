@@ -33,6 +33,7 @@ export const AssignPermission = (props) => {
                 style={{ width: 200 }}
                 placeholder="Select a role"
                 onChange={handleChange}
+                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             >
                 <Option value={null}>Select Role</Option>
                 {
