@@ -3,11 +3,12 @@ import moment from 'moment'
 import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm, Button } from 'antd';
 
 import {
-    editItem, removeItem, updateTask, updateStatus, changePagination,loadTaskByRelease
+    editItem, removeItem, updateTask, updateStatus, changePagination, loadTaskByRelease
 } from '../../actions/releaseActions';
 import { _ChangeLog } from './_ChangeLog'
 import { TaskList } from './TaskList'
 
+import { handlePermission } from '../../functions'
 
 export const List = (props) => {
 
@@ -29,7 +30,7 @@ export const List = (props) => {
             width: 150,
             render: (text, record) =>
                 <div>
-                    { moment(record.releaseDate).format("ddd, DD-MMM-YYYY")}
+                    {moment(record.releaseDate).format("ddd, DD-MMM-YYYY")}
                 </div>
         },
         {
@@ -76,7 +77,7 @@ export const List = (props) => {
                     },
                 ]
 
-                const findItem = weekDays.find( item => item.name == moment(record.releaseDate).format('ddd'))
+                const findItem = weekDays.find(item => item.name == moment(record.releaseDate).format('ddd'))
                 const color = findItem.color
                 return <Tag color={color}>{record.version}</Tag>
             }
@@ -87,30 +88,43 @@ export const List = (props) => {
             width: 150,
             render: (text, record) => (
                 <span>
-                    <Checkbox checked={record.status}
-                        onChange={(e) => dispatch(
-                            updateStatus({
-                                _id: record._id,
-                                status: !record.status
-                            })
-                        )}
-                    />
-                    <Divider type="vertical" />
+                    {
+                        (handlePermission(props, 'release_complete')) &&
+                        <Checkbox checked={record.status}
+                            onChange={(e) => dispatch(
+                                updateStatus({
+                                    _id: record._id,
+                                    status: !record.status
+                                })
+                            )}
+                        />
+                    }
 
-                    <a onClick={() => dispatch(editItem(record._id))} href="javascript:;">
-                        <Icon type="edit" theme="twoTone" />
-                    </a>
 
-                    <Divider type="vertical" />
+                    {
+                        (handlePermission(props, 'release_edit')) &&
+                        <span>
+                            <Divider type="vertical" />
+                            <a onClick={() => dispatch(editItem(record._id))} href="javascript:;">
+                                <Icon type="edit" theme="twoTone" />
+                            </a>
+                        </span>
+                    }
 
-                    <Popconfirm title="Are you sure to delete this task?"
-                        onConfirm={(e) => confirm(record._id)}
-                        okText="Yes" cancelText="No">
+                    {
+                        (handlePermission(props, 'release_delete')) &&
+                        <span>
+                            <Divider type="vertical" />
+                            <Popconfirm title="Are you sure to delete this task?"
+                                onConfirm={(e) => confirm(record._id)}
+                                okText="Yes" cancelText="No">
 
-                        <a href="javascript:;">
-                            <Icon type="delete" theme="twoTone" />
-                        </a>
-                    </Popconfirm>
+                                <a href="javascript:;">
+                                    <Icon type="delete" theme="twoTone" />
+                                </a>
+                            </Popconfirm>
+                        </span>
+                    }
                 </span>
             ),
         }
@@ -136,15 +150,15 @@ export const List = (props) => {
             <Table
                 loading={release.spinning}
                 pagination={release.pagination}
-                onChange={ handleTableChange }
+                onChange={handleTableChange}
                 columns={columns}
                 dataSource={data} size="small"
-                onExpand = { (expended, record) => dispatch(loadTaskByRelease(record.version))}
+                onExpand={(expended, record) => dispatch(loadTaskByRelease(record.version))}
                 expandedRowRender={record =>
                     <div style={{ margin: 0 }}>
                         <_ChangeLog {...props} description={record.description} />
-                        
-                        <TaskList {...props} version={record.version}/>
+
+                        <TaskList {...props} version={record.version} />
                     </div>
                 }
             />

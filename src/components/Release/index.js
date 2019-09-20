@@ -103,7 +103,8 @@ class Release extends Component {
 
 const mapStateToProps = state => ({
     release: state.releaseReducer,
-    project: state.projectReducer
+    project: state.projectReducer,
+    users: state.userReducer
 })
 
 
