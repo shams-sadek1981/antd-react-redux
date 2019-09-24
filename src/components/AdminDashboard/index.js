@@ -11,7 +11,6 @@ import {
     projectSummaryLoading
 } from '../../actions/adminDashboardActions'
 
-
 import { ProjectSummaryChart } from './ProjectSummaryChart'
 
 const cols = {
@@ -22,10 +21,12 @@ const cols = {
 class AdminDashboard extends Component {
 
     componentDidMount = async () => {
+        console.log('Admin Panel Dashboard')
         // await console.log(localStorage.getItem('token'))
 
         this.props.dispatch(userSummaryLoading())
-        await this.props.dispatch(projectSummaryLoading())
+        this.props.dispatch(projectSummaryLoading())
+
     }
 
     render() {
@@ -43,20 +44,18 @@ class AdminDashboard extends Component {
             userWidth = 200
         }
 
-        console.log('userSummaryList', userSummaryList)
-
         return (
             <div>
                 <h1> User Summary </h1>
                 <Chart
                     width={userWidth}
-                    height={500}
+                    height={600}
                     data={userSummaryList}
                     scale={cols}
                     forceFit
                 >
                     <Coord transpose />
-                    <Axis name="assignedUser" />
+                    <Axis name="assignedUser" width="400"/>
                     <Axis name="estHour" />
                     <Legend position="top" dy={-20} />
                     <Tooltip />

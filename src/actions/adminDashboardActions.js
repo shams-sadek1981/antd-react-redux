@@ -6,42 +6,34 @@ export const USER_SUMMARY_LOADING = "USER_SUMMARY_LOADING"
 export const PROJECT_SUMMARY_LOADING = "PROJECT_SUMMARY_LOADING"
 
 
-export const userSummaryLoading = () => {
+export const userSummaryLoading = () => (dispatch, getState) => {
+    get('/upcoming-task/summary-user')
+        .then(data => {
 
-    return (dispatch, getState) => {
-        get('/upcoming-task/summary-user')
-            .then(data => {
-
-                dispatch({
-                    type: USER_SUMMARY_LOADING,
-                    payload: {
-                        userSummaryList: data.result
-                    }
-                })
-
+            dispatch({
+                type: USER_SUMMARY_LOADING,
+                payload: {
+                    userSummaryList: data.result
+                }
             })
-            .catch(err => console.log(err))
-    }
 
+        })
+        .catch(err => console.log(err))
 }
 
 
 
-export const projectSummaryLoading = () => {
+export const projectSummaryLoading = () => (dispatch, getState) => {
+    get('/upcoming-task/summary-project')
+        .then(data => {
 
-    return (dispatch, getState) => {
-        get('/upcoming-task/summary-project')
-            .then(data => {
-
-                dispatch({
-                    type: PROJECT_SUMMARY_LOADING,
-                    payload: {
-                        projectSummaryList: data.result
-                    }
-                })
-
+            dispatch({
+                type: PROJECT_SUMMARY_LOADING,
+                payload: {
+                    projectSummaryList: data.result
+                }
             })
-            .catch(err => console.log(err))
-    }
 
+        })
+        .catch(err => console.log(err))
 }

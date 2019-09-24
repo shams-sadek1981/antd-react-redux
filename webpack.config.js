@@ -19,4 +19,9 @@ module.exports = {
         // ...other rules
     }],
     // ...other config
+    resolve: {
+        alias: {
+            assets: 'src/assets' // relative to the webpack configuration file
+        }
+    }
 }

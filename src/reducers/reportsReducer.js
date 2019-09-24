@@ -7,11 +7,13 @@ import {
     REPORTS_SUBTASK_SUMMARY,
     REPORTS_SET_DATE_RANGE,
     REPORTS_TASK_STATUS_BY_DATE,
-    REPORT_CHANGE_DATE
+    REPORT_CHANGE_DATE,
+    REPORT_TOGGLE_SPINNING
 } from '../actions/reportsActions'
 
 //-- Initialize State
 const initialState = {
+    spinning: false,
     tabKey: "1",
     searchBy: {
         name: 'all',
@@ -100,6 +102,11 @@ const reportsReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 searchBy: action.payload.searchBy,
                 reportTaskStatus: action.payload.reportTaskStatus,
+            })
+
+        case REPORT_TOGGLE_SPINNING:
+            return Object.assign({}, state, {
+                spinning: action.payload.spinning,
             })
 
     }

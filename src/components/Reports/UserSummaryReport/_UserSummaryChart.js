@@ -38,7 +38,7 @@ export const _UserSummaryChart = (props) => {
                     <Tooltip />
                     <Legend />
                     <Bar dataKey="estHour" fill="#82ca9d">
-                        <LabelList dataKey="estHour" position="middle" />
+                        <LabelList dataKey="estHour" position="insideRight" />
                     </Bar>
                     
                     <Bar dataKey="officeHour" fill="#8884d8">

@@ -3,6 +3,7 @@ import { get, post, put, deleteMethod } from '../functions'
 
 //-- Define action names
 export const CHANGE_ADMIN_PANEL_SELECTED_KEYS = "CHANGE_ADMIN_PANEL_SELECTED_KEYS"
+export const CHANGE_ADMIN_PANEL_SELECTED_KEYS_BY_PATH = "CHANGE_ADMIN_PANEL_SELECTED_KEYS_BY_PATH"
 
 export const changeSelectedKeys = (keyNo) => {
     return (dispatch, getState) => {
@@ -28,7 +29,7 @@ export const changeSelectedKeysByPath = (pathName) => {
         const findPath = adminPanel.menus.find( item => item.to == pathName)
 
         dispatch({
-            type: CHANGE_ADMIN_PANEL_SELECTED_KEYS,
+            type: CHANGE_ADMIN_PANEL_SELECTED_KEYS_BY_PATH,
             payload: {
                 selectedKeys: [findPath.keyNo.toString()]
             }

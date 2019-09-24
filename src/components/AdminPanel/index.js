@@ -3,12 +3,15 @@ import { connect } from 'react-redux'
 import { withRouter, NavLink } from 'react-router-dom'
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 
-import './adminPanel.less'
 import { changeSelectedKeysByPath, changeSelectedKeys } from '../../actions/adminPanelActions'
 import { getPermissions } from '../../actions/userActions'
 import { AdminRoutes } from './AdminRoutes'
 
 import { handlePermission } from '../../functions'
+
+import logo from '../../assets/logo.svg'
+
+import './adminPanel.less'
 
 const {
     Header, Footer, Sider, Content,
@@ -23,8 +26,10 @@ class AdminPanel extends Component {
 
     componentDidMount = async () => {
 
+        // console.log('Admin Panel')
         await this.props.dispatch(getPermissions())
 
+        // selected menu by css
         const runningPath = await this.props.location.pathname
         this.props.dispatch(changeSelectedKeysByPath(runningPath))
 
@@ -34,6 +39,8 @@ class AdminPanel extends Component {
         this.setState({
             collapsed: !this.state.collapsed,
         });
+
+        console.log('HH:', this.state.collapsed)
     }
 
     logout = () => {
@@ -53,9 +60,12 @@ class AdminPanel extends Component {
                         className="no-print"
                         trigger={null}
                         collapsible
-                        collapsed={this.props.collapsed}
+                        collapsed={this.state.collapsed}
                     >
-                        <div className="logo">{users.userInfo.name}</div>
+                        <div className="logo">
+                            <img src={logo} alt="Logo"/>
+                            <div style={{ color: "white", paddingLeft: "30px"}}>{users.userInfo.name}</div>
+                        </div>
                         <Menu
                             theme="dark"
                             mode="inline"

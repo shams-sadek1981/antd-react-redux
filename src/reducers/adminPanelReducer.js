@@ -1,5 +1,6 @@
 import {
-    CHANGE_ADMIN_PANEL_SELECTED_KEYS
+    CHANGE_ADMIN_PANEL_SELECTED_KEYS,
+    CHANGE_ADMIN_PANEL_SELECTED_KEYS_BY_PATH
 } from '../actions/adminPanelActions'
 
 //-- Initialize State
@@ -102,6 +103,7 @@ const adminDashboardReducer = (state = initialState, action) => {
 
     switch (action.type) {
 
+        case CHANGE_ADMIN_PANEL_SELECTED_KEYS_BY_PATH:
         case CHANGE_ADMIN_PANEL_SELECTED_KEYS:
             return Object.assign({}, state, {
                 selectedKeys: action.payload.selectedKeys
