@@ -21,7 +21,7 @@ export const TaskList = (props) => {
 
             <ul>
                 {taskListByRelease.map((item, index) => (
-                    <li key={index}>
+                    <li key={index} style={{ background: 'rgba(63, 65, 127, 0.08)', marginBottom: '3px'}}>
                         <div>
                             <div style={{ float: 'left' }}>
                                 {++index}. {item.taskName}

@@ -34,36 +34,32 @@ export const handleSubTaskSubmit = (values) => {
  * Add New Sub Task
  * ------------------------------------------------------------------------------------------------------
  */
-export const addNewSubTask = (taskId) => {
-    // console.log(taskId)
-    return (dispatch, getState) => {
+export const addNewSubTask = (taskId) => (dispatch, getState) => {
 
-        const { subTaskModal, taskList } = getState().upcomingTaskReducer
+    const { subTaskModal, taskList } = getState().upcomingTaskReducer
 
-        const task = taskList.find(item => item._id == taskId)
+    const task = taskList.find(item => item._id == taskId)
 
-        const EditInfo = {
-            taskName: task.taskName,
-            name: '',
-            assignedUser: '',
-            estHour: '',
-        }
-
-        dispatch({
-            type: TASK_ADD_NEW_SUB_TASK,
-            payload: {
-                subTaskModal: {
-                    ...subTaskModal,
-                    modalTitle: 'Create a new SubTask',
-                    okText: 'Create',
-                    EditInfo,
-                    modalVisible: true,
-                    taskId
-                }
-            }
-        })
-
+    const EditInfo = {
+        taskName: task.taskName,
+        name: '',
+        assignedUser: '',
+        estHour: '',
     }
+
+    dispatch({
+        type: TASK_ADD_NEW_SUB_TASK,
+        payload: {
+            subTaskModal: {
+                ...subTaskModal,
+                modalTitle: 'Create a new SubTask',
+                okText: 'Create',
+                EditInfo,
+                modalVisible: true,
+                taskId
+            }
+        }
+    })
 }
 
 
@@ -158,7 +154,7 @@ export const editSubTask = (taskId, subTaskId) => {
                     ...subTaskModal,
                     modalTitle: 'Edit Sub Task',
                     okText: 'Update',
-                    EditInfo: findSubTask,
+                    EditInfo: {...findSubTask, taskName: findTask.taskName },
                     modalVisible: true,
                     taskId
                 }
