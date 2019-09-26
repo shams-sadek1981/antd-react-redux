@@ -69,6 +69,7 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                             })(
                                 <Select
                                     showSearch
+                                    autoFocus
                                     // style={{ width: 200 }}
                                     placeholder="Select a user"
                                 >
@@ -92,7 +93,6 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                                         <Select
                                             showSearch
                                             placeholder="Select a SubTask"
-                                            autoFocus
                                         >
                                             {
                                                 upcomingTask.subTaskList.map((item, index) => (
