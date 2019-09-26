@@ -15,7 +15,6 @@ export default class Root extends Component {
             <Provider store={store}>
                 <Router>
                     <Switch>
-
                         {/* <PrivateRoute path="/admin-panel/:id?" component={ AdminPanel }/> */}
                         <PrivateRoute path="/admin-panel" component={ AdminPanel }/>
                         <Route path="/" component={HomeLayout}/>

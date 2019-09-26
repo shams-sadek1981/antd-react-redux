@@ -2,6 +2,8 @@ import React, { Fragment } from 'react'
 import { List, Button, Progress, Timeline, Icon, Popconfirm } from 'antd';
 
 import { deleteTaskFromRelease } from '../../actions/releaseActions'
+import { _TaskStatus } from './_TaskStatus'
+import { _TaskEstHour } from './_TaskEstHour'
 
 export const TaskList = (props) => {
 
@@ -21,11 +23,14 @@ export const TaskList = (props) => {
 
             <ul>
                 {taskListByRelease.map((item, index) => (
-                    <li key={index} style={{ background: 'rgba(63, 65, 127, 0.08)', marginBottom: '3px'}}>
+                    <li key={index} style={{ background: 'rgba(108, 127, 63, 0.25)', marginBottom: '3px'}}>
                         <div>
                             <div style={{ float: 'left' }}>
                                 {++index}. {item.taskName}
+
+                                <_TaskEstHour subTasks={item.subTasks}/>
                             </div>
+                            
                             <div style={{ float: 'right' }}>
                                 <Popconfirm title="Are you sure to remove from release?"
                                     onConfirm={(e) => confirm(item)}
@@ -36,6 +41,11 @@ export const TaskList = (props) => {
                                     </a>
                                 </Popconfirm>
                             </div>
+
+                            <div style={{ clear: 'both' }}>
+                                <_TaskStatus subTasks={item.subTasks}/>
+                            </div>
+
                         </div>
                         <Progress
                             percent={item.percent}

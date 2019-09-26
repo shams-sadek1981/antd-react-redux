@@ -29,7 +29,7 @@ export const _SearchByProject = (props) => {
             <Select
                 showSearch
                 style={{ width: 200 }}
-                defaultValue={ upcomingTask.searchBy.project[0] }
+                value={ upcomingTask.searchBy.project[0] }
                 placeholder="Select a Project"
                 optionFilterProp="children"
                 onChange={handleChange}

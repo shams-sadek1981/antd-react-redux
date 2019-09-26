@@ -141,7 +141,7 @@ export const changeTabKey = (value) => (dispatch, getState) => {
 
     const { searchBy, pagination } = getState().upcomingTaskReducer
     const { pageSize } = pagination
-    
+
 
     let searchByCompletedAt = false
     let running = false
@@ -195,7 +195,7 @@ export const changeTabKey = (value) => (dispatch, getState) => {
 
     //-- get Result
     dispatch(upcomingTaskSearchByResult())
-    
+
 
     // getTaskResult(current, pageSize, name, project, completedAt, text, running, newlyAdded)
     //     .then(data => {
@@ -241,7 +241,7 @@ export const toggleSpinning = (booleanValue) => {
 
 export const searchBy = (fieldName, value) => async (dispatch, getState) => {
 
-    console.log('value:', value)
+    // console.log('value:', value)
 
     await dispatch(toggleSpinning(true))
 
@@ -328,7 +328,7 @@ const getTaskResult = async (current, pageSize, name, project, completedAt, text
     } else {
         newProjectParams = "project=" + project
     }
-    
+
     const searchUrl = `/upcoming-task/search-running?page=${current}&pageSize=${pageSize}&name=${name}&${newProjectParams}&completedAt=${completedAt}&text=${text}&running=${running}&newlyAdded=${newlyAdded}`
 
     return await get(searchUrl)
@@ -430,7 +430,10 @@ export const addNewTask = () => {
                 },
                 searchBy: {
                     ...searchBy,
-                    newlyAdded: true
+                    newlyAdded: true,
+                    project: ['all'],
+                    name: 'all',
+                    text: '',
                 }
             }
         })
@@ -598,7 +601,6 @@ export const loadRelease = projectName => (dispatch, getState) => {
  * -------------------------------------------------------------------------------------------------
  */
 export const updateTask = (values) => (dispatch, getState) => {
-
 
     //-- get User Name from userInfo
     const { userInfo } = getState().userReducer

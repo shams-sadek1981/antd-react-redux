@@ -35,6 +35,7 @@ export const SearchByForm = (props) => {
                 <Form.Item label="Select User">
                     <Select
                         showSearch
+                        defaultValue={ reports.searchBy.name }
                         style={{ width: 200 }}
                         placeholder="Select a person"
                         defaultValue={reports.searchBy.userName}

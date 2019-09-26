@@ -29,7 +29,7 @@ export const _SearchByUser = (props) => {
             <Select
                 showSearch
                 style={{ width: 200 }}
-                defaultValue={ upcomingTask.searchBy.name }
+                value={ upcomingTask.searchBy.name }
                 placeholder="Select a person"
                 optionFilterProp="children"
                 onChange={handleChange}

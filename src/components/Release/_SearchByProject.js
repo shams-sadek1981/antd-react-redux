@@ -28,6 +28,7 @@ export const _SearchByProject = (props) => {
         <Fragment>
             <Select
                 showSearch
+                defaultValue={ release.searchBy.project }
                 style={{ width: 200 }}
                 placeholder="Select a project"
                 optionFilterProp="children"

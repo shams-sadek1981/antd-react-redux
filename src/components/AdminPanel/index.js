@@ -63,7 +63,7 @@ class AdminPanel extends Component {
                         collapsed={this.state.collapsed}
                     >
                         <div className="logo">
-                            <img src={logo} alt="Logo"/>
+                            {/* <img src={logo} alt="Logo"/> */}
                             <div style={{ color: "white", paddingLeft: "30px"}}>{users.userInfo.name}</div>
                         </div>
                         <Menu
