@@ -7,7 +7,7 @@ export const _TaskStatus = (props) => {
     const { subTasks } = props
 
     return (
-        <Fragment>
+        <div style={{ paddingTop: '10px'}}>
             {
                 subTasks.map((subTask, index) => {
 
@@ -24,15 +24,17 @@ export const _TaskStatus = (props) => {
                     return (
                         <span key={index} style={style}>
                             |
-                                {subTask.assignedUser}:
-                                {subTask.estHour}~
-                                {subTask.name}
+                                &nbsp;
+                                    {subTask.assignedUser}:
+                                    {subTask.estHour}~
+                                    {subTask.name}
+                                &nbsp;
                             |
                         </span>
                     )
 
                 })
             }
-        </Fragment>
+        </div>
     )
 }

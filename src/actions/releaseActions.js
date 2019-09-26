@@ -228,6 +228,8 @@ export const loadTaskByRelease = version => (dispatch, getState) => {
 
     const { taskList: oldTaskList } = getState().releaseReducer
 
+    version = encodeURIComponent(version)
+
     const searchUrl = `/release/upcoming-task?version=${version}`
 
     return get(searchUrl)
@@ -235,7 +237,9 @@ export const loadTaskByRelease = version => (dispatch, getState) => {
 
             const newTaskList = data.result
 
-            const otherTaskList = oldTaskList.filter( item => item.release != version)
+            const { totalEst, completedEst, dueEst, percent} = data
+
+            const otherTaskList = oldTaskList.filter(item => item.release != version)
 
             dispatch({
                 type: RELEASE_BY_UPCOMING_TASK,
@@ -243,7 +247,13 @@ export const loadTaskByRelease = version => (dispatch, getState) => {
                     taskList: [
                         ...otherTaskList,
                         ...newTaskList
-                    ]
+                    ],
+                    sprint: {
+                        totalEst,
+                        completedEst,
+                        dueEst,
+                        percent
+                    }
                 }
             })
         })
@@ -261,14 +271,14 @@ export const deleteTaskFromRelease = item => (dispatch, getState) => {
 
     const newValues = { release: null }
 
-        put('/upcoming-task/update/' + _id, newValues)
-            .then(data => {
+    put('/upcoming-task/update/' + _id, newValues)
+        .then(data => {
 
-                dispatch(loadTaskByRelease(release))
+            dispatch(loadTaskByRelease(release))
 
 
-            })
-            .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
 }
 
 

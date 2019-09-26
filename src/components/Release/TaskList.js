@@ -13,25 +13,50 @@ export const TaskList = (props) => {
 
     const confirm = item => dispatch(deleteTaskFromRelease(item))
 
-
     return (
         <Fragment>
-            
-            { taskListByRelease.length > 0 &&
-                <h4>Task List...</h4>
+
+            {/* -------------------- Sprint calculation -------------------- */}
+            {taskListByRelease.length > 0 &&
+                <div style={{ borderRadius: '5px', marginBottom: '5px'}}>
+                    <div style={{ paddingLeft: '40px' }}>
+
+                        <div style={{ float: 'left' }}>
+                            <h3 style={{ color: '#0000ffab' }}>
+                                # Total Est: <b>{release.sprint.totalEst}</b>
+                            </h3>
+                            <h4 style={{ color: '#008000cf', float: 'left' }}>
+                                # Completed: <b>{release.sprint.completedEst}</b>
+                            </h4>
+                            <h4 style={{ color: '#ff0000c4', float: 'left', paddingLeft: '15px' }}>
+                                # Due: <b>{release.sprint.dueEst}</b>
+                            </h4>
+                        </div>
+
+                        <div style={{ float: 'right', paddingRight: '30px', paddingBottom: '5px' }}>
+                            <Progress type="circle" percent={release.sprint.percent} width={60} />
+                        </div>
+
+                        <div style={{ clear: 'both' }}></div>
+                    </div>
+                </div>
             }
 
             <ul>
                 {taskListByRelease.map((item, index) => (
-                    <li key={index} style={{ background: 'rgba(108, 127, 63, 0.25)', marginBottom: '3px'}}>
+                    <li key={index} style={{ background: 'rgba(108, 127, 63, 0.25)', marginBottom: '3px' }}>
                         <div>
                             <div style={{ float: 'left' }}>
                                 {++index}. {item.taskName}
 
-                                <_TaskEstHour subTasks={item.subTasks}/>
+                                <_TaskEstHour subTasks={item.subTasks} />
+                                <_TaskStatus subTasks={item.subTasks} />
                             </div>
-                            
+
                             <div style={{ float: 'right' }}>
+
+                                <Progress type="circle" percent={item.percent} width={50} style={{ padding: '5px 10px', }} />
+
                                 <Popconfirm title="Are you sure to remove from release?"
                                     onConfirm={(e) => confirm(item)}
                                     okText="Yes" cancelText="No">
@@ -43,14 +68,10 @@ export const TaskList = (props) => {
                             </div>
 
                             <div style={{ clear: 'both' }}>
-                                <_TaskStatus subTasks={item.subTasks}/>
+
                             </div>
 
                         </div>
-                        <Progress
-                            percent={item.percent}
-                            status="active" size="small" strokeWidth={2}
-                        />
                     </li>
                 ))}
             </ul>
