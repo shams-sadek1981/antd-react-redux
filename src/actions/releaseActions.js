@@ -226,7 +226,7 @@ const getResult = (current, pageSize, project, status, text) => {
  */
 export const loadTaskByRelease = version => (dispatch, getState) => {
 
-    const { taskList: oldTaskList } = getState().releaseReducer
+    // const { taskList: oldTaskList } = getState().releaseReducer
 
     version = encodeURIComponent(version)
 
@@ -239,13 +239,13 @@ export const loadTaskByRelease = version => (dispatch, getState) => {
 
             const { totalEst, completedEst, dueEst, percent} = data
 
-            const otherTaskList = oldTaskList.filter(item => item.release != version)
+            // const otherTaskList = oldTaskList.filter(item => item.release != version)
 
             dispatch({
                 type: RELEASE_BY_UPCOMING_TASK,
                 payload: {
                     taskList: [
-                        ...otherTaskList,
+                        // ...otherTaskList,
                         ...newTaskList
                     ],
                     sprint: {

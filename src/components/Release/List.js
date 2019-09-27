@@ -90,14 +90,19 @@ export const List = (props) => {
                 <span>
                     {
                         (handlePermission(props, 'release_complete')) &&
-                        <Checkbox checked={record.status}
-                            onChange={(e) => dispatch(
+                        <Popconfirm title="Are you sure to change the status?"
+                            onConfirm={(e) => dispatch(
                                 updateStatus({
                                     _id: record._id,
                                     status: !record.status
                                 })
                             )}
-                        />
+                            okText="Yes" cancelText="No">
+
+                            <Checkbox checked={record.status}
+                            
+                            />
+                        </Popconfirm>
                     }
 
 
