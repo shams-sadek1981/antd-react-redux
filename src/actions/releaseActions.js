@@ -237,7 +237,7 @@ export const loadTaskByRelease = version => (dispatch, getState) => {
 
             const newTaskList = data.result
 
-            const { totalEst, completedEst, dueEst, percent} = data
+            const { totalEst, completedEst, dueEst, percent } = data
 
             // const otherTaskList = oldTaskList.filter(item => item.release != version)
 
@@ -484,22 +484,19 @@ export const updateItem = (values) => {
 }
 
 //-- Update Task Status (true/false)
-export const updateStatus = (values) => {
+export const updateStatus = (values) => (dispatch, getState) => {
 
-    return (dispatch, getState) => {
+    const { _id, status } = values
 
-        const { _id, status } = values
+    const data = { status }
 
-        const data = { status }
+    put('/release/status/' + _id, data)
+        .then(data => {
 
-        put('/release/' + _id, data)
-            .then(data => {
+            dispatch(releaseSearchByResult())
 
-                dispatch(releaseSearchByResult())
-
-            })
-            .catch(err => openNotificationWithIcon('error', err.message, 'Task status updating problem'))
-    }
+        })
+        .catch(err => openNotificationWithIcon('error', err.message, 'Task status updating problem'))
 }
 
 
