@@ -12,12 +12,12 @@ export const _TaskEstHour = (props) => {
     });
 
     return (
-        <Fragment>
-            <span style={{ fontWeight: 'bold', paddingLeft: '10px', color: '#0000ffb0'}}>
-                : {totalHour}
-                {totalHour > 1 && ' Hours'}
-                {totalHour == 1 && ' Hour'}
+        <div style={{ float: "right"}}>
+            <span style={{ paddingLeft: '10px', color: '#0000ffb0'}}>
+                <b>{totalHour}</b>
+                <i>{totalHour > 1 && ' Hours'}</i>
+                <i>{totalHour == 1 && ' Hour'}</i>
             </span>
-        </Fragment>
+        </div>
     )
 }
