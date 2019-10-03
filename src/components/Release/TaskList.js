@@ -6,6 +6,37 @@ import { _TaskStatus } from './_TaskStatus'
 import { _TaskEstHour } from './_TaskEstHour'
 import { handlePermission } from '../../functions'
 
+
+
+function TaskTypeDisplay(props) {
+
+    const featureTypes = [
+        {
+            name: 'New Feature',
+            color: 'blue'
+        },
+        {
+            name: 'Enhancement',
+            color: 'magenta'
+        },
+        {
+            name: 'Plugin Issue',
+            color: 'orange'
+        },
+        {
+            name: 'R&D',
+            color: 'green'
+        }
+    ]
+
+    const findItem = featureTypes.find(item => item.name == props.taskType)
+
+    let color = 'orange'
+    if (typeof (findItem) != 'undefined') color = findItem.color
+
+    return <Tag color={color} style={{ float: 'right' }}>{props.taskType}</Tag>
+}
+
 export const TaskList = (props) => {
 
     const { dispatch, release, version } = props
@@ -69,7 +100,9 @@ export const TaskList = (props) => {
                             </div>
 
                             <_TaskEstHour subTasks={item.subTasks} />
-                            <Tag color="purple" style={{ float: 'right'}}>{item.taskType}</Tag>
+
+                            <TaskTypeDisplay taskType={item.taskType} />
+
                             <div style={{ clear: 'both' }}></div>
 
                         </div>
