@@ -111,7 +111,7 @@ export const List = (props) => {
             render: (text, record) => (
                 <span>
                     {
-                        (handlePermission(props, 'release_complete')) &&
+                        (handlePermission(props, 'sprint_complete')) &&
                         <Popconfirm title="Are you sure to change the status?"
                             onConfirm={(e) => dispatch(
                                 updateStatus({
@@ -129,7 +129,7 @@ export const List = (props) => {
 
 
                     {
-                        (handlePermission(props, 'release_edit')) &&
+                        (handlePermission(props, 'sprint_edit')) &&
                         <span>
                             <Divider type="vertical" />
                             <a onClick={() => dispatch(editItem(record._id))} href="javascript:;">
@@ -139,7 +139,7 @@ export const List = (props) => {
                     }
 
                     {
-                        (handlePermission(props, 'release_delete')) &&
+                        (handlePermission(props, 'sprint_delete')) &&
                         <span>
                             <Divider type="vertical" />
                             <Popconfirm title="Are you sure to delete this Sprint?"

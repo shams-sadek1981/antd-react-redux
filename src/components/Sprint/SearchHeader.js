@@ -30,7 +30,7 @@ export const SearchHeader = (props) => {
             <Row>
                 <Col span={3}>
                     {
-                        (handlePermission(props, 'release_create_new')) &&
+                        (handlePermission(props, 'sprint_create_new')) &&
                         <Button
                             type="primary"
                             onClick={() => dispatch(addNew())}
