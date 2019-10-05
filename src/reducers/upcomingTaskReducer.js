@@ -11,6 +11,7 @@ import {
     UPCOMING_TASK_CHANGE_TABKEY,
     UPCOMING_TASK_CHANGE_PAGINATION,
     UPCOMING_TASK_LOAD_RELEASE,
+    UPCOMING_TASK_LOAD_SPRINT,
     UPCOMING_TASK_NEWLY_ADDED
 } from '../actions/upcomingTaskActions'
 
@@ -22,6 +23,7 @@ import {
     TASK_UPDATE_SUB_TASK,
     TASK_TOGGLE_SUB_TASK_MODAL_VISIBLE
 } from '../actions/task/subTaskActions'
+import moment from 'moment'
 
 //-- Initialize State
 const initialState = {
@@ -63,6 +65,9 @@ const initialState = {
     },
     releaseList: [{
         version: 'Pro v2.3.4'
+    }],
+    sprintList: [{
+        // name: 'ERP Sprint Oct-2019'
     }],
     subTaskModal: {
         modalVisible: false,
@@ -189,6 +194,11 @@ const upcomingTaskReducer = (state = initialState, action) => {
         case UPCOMING_TASK_LOAD_RELEASE:
             return Object.assign({}, state, {
                 releaseList: action.payload.releaseList
+            })
+
+        case UPCOMING_TASK_LOAD_SPRINT:
+            return Object.assign({}, state, {
+                sprintList: action.payload.sprintList
             })
 
         case UPCOMING_TASK_NEWLY_ADDED:

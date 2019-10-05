@@ -67,6 +67,7 @@ export const TaskList = (props) => {
             dueHour: item.dueHour,
             percent: item.percent,
             release: item.release,
+            sprint: item.sprint,
             userColor,
         }
     })
@@ -141,7 +142,7 @@ export const TaskList = (props) => {
             title: 'Task Type',
             dataIndex: 'taskType',
             key: 'taskType',
-            width: 100,
+            width: 130,
             render: (text, record) => {
 
                 const featureTypes = [
@@ -170,6 +171,9 @@ export const TaskList = (props) => {
 
                 return <div>
                     <Tag color={color}>{record.taskType}</Tag>
+                    <div>
+                        { record.sprint}
+                    </div>
                 </div>
             }
         },

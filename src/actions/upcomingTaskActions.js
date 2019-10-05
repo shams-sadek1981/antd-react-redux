@@ -32,6 +32,7 @@ export const UPCOMING_TASK_SEARCH_BY_RESULT = "UPCOMING_TASK_SEARCH_BY_RESULT"
 export const UPCOMING_TASK_CHANGE_PAGINATION = "UPCOMING_TASK_CHANGE_PAGINATION"
 
 export const UPCOMING_TASK_LOAD_RELEASE = "UPCOMING_TASK_LOAD_RELEASE"
+export const UPCOMING_TASK_LOAD_SPRINT = "UPCOMING_TASK_LOAD_SPRINT"
 
 export const UPCOMING_TASK_NEWLY_ADDED = "UPCOMING_TASK_NEWLY_ADDED"
 
@@ -544,6 +545,7 @@ export const editTask = (id) => {
 
         //-- load project releated release
         dispatch(loadRelease(findTask.projectName))
+        dispatch(loadSprint(findTask.projectName))
 
         dispatch({
             type: UPCOMING_TASK_EDIT_TASK,
@@ -563,7 +565,7 @@ export const editTask = (id) => {
 
 /**
  * ----------------------------------------------------------------------------------------
- * load release data for task editing period
+ * load Release data for task editing period
  * ----------------------------------------------------------------------------------------
  * 
  */
@@ -589,6 +591,42 @@ export const loadRelease = projectName => (dispatch, getState) => {
                 type: UPCOMING_TASK_LOAD_RELEASE,
                 payload: {
                     releaseList
+                }
+            })
+        })
+        .catch(err => console.log(err))
+}
+
+/**
+ * ----------------------------------------------------------------------------------------
+ * load Sprint data for task editing period
+ * ----------------------------------------------------------------------------------------
+ * 
+ */
+export const loadSprint = projectName => (dispatch, getState) => {
+
+    const current = 1
+    const pageSize = 10
+    const status = false
+
+    const searchUrl = `/sprint?page=${current}&limit=${pageSize}&project=${projectName}&status=${status}&text=`
+
+    console.log('projectName', projectName)
+
+    return get(searchUrl)
+        .then(data => {
+
+            const sprintList = data.map(item => {
+                return {
+                    name: item.name,
+                    endDate: moment(item.endDate).format("DD-MMM-YYYY"),
+                }
+            })
+
+            dispatch({
+                type: UPCOMING_TASK_LOAD_SPRINT,
+                payload: {
+                    sprintList
                 }
             })
         })

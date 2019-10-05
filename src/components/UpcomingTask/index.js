@@ -161,6 +161,7 @@ const mapStateToProps = state => ({
     project: state.projectReducer,
     taskType: state.taskTypeReducer,
     release: state.releaseReducer,
+    sprint: state.sprintReducer
 })
 
 

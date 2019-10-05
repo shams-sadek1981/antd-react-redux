@@ -73,6 +73,14 @@ const initialState = {
             permission: 'menu_release'
         },
         {
+            keyNo:13,
+            label: 'Sprint',
+            to: '/admin-panel/sprint',
+            breadcrumb: ['Admin Panel','Sprint'],
+            iconType: 'area-chart',
+            permission: 'menu_sprint'
+        },
+        {
             keyNo:5,
             label: 'Reports',
             to: '/admin-panel/reports',

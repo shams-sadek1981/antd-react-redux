@@ -38,7 +38,7 @@ export const _TaskEstHour = (props) => {
     return (
         <div style={{ float: "right"}}>
             <Tag color={color} style={{ float: 'right' }}>
-                { props.taskType } # <b>{ totalHour }</b>
+                { props.taskType }#<b>{ totalHour }</b>
             </Tag>
         </div>
     )

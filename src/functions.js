@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 
-const bearer = localStorage.getItem('token');
+const bearer = 'Bearer ' + localStorage.getItem('token');
 
 /**
  * -------------------------------------------------------------------------------------------

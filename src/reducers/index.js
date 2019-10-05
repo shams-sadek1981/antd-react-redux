@@ -7,6 +7,7 @@ import homeLayoutReducer from './homeLayoutReducer'
 import customerReducer from './customerReducer'
 import upcomingTaskReducer from './upcomingTaskReducer'
 import releaseReducer from './releaseReducer'
+import sprintReducer from './sprintReducer'
 import adminDashboardReducer from './adminDashboardReducer'
 import adminPanelReducer from './adminPanelReducer'
 import reportsReducer from './reportsReducer'
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
     customerReducer,
     upcomingTaskReducer,
     releaseReducer,
+    sprintReducer,
     adminDashboardReducer,
     adminPanelReducer,
     reportsReducer,

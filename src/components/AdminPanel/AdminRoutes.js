@@ -10,6 +10,7 @@ import PublicHoliday from '../PublicHoliday'
 import UpcomingTask from '../UpcomingTask'
 import AdminDashboard from '../AdminDashboard'
 import Release from '../Release'
+import Sprint from '../Sprint'
 import Reports from '../Reports'
 import UploadFile from '../UploadFile'
 import ChangePassword from '../ChangePassword'
@@ -38,6 +39,8 @@ export const AdminRoutes = (props) => {
             <Route path={`${path}/upcoming-task`} component={UpcomingTask} />
             
             <PermissionRoute path={`${path}/release`} component={Release} permissionName="menu_release" users={users}/>
+            
+            <Route path={`${path}/sprint`} component={Sprint} permissionName="menu_sprint" users={users}/>
             
             <PermissionRoute path={`${path}/reports`} component={Reports} permissionName="menu_reports" users={users}/>
             

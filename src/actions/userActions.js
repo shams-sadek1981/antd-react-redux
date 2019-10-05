@@ -60,7 +60,7 @@ export const getPermissions = () => async (dispatch, getState) => {
     })
 
     const url = await process.env.REACT_APP_HOST + '/users/permissions'
-    const token = await localStorage.getItem('token')
+    const token = await "Bearer " + localStorage.getItem('token')
 
     await axios.get(url, {
         headers: {

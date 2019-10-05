@@ -101,44 +101,75 @@ export const NewTaskModal = Form.create({ name: 'form_in_modal' })(
                             )}
                         </Form.Item>
 
-                        <Form.Item label="Select Project">
-                            {getFieldDecorator('projectName', {
-                                initialValue: upcomingTask.modal.EditInfo.projectName,
-                                rules: [{ required: true, message: 'Please select project' }],
-                            })(
-                                <Select
-                                    showSearch
-                                    // style={{ width: 200 }}
-                                    placeholder="Select a project"
-                                >
-                                    {
-                                        project.list.map((item, index) =>
-                                            <Option value={item.name} key={index}>{item.name}</Option>
-                                        )
-                                    }
-                                </Select>
-                            )}
-                        </Form.Item>
+                        <Row gutter={24}>
+                            <Col span={12}>
+                                <Form.Item label="Select Project">
+                                    {getFieldDecorator('projectName', {
+                                        initialValue: upcomingTask.modal.EditInfo.projectName,
+                                        rules: [{ required: true, message: 'Please select project' }],
+                                    })(
+                                        <Select
+                                            showSearch
+                                            // style={{ width: 200 }}
+                                            placeholder="Select a project"
+                                        >
+                                            {
+                                                project.list.map((item, index) =>
+                                                    <Option value={item.name} key={index}>{item.name}</Option>
+                                                )
+                                            }
+                                        </Select>
+                                    )}
+                                </Form.Item>
+                            </Col>
 
-                        <Form.Item label="Assigned By">
-                            {getFieldDecorator('assignedBy', {
-                                initialValue: upcomingTask.modal.EditInfo.assignedBy,
-                                // rules: [{ required: true, message: 'Please select user' }],
-                            })(
-                                <Select
-                                    showSearch
-                                    // style={{ width: 200 }}
-                                    placeholder="Select a user"
-                                >
-                                    {
-                                        users.allUser.map((item, index) => (
-                                            <Option value={item.name} key={index}>{item.name}</Option>
-                                        ))
-                                    }
+                            <Col span={12}>
+                                <Form.Item label="Assigned By">
+                                    {getFieldDecorator('assignedBy', {
+                                        initialValue: upcomingTask.modal.EditInfo.assignedBy,
+                                        // rules: [{ required: true, message: 'Please select user' }],
+                                    })(
+                                        <Select
+                                            showSearch
+                                            // style={{ width: 200 }}
+                                            placeholder="Select a user"
+                                        >
+                                            {
+                                                users.allUser.map((item, index) => (
+                                                    <Option value={item.name} key={index}>{item.name}</Option>
+                                                ))
+                                            }
 
-                                </Select>
-                            )}
-                        </Form.Item>
+                                        </Select>
+                                    )}
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        {editMode &&
+                            <Form.Item label="Select Sprint">
+                                {getFieldDecorator('sprint', {
+                                    initialValue: upcomingTask.modal.EditInfo.sprint,
+                                    // rules: [{ required: true, message: 'Please select release' }],
+                                })(
+                                    <Select
+                                        showSearch
+                                        // style={{ width: 200 }}
+                                        placeholder="Select a Sprint"
+                                    >
+                                        <Option value={null}>Select Sprint</Option>
+                                        {
+                                            upcomingTask.sprintList.map((item, index) =>
+                                                <Option value={item.name} key={index}>
+                                                    <span style={{ color: 'blue' }}>{item.name}</span>
+                                                    <span style={{ paddingLeft: '5px' }}>{item.endDate}</span>
+                                                </Option>
+                                            )
+                                        }
+                                    </Select>
+                                )}
+                            </Form.Item>
+                        }
 
                         <Row gutter={24}>
                             <Col span={10}>
