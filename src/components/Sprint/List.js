@@ -30,38 +30,6 @@ export const List = (props) => {
 
     const columns = [
         {
-            title: 'Start Date',
-            dataIndex: 'startDate',
-            key: 'startDate',
-            width: 150,
-            render: (text, record) =>
-                <div>
-                    {moment(record.startDate).format("ddd, DD-MMM-YYYY")}
-                </div>
-        },
-        {
-            title: 'End Date',
-            dataIndex: 'endDate',
-            key: 'endDate',
-            width: 150,
-            render: (text, record) =>
-                <div>
-                    {moment(record.endDate).format("ddd, DD-MMM-YYYY")}
-                </div>
-        },
-        {
-            title: 'Project Name',
-            dataIndex: 'projects',
-            key: 'projects',
-            width: 150,
-            render: (text, record) =>
-                <div>
-                    { record.projects.map( item => (
-                        item + ', '
-                    ))}
-                </div>
-        },
-        {
             title: 'Sprint',
             dataIndex: 'name',
             key: 'name',
@@ -103,6 +71,38 @@ export const List = (props) => {
                 const color = findItem.color
                 return <Tag color={color}>{record.name}</Tag>
             }
+        },
+        {
+            title: 'Start Date',
+            dataIndex: 'startDate',
+            key: 'startDate',
+            width: 150,
+            render: (text, record) =>
+                <div>
+                    {moment(record.startDate).format("ddd, DD-MMM-YYYY")}
+                </div>
+        },
+        {
+            title: 'End Date',
+            dataIndex: 'endDate',
+            key: 'endDate',
+            width: 150,
+            render: (text, record) =>
+                <div>
+                    {moment(record.endDate).format("ddd, DD-MMM-YYYY")}
+                </div>
+        },
+        {
+            title: 'Project Name',
+            dataIndex: 'projects',
+            key: 'projects',
+            width: 150,
+            render: (text, record) =>
+                <div>
+                    { record.projects.map( item => (
+                        item + ', '
+                    ))}
+                </div>
         },
         {
             title: 'Action',
