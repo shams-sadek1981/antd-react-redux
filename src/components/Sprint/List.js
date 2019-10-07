@@ -186,7 +186,7 @@ export const List = (props) => {
                     <div style={{ margin: 0 }}>
                         <_ChangeLog {...props} description={record.description} />
 
-                        <TaskList {...props} name={record.name} />
+                        <TaskList {...props} sprintName={record.name} />
                     </div>
                 }
             />

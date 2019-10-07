@@ -223,36 +223,26 @@ const getResult = (current, pageSize, project, status, text) => {
  * get upcoming task by sprint
  * ----------------------------------------------------------------------------------------------------
  */
-export const loadTaskBySprint = sprintName => (dispatch, getState) => {
+export const loadTaskBySprint = sprint => (dispatch, getState) => {
 
-    // const { taskList: oldTaskList } = getState().releaseReducer
+    const { taskList: oldTaskList } = getState().sprintReducer
 
-    sprintName = encodeURIComponent(sprintName)
+    const encodedSprintName = encodeURIComponent(sprint)
 
-    const searchUrl = `/sprint/upcoming-task?sprintName=${sprintName}`
+    const searchUrl = `/sprint/upcoming-task?sprintName=${encodedSprintName}`
 
-    return get(searchUrl)
+    get(searchUrl)
         .then(data => {
 
-            const newTaskList = data.result
-
-            const { totalEst, completedEst, dueEst, percent } = data
-
-            // const otherTaskList = oldTaskList.filter(item => item.release != version)
+            const otherTaskList = oldTaskList.filter(item => item.sprintName != sprint)
 
             dispatch({
                 type: SPRINT_BY_UPCOMING_TASK,
                 payload: {
                     taskList: [
-                        // ...otherTaskList,
-                        ...newTaskList
-                    ],
-                    sprint: {
-                        totalEst,
-                        completedEst,
-                        dueEst,
-                        percent
-                    }
+                        ...otherTaskList,
+                        data
+                    ]
                 }
             })
         })
