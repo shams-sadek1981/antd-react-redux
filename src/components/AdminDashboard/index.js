@@ -12,6 +12,7 @@ import {
 } from '../../actions/adminDashboardActions'
 
 import { ProjectSummaryChart } from './ProjectSummaryChart'
+import styles from './styles.module.less'
 
 const cols = {
     // estHour: { alias: '销售量' },
@@ -45,8 +46,8 @@ class AdminDashboard extends Component {
         }
 
         return (
-            <div>
-                <h1> User Summary </h1>
+            <div className={styles.wrapper}>
+                <h1 onClick={ () => this.props.dispatch(userSummaryLoading())}> User Summary </h1>
                 <Chart
                     width={userWidth}
                     height={600}
@@ -80,7 +81,7 @@ class AdminDashboard extends Component {
 
                 <h1> Project Summary </h1>
                 <Chart
-                    width={projectWidth}
+                    // width={projectWidth}
                     height={450}
                     data={projectSummaryList}
                     scale={cols}
