@@ -22,6 +22,25 @@ import { _MoreActionMenu } from './_MoreActionMenu'
 
 export const TaskList = (props) => {
 
+    const featureTypes = [
+        {
+            name: 'New Feature',
+            color: 'blue'
+        },
+        {
+            name: 'Enhancement',
+            color: 'magenta'
+        },
+        {
+            name: 'Plugin Issue',
+            color: 'orange'
+        },
+        {
+            name: 'R&D',
+            color: 'green'
+        }
+    ]
+    
     const { dispatch, upcomingTask } = props
 
     const handleTableChange = (pagination, filters, sorter) => {
@@ -144,25 +163,6 @@ export const TaskList = (props) => {
             key: 'taskType',
             width: 130,
             render: (text, record) => {
-
-                const featureTypes = [
-                    {
-                        name: 'New Feature',
-                        color: 'blue'
-                    },
-                    {
-                        name: 'Enhancement',
-                        color: 'magenta'
-                    },
-                    {
-                        name: 'Plugin Issue',
-                        color: 'orange'
-                    },
-                    {
-                        name: 'R&D',
-                        color: 'green'
-                    }
-                ]
 
                 const findItem = featureTypes.find(item => item.name == record.taskType)
 

@@ -31,12 +31,6 @@ const initialState = {
         status: false
     },
     taskList:[],
-    sprint: {
-        totalEst: 100,
-        completedEst: 80,
-        dueEst: 10,
-        percent: 80
-    },
     spinning: false,
     list: [],
     modal: {
@@ -123,8 +117,7 @@ const upcomingTaskReducer = (state = initialState, action) => {
             
         case RELEASE_BY_UPCOMING_TASK:
             return Object.assign({}, state, {
-                taskList: action.payload.taskList,
-                sprint: action.payload.sprint
+                taskList: action.payload.taskList
             })
     }
 

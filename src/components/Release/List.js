@@ -12,6 +12,37 @@ import { handlePermission } from '../../functions'
 
 export const List = (props) => {
 
+    const weekDays = [
+        {
+            name: 'Mon',
+            color: 'green'
+        },
+        {
+            name: 'Tue',
+            color: 'magenta'
+        },
+        {
+            name: 'Wed',
+            color: 'orange'
+        },
+        {
+            name: 'Thu',
+            color: 'blue'
+        },
+        {
+            name: 'Fri',
+            color: 'purple'
+        },
+        {
+            name: 'Sat',
+            color: 'red'
+        },
+        {
+            name: 'Sun',
+            color: 'red'
+        },
+    ]
+    
     const { dispatch, release } = props
 
     const handleTableChange = (pagination, filters, sorter) => {
@@ -45,37 +76,6 @@ export const List = (props) => {
             key: 'version',
             width: 150,
             render: (text, record) => {
-
-                const weekDays = [
-                    {
-                        name: 'Mon',
-                        color: 'green'
-                    },
-                    {
-                        name: 'Tue',
-                        color: 'magenta'
-                    },
-                    {
-                        name: 'Wed',
-                        color: 'orange'
-                    },
-                    {
-                        name: 'Thu',
-                        color: 'blue'
-                    },
-                    {
-                        name: 'Fri',
-                        color: 'purple'
-                    },
-                    {
-                        name: 'Sat',
-                        color: 'red'
-                    },
-                    {
-                        name: 'Sun',
-                        color: 'red'
-                    },
-                ]
 
                 const findItem = weekDays.find(item => item.name == moment(record.releaseDate).format('ddd'))
                 const color = findItem.color
