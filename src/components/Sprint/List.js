@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import moment from 'moment'
-import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm, Button } from 'antd';
+import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm, Progress } from 'antd';
 
 import {
     updateTask, changePagination, loadTaskByRelease
@@ -71,6 +71,13 @@ export const List = (props) => {
                 const color = findItem.color
                 return <Tag color={color}>{record.name}</Tag>
             }
+        },
+        {
+            title: 'Progress',
+            dataIndex: 'percent',
+            key: 'percent',
+            width: 150,
+            render: (text, record) => <Progress type="circle" percent={record.percent} width={50} />
         },
         {
             title: 'Start Date',
@@ -170,6 +177,7 @@ export const List = (props) => {
             startDate: item.startDate,
             endDate: item.endDate,
             projects: item.projects,
+            percent: item.percent
         }
     })
 

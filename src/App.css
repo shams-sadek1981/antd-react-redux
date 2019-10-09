@@ -101,5 +101,5 @@
 
 /* Admin Dashboard userChart & ProjectChart */
 #canvas_1, #canvas_2 {
-    width: 100% !important;
+    /* width: 100% !important; */
 }
