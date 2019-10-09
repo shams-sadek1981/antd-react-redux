@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import moment from 'moment'
-import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm, Button } from 'antd';
+import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm, Progress } from 'antd';
 
 import {
     editItem, removeItem, updateTask, updateStatus, changePagination, loadTaskByRelease
@@ -42,7 +42,7 @@ export const List = (props) => {
             color: 'red'
         },
     ]
-    
+
     const { dispatch, release } = props
 
     const handleTableChange = (pagination, filters, sorter) => {
@@ -79,8 +79,22 @@ export const List = (props) => {
 
                 const findItem = weekDays.find(item => item.name == moment(record.releaseDate).format('ddd'))
                 const color = findItem.color
-                return <Tag color={color}>{record.version}</Tag>
+                return <div>
+                    <Tag color={color}>{record.version}</Tag>
+                    <div style={{ fontStyle: 'italic', paddingTop: '5px' }}>
+                        Est:<span style={{ color: 'blue', paddingRight: '5px' }}>{record.est}</span>
+                        Due:<span style={{ color: 'red', paddingRight: '5px' }}>{record.due}</span>
+                        Complete:<span style={{ color: 'green', paddingLeft: '5px' }}>{record.complete}</span>
+                    </div>
+                </div>
             }
+        },
+        {
+            title: 'Progress',
+            dataIndex: 'percent',
+            key: 'percent',
+            width: 150,
+            render: (text, record) => <Progress type="circle" percent={record.percent} width={50} />
         },
         {
             title: 'Action',
@@ -100,7 +114,7 @@ export const List = (props) => {
                             okText="Yes" cancelText="No">
 
                             <Checkbox checked={record.status}
-                            
+
                             />
                         </Popconfirm>
                     }
@@ -147,6 +161,10 @@ export const List = (props) => {
             projectName: item.projectName,
             version: item.version,
             description: item.description,
+            percent: item.percent,
+            est: item.est,
+            complete: item.complete,
+            due: item.due,
         }
     })
 

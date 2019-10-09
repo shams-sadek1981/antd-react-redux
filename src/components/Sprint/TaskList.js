@@ -4,7 +4,6 @@ import { List, Button, Progress, Timeline, Icon, Popconfirm, Tag } from 'antd';
 import { deleteTaskFromSprint } from '../../actions/sprintActions'
 import { _TaskStatus } from './_TaskStatus'
 import { _TaskEstHour } from './_TaskEstHour'
-import { _SprintCalculation } from './_SprintCalculation'
 import { handlePermission } from '../../functions'
 
 import styles from './styles.module.less'
@@ -25,8 +24,6 @@ export const TaskList = (props) => {
             {/* -------------------- Sprint calculation -------------------- */}
             {sprintList &&
                 <div className={ styles.taskList }>
-                    <_SprintCalculation {...props} sprintList={sprintList} />
-
                     <ul>
                         {sprintList.result.map((item, index) => (
                             <li key={index} style={{ background: 'rgb(255, 255, 255)', marginBottom: '3px', borderBottom: '1px solid rgba(0, 0, 0, 0.1)' }}>

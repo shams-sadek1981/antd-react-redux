@@ -16,6 +16,37 @@ import { TaskList } from './TaskList'
 
 import { handlePermission } from '../../functions'
 
+const weekDays = [
+    {
+        name: 'Mon',
+        color: 'green'
+    },
+    {
+        name: 'Tue',
+        color: 'magenta'
+    },
+    {
+        name: 'Wed',
+        color: 'orange'
+    },
+    {
+        name: 'Thu',
+        color: 'blue'
+    },
+    {
+        name: 'Fri',
+        color: 'purple'
+    },
+    {
+        name: 'Sat',
+        color: 'red'
+    },
+    {
+        name: 'Sun',
+        color: 'red'
+    },
+]
+
 export const List = (props) => {
 
     const { dispatch, release, sprint } = props
@@ -35,41 +66,16 @@ export const List = (props) => {
             key: 'name',
             width: 150,
             render: (text, record) => {
-
-                const weekDays = [
-                    {
-                        name: 'Mon',
-                        color: 'green'
-                    },
-                    {
-                        name: 'Tue',
-                        color: 'magenta'
-                    },
-                    {
-                        name: 'Wed',
-                        color: 'orange'
-                    },
-                    {
-                        name: 'Thu',
-                        color: 'blue'
-                    },
-                    {
-                        name: 'Fri',
-                        color: 'purple'
-                    },
-                    {
-                        name: 'Sat',
-                        color: 'red'
-                    },
-                    {
-                        name: 'Sun',
-                        color: 'red'
-                    },
-                ]
-
                 const findItem = weekDays.find(item => item.name == moment(record.endDate).format('ddd'))
                 const color = findItem.color
-                return <Tag color={color}>{record.name}</Tag>
+                return <div>
+                    <Tag color={color}>{record.name}</Tag>
+                    <div style={{ fontStyle: 'italic', paddingTop: '5px'}}>
+                        Est:<span style={{color: 'blue', paddingRight: '5px'}}>{ record.est }</span>
+                        Due:<span style={{color: 'red', paddingRight: '5px'}}>{record.due}</span>
+                        Complete:<span style={{color: 'green', paddingLeft: '5px'}}>{record.complete}</span>
+                    </div>
+                </div>
             }
         },
         {
@@ -177,7 +183,10 @@ export const List = (props) => {
             startDate: item.startDate,
             endDate: item.endDate,
             projects: item.projects,
-            percent: item.percent
+            percent: item.percent,
+            est: item.est,
+            complete: item.complete,
+            due: item.due,
         }
     })
 
