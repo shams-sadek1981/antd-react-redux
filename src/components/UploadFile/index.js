@@ -12,7 +12,7 @@ import {
 } from 'antd';
 const { Option } = Select;
 
-const bearer = localStorage.getItem('token');
+const bearer = "Bearer " + localStorage.getItem('token');
 axios.defaults.headers.common['Authorization'] = bearer;
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -26,7 +26,7 @@ class UploadFile extends Component {
 
     handleChange = e => {
 
-        console.table(e.target.files)
+        // console.table(e.target.files)
         // console.log(e.target.files[0])
 
         const files = e.target.files
@@ -34,11 +34,10 @@ class UploadFile extends Component {
         let formData = new FormData()
         formData.append('taskCsv', files[0])
 
-        const url = "http://localhost:3000/upcoming-task/upload-csv"
+        const url = process.env.REACT_APP_HOST + "/upcoming-task/upload-csv"
 
         axios.post(url, formData)
             .then(res => {
-                console.log(res)
                 openNotificationWithIcon('success', 'Upload', 'File Uploaded Successfully')
             })
             .catch(err => console.log(err))
