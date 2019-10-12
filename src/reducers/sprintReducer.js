@@ -14,7 +14,11 @@ import {
     SPRINT_CHANGE_TABKEY,
     SPRINT_BY_UPCOMING_TASK,
     SPRINT_SPINNING,
-    SPRINT_SEARCH_BY
+    SPRINT_SEARCH_BY,
+    SPRINT_EDIT_TASK,
+    SPRINT_TASK_TOGGLE_MODAL_VISIBLE,
+    SPRINT_LOAD_BY_PROJECT,
+    SPRINT_LOAD_RELEASE_BY_PROJECT
 } from '../actions/sprintActions'
 
 
@@ -47,6 +51,20 @@ const initialState = {
             endDate: '',
         }
     },
+    upcomingTaskModal: {
+        modalVisible: false,
+        modalTitle: 'Edit Task',
+        okText: 'Update',
+        release: '',
+        EditInfo: {
+            taskName: '',
+            description: '',
+            projectName: '',
+            taskType: '',
+            estHour: '',
+            assignedUser: ''
+        }
+    },
     projects: [
         'All Plugin',
         'Dokan',
@@ -58,6 +76,12 @@ const initialState = {
         'Project Manager',
         'wePOS'
     ],
+    sprintList: [{
+        // name: 'ERP Sprint Oct-2019'
+    }],
+    releaseList: [{
+        version: 'Pro v2.3.4'
+    }],
 }
 
 const sprintReducer = (state = initialState, action) => {
@@ -121,6 +145,22 @@ const sprintReducer = (state = initialState, action) => {
         case SPRINT_BY_UPCOMING_TASK:
             return Object.assign({}, state, {
                 taskList: action.payload.taskList
+            })
+
+        case SPRINT_LOAD_BY_PROJECT:
+            return Object.assign({}, state, {
+                sprintList: action.payload.sprintList
+            })
+
+        case SPRINT_LOAD_RELEASE_BY_PROJECT:
+            return Object.assign({}, state, {
+                releaseList: action.payload.releaseList
+            })
+
+        case SPRINT_TASK_TOGGLE_MODAL_VISIBLE:
+        case SPRINT_EDIT_TASK:
+            return Object.assign({}, state, {
+                upcomingTaskModal: action.payload.upcomingTaskModal
             })
     }
 

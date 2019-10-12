@@ -11,7 +11,7 @@ export const _TaskStatus = (props) => {
             {
                 subTasks.map((subTask, index) => {
 
-                    let style = { color: 'red' }
+                    let style = { color: 'red', float: 'left' }
                     let badgeStyle = { backgroundColor: '#ff0000ab' }
 
                     if (subTask.completedAt) {
@@ -20,15 +20,15 @@ export const _TaskStatus = (props) => {
                     }
 
                     return (
-                        <span key={index} style={style}>
+                        <div key={index} style={style}>
                             |
-                                &nbsp;
-                                    <i>{subTask.assignedUser}::</i>
-                                <i style={{ color: "#0000ffbd"}}>{subTask.name}</i>
-                                #{ subTask.estHour }
-                                &nbsp;
+                            <span style={{ padding: '5px', fontStyle: 'italic'}}>
+                                <span>{subTask.assignedUser}:</span>
+                                <span style={{ fontWeight: 'bold'}}>{subTask.estHour}:</span>
+                                <span style={{ color: "#0000ffbd" }}>{subTask.name}</span>
+                            </span>
                             |
-                        </span>
+                        </div>
                     )
 
                 })

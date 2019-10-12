@@ -70,6 +70,8 @@ export const List = (props) => {
                 const color = findItem.color
                 return <div>
                     <Tag color={color}>{record.name}</Tag>
+                    <span style={{ fontStyle: 'italic', color: '#0000ff9e'}}>{ record.restOfDays } Days</span>
+
                     <div style={{ fontStyle: 'italic', paddingTop: '5px'}}>
                         Est:<span style={{color: 'blue', paddingRight: '5px'}}>{ record.est }</span>
                         Due:<span style={{color: 'red', paddingRight: '5px'}}>{record.due}</span>
@@ -187,6 +189,8 @@ export const List = (props) => {
             est: item.est,
             complete: item.complete,
             due: item.due,
+            userDetails: item.userDetails,
+            restOfDays: item.restOfDays,
         }
     })
 
@@ -203,7 +207,7 @@ export const List = (props) => {
                     <div style={{ margin: 0 }}>
                         <_ChangeLog {...props} description={record.description} />
 
-                        <TaskList {...props} sprintName={record.name} />
+                        <TaskList {...props} sprintName={record.name} userDetails={record.userDetails}/>
                     </div>
                 }
             />

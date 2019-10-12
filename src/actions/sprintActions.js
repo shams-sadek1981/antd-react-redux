@@ -28,6 +28,10 @@ export const SPRINT_SEARCH_BY = "SPRINT_SEARCH_BY"
 export const RELEASE_CHANGE_PAGINATION = "RELEASE_CHANGE_PAGINATION"
 
 export const SPRINT_BY_UPCOMING_TASK = "SPRINT_BY_UPCOMING_TASK"
+export const SPRINT_EDIT_TASK = "SPRINT_EDIT_TASK"
+export const SPRINT_TASK_TOGGLE_MODAL_VISIBLE = "SPRINT_TASK_TOGGLE_MODAL_VISIBLE"
+export const SPRINT_LOAD_BY_PROJECT = "SPRINT_LOAD_BY_PROJECT"
+export const SPRINT_LOAD_RELEASE_BY_PROJECT = "SPRINT_LOAD_RELEASE_BY_PROJECT"
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -265,6 +269,9 @@ export const deleteTaskFromSprint = item => (dispatch, getState) => {
 
             dispatch(loadTaskBySprint(sprint))
 
+            //-- reload for refresh
+            dispatch(sprintSearchByResult())
+
         })
         .catch(err => console.log(err))
 }
@@ -407,8 +414,6 @@ export const editItem = (id) => (dispatch, getState) => {
 
     const findItem = list.find(item => item._id == id)
 
-    console.log(findItem)
-
     const EditInfo = {
         _id: findItem._id,
         name: findItem.name,
@@ -431,6 +436,7 @@ export const editItem = (id) => (dispatch, getState) => {
             }
         }
     })
+    
 }
 
 
@@ -492,4 +498,178 @@ export const removeItem = (id) => (dispatch, getState) => {
         .then(data => {
             dispatch(sprintSearchByResult())
         })
+}
+
+/**
+ * ------------------------------------------------------------------------------------------------------
+ * Edit Task
+ * ------------------------------------------------------------------------------------------------------
+ */
+export const editTask = (sprintName, id) => (dispatch, getState) => {
+
+    const { taskList, upcomingTaskModal } = getState().sprintReducer
+
+    const findSprint = taskList.find(item => item.sprintName == sprintName)
+    const findTask = findSprint.result.find(item => item._id == id)
+
+    // dispatch({
+    //     type: 'BBB',
+    //     payload: {
+    //         findSprint,
+    //         findTask
+    //     }
+    // })
+
+    //-- load project releated release
+    // dispatch(loadRelease(findTask.projectName))
+    // dispatch(loadSprint(findTask.projectName))
+
+    dispatch({
+        type: SPRINT_EDIT_TASK,
+        payload: {
+            upcomingTaskModal: {
+                ...upcomingTaskModal,
+                modalTitle: 'Edit Task',
+                okText: 'Update',
+                EditInfo: findTask,
+                modalVisible: true
+            }
+        }
+    })
+
+    dispatch(loadSprintByProject(findTask.projectName))
+    dispatch(loadReleaseByProject(findTask.projectName))
+}
+
+//-- Handle Submit
+export const handleUpdateFromUpcomingTask = (values) => (dispatch, getState) => {
+
+    const { upcomingTaskModal } = getState().sprintReducer
+
+    //-- Update Task
+    // dispatch(updateTask(values))
+    //-- get User Name from userInfo
+    const { userInfo } = getState().userReducer
+
+    let newValues = { ...values, updatedBy: userInfo.name }
+
+    dispatch({
+        type: 'KKK',
+        oldSprint: upcomingTaskModal.EditInfo.sprint,
+        newSprint: newValues.sprint
+    })
+
+    if (values.completedAt != null) {
+        newValues = {
+            ...values,
+            completedAt: moment(values.completedAt).format('YYYY-MM-DD'),
+        }
+    }
+
+    const { _id } = upcomingTaskModal.EditInfo
+
+    put('/upcoming-task/update/' + _id, newValues)
+        .then(data => {
+
+            dispatch(toggleTaskModalVisible())
+
+            // dispatch(loadTaskBySprint(newValues.sprint))
+            dispatch(loadTaskBySprint(upcomingTaskModal.EditInfo.sprint))
+            dispatch(sprintSearchByResult())
+
+            
+
+        })
+        .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
+}
+
+
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * Task Modal form toggle (visible or no)
+ * ----------------------------------------------------------------------------------------------------
+ */
+export const toggleTaskModalVisible = () => (dispatch, getState) => {
+
+    const { upcomingTaskModal } = getState().sprintReducer
+
+    dispatch({
+        type: SPRINT_TASK_TOGGLE_MODAL_VISIBLE,
+        payload: {
+            upcomingTaskModal: {
+                ...upcomingTaskModal,
+                modalVisible: !upcomingTaskModal.modalVisible
+            }
+        }
+    })
+}
+
+
+/**
+ * ----------------------------------------------------------------------------------------
+ * load Sprint data for task editing period
+ * ----------------------------------------------------------------------------------------
+ * 
+ */
+export const loadSprintByProject = projectName => (dispatch, getState) => {
+
+    const current = 1
+    const pageSize = 10
+    const status = false
+
+    const searchUrl = `/sprint?page=${current}&limit=${pageSize}&project=${projectName}&status=${status}&text=`
+
+
+    return get(searchUrl)
+        .then(data => {
+
+            const sprintList = data.map(item => {
+                return {
+                    name: item.name,
+                    endDate: moment(item.endDate).format("DD-MMM-YYYY"),
+                }
+            })
+
+            dispatch({
+                type: SPRINT_LOAD_BY_PROJECT,
+                payload: {
+                    sprintList
+                }
+            })
+        })
+        .catch(err => console.log(err))
+}
+
+/**
+ * ----------------------------------------------------------------------------------------
+ * load Release data for task editing period
+ * ----------------------------------------------------------------------------------------
+ * 
+ */
+export const loadReleaseByProject = projectName => (dispatch, getState) => {
+
+    const current = 1
+    const pageSize = 10
+    const status = false
+
+    const searchUrl = `/release?page=${current}&pageSize=${pageSize}&project=${projectName}&status=${status}&text=`
+
+    return get(searchUrl)
+        .then(data => {
+
+            const releaseList = data.result.map(item => {
+                return {
+                    version: item.version,
+                    releaseDate: moment(item.releaseDate).format("DD-MMM-YYYY"),
+                }
+            })
+
+            dispatch({
+                type: SPRINT_LOAD_RELEASE_BY_PROJECT,
+                payload: {
+                    releaseList
+                }
+            })
+        })
+        .catch(err => console.log(err))
 }
