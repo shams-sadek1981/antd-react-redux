@@ -18,7 +18,9 @@ import {
     SPRINT_EDIT_TASK,
     SPRINT_TASK_TOGGLE_MODAL_VISIBLE,
     SPRINT_LOAD_BY_PROJECT,
-    SPRINT_LOAD_RELEASE_BY_PROJECT
+    SPRINT_LOAD_RELEASE_BY_PROJECT,
+    SPRINT_EDIT_SUBTASK,
+    SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE
 } from '../actions/sprintActions'
 
 
@@ -65,6 +67,19 @@ const initialState = {
             assignedUser: ''
         }
     },
+    subTaskModal: {
+        modalVisible: false,
+        taskId: '',
+        taskName: 'Elementor',
+        modalTitle: 'Create Sub Task',
+        okText: 'Create',
+        EditInfo: {
+            name: '',
+            estHour: '',
+            assignedUser: ''
+        },
+        startDate: null
+    },
     projects: [
         'All Plugin',
         'Dokan',
@@ -82,6 +97,7 @@ const initialState = {
     releaseList: [{
         version: 'Pro v2.3.4'
     }],
+    subTaskList: ['API','SRS', 'R&D', 'Mockup', 'Design', 'Frontend', 'Develop', 'Merge', 'Testing', 'Documentation']
 }
 
 const sprintReducer = (state = initialState, action) => {
@@ -161,6 +177,12 @@ const sprintReducer = (state = initialState, action) => {
         case SPRINT_EDIT_TASK:
             return Object.assign({}, state, {
                 upcomingTaskModal: action.payload.upcomingTaskModal
+            })
+
+        case SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE:
+        case SPRINT_EDIT_SUBTASK:
+            return Object.assign({}, state, {
+                subTaskModal: action.payload.subTaskModal
             })
     }
 

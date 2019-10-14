@@ -68,7 +68,12 @@ export const TaskList = (props) => {
                                             {++index}. {item.taskName}
                                         </a>
                                         
-                                        <_TaskStatus subTasks={item.subTasks} />
+                                        <_TaskStatus
+                                            {...props}
+                                            subTasks={item.subTasks}
+                                            taskId={ item._id}
+                                            sprintName={sprintName}
+                                        />
                                     </Col>
 
                                         <Col span={2} align="right">
@@ -82,7 +87,7 @@ export const TaskList = (props) => {
                                         <Col span={3} align="right">
                                             <Progress type="circle" percent={item.percent} width={50} style={{ padding: '5px 10px', }} />
                                             {
-                                                (handlePermission(props, 'release_task_delete')) &&
+                                                (handlePermission(props, 'sprint_task_delete')) &&
                                                 <Popconfirm title="Are you sure to remove from sprint?"
                                                     onConfirm={(e) => confirm(item)}
                                                     okText="Yes" cancelText="No">

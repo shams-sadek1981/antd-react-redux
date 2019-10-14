@@ -8,6 +8,7 @@ import { List } from './List'
 import { NewModal } from './NewModal'
 import { SearchHeader } from './SearchHeader'
 import { TaskModal } from './TaskModal'
+import { SubTaskModal } from './SubTaskModal'
 
 
 import {
@@ -22,7 +23,8 @@ import {
     handleSubmit,
     sprintSearchByResult,
     changeTabKey,
-    handleUpdateFromUpcomingTask
+    handleUpdateFromUpcomingTask,
+    updateSubTask
 } from '../../actions/sprintActions'
 
 import { getAllProject } from '../../actions/projectActions';
@@ -78,6 +80,22 @@ class Sprint extends Component {
         });
     }
 
+    //-- Modal SubTask update form submit
+    handleSubTaskUpdate = () => {
+        const form = this.formRef.props.form;
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+            console.log('Received values of form: ', values);
+
+            this.props.dispatch(updateSubTask(values))
+
+            form.resetFields();
+        });
+    }
+
+
     saveFormRef = (formRef) => {
         this.formRef = formRef;
     }
@@ -105,6 +123,15 @@ class Sprint extends Component {
                         wrappedComponentRef={this.saveFormRef}
                         // onCancel={this.handleCancel}
                         onCreate={this.handleTaskUpdate}
+                    />
+                }
+                
+                {sprint.subTaskModal.modalVisible &&
+                    <SubTaskModal
+                        {...this.props}
+                        wrappedComponentRef={this.saveFormRef}
+                        // onCancel={this.handleCancel}
+                        onCreate={this.handleSubTaskUpdate}
                     />
                 }
 

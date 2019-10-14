@@ -32,6 +32,8 @@ export const SPRINT_EDIT_TASK = "SPRINT_EDIT_TASK"
 export const SPRINT_TASK_TOGGLE_MODAL_VISIBLE = "SPRINT_TASK_TOGGLE_MODAL_VISIBLE"
 export const SPRINT_LOAD_BY_PROJECT = "SPRINT_LOAD_BY_PROJECT"
 export const SPRINT_LOAD_RELEASE_BY_PROJECT = "SPRINT_LOAD_RELEASE_BY_PROJECT"
+export const SPRINT_EDIT_SUBTASK = "SPRINT_EDIT_SUBTASK"
+export const SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE = "SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE"
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -436,7 +438,7 @@ export const editItem = (id) => (dispatch, getState) => {
             }
         }
     })
-    
+
 }
 
 
@@ -577,7 +579,7 @@ export const handleUpdateFromUpcomingTask = (values) => (dispatch, getState) => 
             dispatch(loadTaskBySprint(upcomingTaskModal.EditInfo.sprint))
             dispatch(sprintSearchByResult())
 
-            
+
 
         })
         .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
@@ -672,4 +674,90 @@ export const loadReleaseByProject = projectName => (dispatch, getState) => {
             })
         })
         .catch(err => console.log(err))
+}
+
+/**
+ * ------------------------------------------------------------------------------------------------------
+ * Edit Sub Task
+ * ------------------------------------------------------------------------------------------------------
+ */
+export const editSubTask = (sprintName, taskId, subTaskId) => (dispatch, getState) => {
+
+    const { taskList, subTaskModal } = getState().sprintReducer
+
+    const findSprint = taskList.find(item => item.sprintName == sprintName)
+    const findTask = findSprint.result.find(item => item._id == taskId)
+    const findSubTask = findTask.subTasks.find(item => item._id == subTaskId)
+
+    dispatch({
+        type: SPRINT_EDIT_SUBTASK,
+        payload: {
+            subTaskModal: {
+                // ...subTaskModal,
+                modalTitle: 'Edit Sub Task',
+                okText: 'Update',
+                EditInfo: { ...findSubTask, taskName: findTask.taskName },
+                modalVisible: true,
+                taskId,
+                sprintName
+            }
+        }
+    })
+}
+
+/**
+ * Handle SubTask Edit
+ * @param {*} values 
+ */
+export const updateSubTask = (values) => (dispatch, getState) => {
+
+    const { userInfo } = getState().userReducer
+    const { subTaskModal } = getState().sprintReducer
+    const newValues = { ...values, updatedBy: userInfo.name }
+
+    const subTaskId = values._id
+    const sprintName = subTaskModal.sprintName
+
+    // dispatch({
+    //     type: 'ABC',
+    //     payload: {
+    //         newValues,
+    //         subTaskId,
+    //         sprintName
+    //     }
+    // })
+
+    put(`/upcoming-task/subtask/update/${subTaskId}`, newValues)
+        .then(data => {
+
+            dispatch(toggleSubtaskModalVisible())
+
+            //-- Main Line item only Sprint Info
+            dispatch(sprintSearchByResult())
+
+            //-- subTask list by sprint name
+            dispatch(loadTaskBySprint(sprintName))
+
+        })
+        .catch(err => console.log(err))
+}
+
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * Subtask Modal form toggle (visible or no)
+ * ----------------------------------------------------------------------------------------------------
+ */
+export const toggleSubtaskModalVisible = () => (dispatch, getState) => {
+
+    const { subTaskModal } = getState().sprintReducer
+
+    dispatch({
+        type: SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE,
+        payload: {
+            subTaskModal: {
+                ...subTaskModal,
+                modalVisible: !subTaskModal.modalVisible,
+            }
+        }
+    })
 }
