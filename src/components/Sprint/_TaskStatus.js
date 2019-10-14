@@ -8,11 +8,11 @@ export const _TaskStatus = (props) => {
     const { subTasks, dispatch, taskId, sprintName } = props
 
     return (
-        <div style={{ paddingTop: '10px' }}>
+        <div style={{ paddingTop: '10px', display: 'flex' }}>
             {
                 subTasks.map((subTask, index) => {
 
-                    let style = { color: 'red', float: 'left' }
+                    let style = { color: 'red' }
                     let badgeStyle = { backgroundColor: '#ff0000ab' }
 
                     if (subTask.completedAt) {
