@@ -20,7 +20,8 @@ import {
     SPRINT_LOAD_BY_PROJECT,
     SPRINT_LOAD_RELEASE_BY_PROJECT,
     SPRINT_EDIT_SUBTASK,
-    SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE
+    SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE,
+    SPRINT_FILTER_BY_USER_NAME
 } from '../actions/sprintActions'
 
 
@@ -39,6 +40,7 @@ const initialState = {
         status: false
     },
     taskList:[],
+    taskListByFilter:[],
     spinning: false,
     list: [],
     modal: {
@@ -113,6 +115,7 @@ const sprintReducer = (state = initialState, action) => {
         case RELEASE_REMOVE_TASK:
             return Object.assign({}, state, {
                 taskList: action.payload.taskList,
+                taskListByFilter: action.payload.taskList
             })
 
         case SPRINT_SEARCH_BY_RESULT:
@@ -160,7 +163,13 @@ const sprintReducer = (state = initialState, action) => {
             
         case SPRINT_BY_UPCOMING_TASK:
             return Object.assign({}, state, {
-                taskList: action.payload.taskList
+                taskList: action.payload.taskList,
+                taskListByFilter: action.payload.taskList
+            })
+
+        case SPRINT_FILTER_BY_USER_NAME:
+            return Object.assign({}, state, {
+                taskListByFilter: action.payload.taskListByFilter
             })
 
         case SPRINT_LOAD_BY_PROJECT:

@@ -34,6 +34,7 @@ export const SPRINT_LOAD_BY_PROJECT = "SPRINT_LOAD_BY_PROJECT"
 export const SPRINT_LOAD_RELEASE_BY_PROJECT = "SPRINT_LOAD_RELEASE_BY_PROJECT"
 export const SPRINT_EDIT_SUBTASK = "SPRINT_EDIT_SUBTASK"
 export const SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE = "SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE"
+export const SPRINT_FILTER_BY_USER_NAME = "SPRINT_FILTER_BY_USER_NAME"
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -758,6 +759,39 @@ export const toggleSubtaskModalVisible = () => (dispatch, getState) => {
                 ...subTaskModal,
                 modalVisible: !subTaskModal.modalVisible,
             }
+        }
+    })
+}
+
+
+//-- filter by user name in sptint
+export const filterByUserName = (sprintName, userName) => (dispatch, getState) => {
+    
+    const { taskList } = getState().sprintReducer
+    
+    let sprintList = taskList.find(item => item.sprintName == sprintName)
+    const sprintIndex = taskList.findIndex(item => item.sprintName == sprintName)
+    
+    
+    const newResult = sprintList.result.filter( task => {
+
+        const findUser = task.subTasks.find( subTask => subTask.assignedUser == userName)
+
+        if(findUser) {
+            return task
+        }
+    })
+
+    // set new sprint list
+    sprintList = {
+        ...sprintList,
+        result: newResult
+    }
+
+    dispatch({
+        type: SPRINT_FILTER_BY_USER_NAME,
+        payload: {
+            taskListByFilter: [sprintList]
         }
     })
 }

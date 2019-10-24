@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
-import { List, Button, Progress, Timeline, Icon, Popconfirm, Tag, Row, Col } from 'antd';
+import { Rate, Button, Progress, Timeline, Icon, Popconfirm, Tag, Row, Col } from 'antd';
 
-import { deleteTaskFromSprint, editTask } from '../../actions/sprintActions'
+import { deleteTaskFromSprint, editTask, filterByUserName } from '../../actions/sprintActions'
 import { _TaskStatus } from './_TaskStatus'
 import { _TaskEstHour } from './_TaskEstHour'
 import { handlePermission } from '../../functions'
@@ -12,9 +12,7 @@ export const TaskList = (props) => {
 
     const { dispatch, sprint, sprintName, userDetails } = props
 
-    const taskListBySprint = sprint.taskList.filter(item => item.sprintName == sprintName)
-
-    const sprintList = taskListBySprint[0]
+    const sprintList = sprint.taskListByFilter.find(item => item.sprintName == sprintName)
 
     //-- Delete Task From Sprint
     const confirm = item => dispatch(deleteTaskFromSprint(item))
@@ -35,7 +33,11 @@ export const TaskList = (props) => {
 
             <div style={{ marginLeft: '60px' }}>
                 {userDetails.map((item, index) =>
-                    <div key={index} style={{ float: 'left', border: '1px solid #c0c0c057', borderRadius: '5px', padding: '10px', marginRight: '10px' }}>
+                    <div
+                        key={index}
+                        style={{ float: 'left', border: '1px solid #c0c0c057', borderRadius: '5px', padding: '10px', marginRight: '10px' }}
+                        onClick={ () => dispatch(filterByUserName(sprintName, item.userName))}
+                    >
                         <Progress type="circle" percent={item.percent} width={50} style={{ marginRight: '25px' }} />
                         <Tag color={randomColor()} style={{ fontStyle: 'italic', fontWeight: 'bold' }}>
                             {item.userName}:
@@ -55,19 +57,18 @@ export const TaskList = (props) => {
             </div>
             <div style={{ clear: 'both', marginBottom: '15px' }}></div>
 
-            {sprintList &&
+            { sprintList &&
                 <div className={styles.taskList}>
                     <ul>
                         {sprintList.result.map((item, index) => (
                             <li key={index} style={{ background: 'rgb(255, 255, 255)', marginBottom: '3px', borderBottom: '1px solid rgba(0, 0, 0, 0.1)' }}>
                                 <Row gutter={24}>
                                     <Col span={19}>
-                                        <a href="javascript:;" onClick={() => {
+                                        <a style={{ color: 'black'}} href="javascript:;" onClick={() => {
                                                 dispatch(editTask(sprintName, item._id))
                                         }}>
                                             {++index}. {item.taskName}
                                         </a>
-                                        
                                         <_TaskStatus
                                             {...props}
                                             subTasks={item.subTasks}

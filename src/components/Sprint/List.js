@@ -197,8 +197,8 @@ export const List = (props) => {
     return (
         <Fragment>
             <Table
-                loading={release.spinning}
-                pagination={release.pagination}
+                loading={sprint.spinning}
+                pagination={sprint.pagination}
                 onChange={handleTableChange}
                 columns={columns}
                 dataSource={data} size="small"
