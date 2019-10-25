@@ -69,7 +69,7 @@ export const List = (props) => {
                 const findItem = weekDays.find(item => item.name == moment(record.endDate).format('ddd'))
                 const color = findItem.color
                 return <div>
-                    <Tag color={color}>{record.name}</Tag>
+                    <Tag color={color} onClick={ () => dispatch(loadTaskBySprint(record.name))}>{record.name}</Tag>
                     <span style={{ fontStyle: 'italic', color: '#0000ff9e'}}>{ record.restOfDays } Days</span>
 
                     <div style={{ fontStyle: 'italic', paddingTop: '5px'}}>
