@@ -138,13 +138,17 @@ export const toggleSpinning = (booleanValue) => (dispatch, getState) => {
     })
 }
 
-export const searchBy = (fieldName, value) => (dispatch, getState) => {
+export const searchBy = (fieldName, value) => async (dispatch, getState) => {
 
     dispatch(toggleSpinning(true))
 
     let { searchBy, pagination, tabKey } = getState().sprintReducer
     const { current } = pagination
-    const { name, project, text, status } = searchBy
+    let { name, project, text, status } = searchBy
+
+    // set projects of user for permission
+    const { userInfo } = getState().userReducer
+    project = await getProjectSearchBy(userInfo, project)
 
     //-- set Search by
     searchBy = {
@@ -209,15 +213,24 @@ const setObjForSearchResult = (obj) => {
  * ----------------------------------------------------------------------------------------------------
  * get Result Helper function
  * ----------------------------------------------------------------------------------------------------
- * @param {*} current 
- * @param {*} project 
- * @param {*} status 
- * @param {*} text 
+ * @param {*} current
+ * @param {*} project
+ * @param {*} status
+ * @param {*} text
  */
 
 const getResult = (current, pageSize, project, status, text) => {
 
-    const searchUrl = `/sprint?page=${current}&limit=${pageSize}&project=${project}&status=${status}&text=${text}`
+    let newProjectParams = ''
+    if (Array.isArray(project)) {
+        project.forEach(item => {
+            newProjectParams += "project=" + item + "&"
+        })
+    } else {
+        newProjectParams = "project=" + project
+    }
+
+    const searchUrl = `/sprint?page=${current}&limit=${pageSize}&${newProjectParams}&status=${status}&text=${text}`
 
     return get(searchUrl)
         .then(data => data)
@@ -285,13 +298,17 @@ export const deleteTaskFromSprint = item => (dispatch, getState) => {
  * Task Result
  * ------------------------------------------------------------------------------------------
  */
-export const sprintSearchByResult = () => (dispatch, getState) => {
+export const sprintSearchByResult = () => async (dispatch, getState) => {
 
     let { searchBy, pagination } = getState().sprintReducer
     let { current, pageSize } = pagination
-    const { project, text, status } = searchBy
+    let { project, text, status } = searchBy
 
-    getResult(current, pageSize, project, status, text)
+    const { userInfo } = getState().userReducer
+
+    project = await getProjectSearchBy(userInfo, project)
+
+    await getResult(current, pageSize, project, status, text)
         .then(data => {
             dispatch({
                 type: SPRINT_SEARCH_BY_RESULT,
@@ -303,6 +320,20 @@ export const sprintSearchByResult = () => (dispatch, getState) => {
         })
 }//-- end function
 
+
+//-- Set Project Search By
+function getProjectSearchBy(userInfo, project) {
+
+    let newProjectList = ['all']
+    if (userInfo.projects.length > 0) {
+        if (project[0] == 'all') {
+            userInfo.projects.forEach(item => newProjectList.push(item.projectName))
+            project = newProjectList
+        }
+    }
+
+    return project
+}
 
 
 //-- Handle Submit
@@ -771,7 +802,6 @@ export const filterByUserName = (sprintName, userName) => (dispatch, getState) =
     
     let sprintList = taskList.find(item => item.sprintName == sprintName)
     const sprintIndex = taskList.findIndex(item => item.sprintName == sprintName)
-    
     
     const newResult = sprintList.result.filter( task => {
 

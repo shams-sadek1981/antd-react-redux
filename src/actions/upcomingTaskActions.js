@@ -375,8 +375,6 @@ export const filterProjectByUser = () => (dispatch, getState) => {
             }
         })
     }
-
-
 }
 
 

@@ -27,7 +27,9 @@ import {
     updateSubTask
 } from '../../actions/sprintActions'
 
-import { getAllProject } from '../../actions/projectActions';
+import { getAllProject, getProjectByUser } from '../../actions/projectActions';
+
+import { loadUser, getPermissions } from '../../actions/userActions'
 
 import styles from './styles.module.less'
 
@@ -43,9 +45,13 @@ class Sprint extends Component {
 
     };
 
-    componentDidMount = () => {
+    componentDidMount = async () => {
+        
+        await this.props.dispatch( getPermissions() )
+
         this.props.dispatch(sprintSearchByResult())
-        this.props.dispatch(getAllProject())
+        
+        this.props.dispatch(getProjectByUser())
     }
 
     //-- Modal form submit

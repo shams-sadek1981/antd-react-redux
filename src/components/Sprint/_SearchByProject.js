@@ -21,7 +21,7 @@ export const _SearchByProject = (props) => {
     const { dispatch, release, project } = props
 
     const handleChange = (projectName) => {
-        dispatch(searchBy('project', projectName))
+        dispatch(searchBy('project', [projectName]))
     }
 
     return (

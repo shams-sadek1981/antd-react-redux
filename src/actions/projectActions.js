@@ -44,6 +44,32 @@ export const getAllProject = () => (dispatch, getState) => {
         .catch(err => console.log(err))
 }
 
+//-- Filter by Project
+export const getProjectByUser = () => (dispatch, getState) => {
+
+    const user = getState().userReducer
+
+    let newList = []
+    if (user.userInfo.projects.length > 0) {
+        
+        // get Selected project by user
+        newList = user.userInfo.projects.map(item => ({
+            _id: item._id,
+            name: item.projectName
+        }))
+
+        dispatch({
+            type: PROJECT_LOAD,
+            payload: {
+                list: newList
+            }
+        })
+    } else {
+        // get all project
+        dispatch(getAllProject())
+    }
+}
+
 
 /**
  * 
