@@ -96,8 +96,12 @@ export const changeTabKey = (value) => (dispatch, getState) => {
     //-- step-3 fetch data from API
     const current = 1
     const status = newStatus
-    const { project, text } = searchBy
+    let { project, text } = searchBy
 
+
+    //-- set Project (array) Search By for user permission
+    const { userInfo } = getState().userReducer
+    project = getProjectSearchBy(userInfo, project)
 
     // console.log(pageSize)
 
