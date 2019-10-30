@@ -70,7 +70,11 @@ export const List = (props) => {
                 const color = findItem.color
                 return <div>
                     <Tag color={color} onClick={ () => dispatch(loadTaskBySprint(record.name))}>{record.name}</Tag>
-                    <span style={{ fontStyle: 'italic', color: '#0000ff9e'}}>{ record.restOfDays } Days</span>
+                    <span style={{ fontStyle: 'italic', color: '#0000ff9e'}}>
+                        { record.restOfDays > 1 && record.restOfDays + ' Days' }
+                        { record.restOfDays == 1 && '1 Day' }
+                        { record.restOfDays == 0 && ' Last Day' }
+                    </span>
 
                     <div style={{ fontStyle: 'italic', paddingTop: '5px'}}>
                         Est:<span style={{color: 'blue', paddingRight: '5px'}}>{ record.est }</span>
