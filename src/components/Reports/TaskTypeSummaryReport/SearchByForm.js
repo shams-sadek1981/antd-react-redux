@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import moment from 'moment'
 import { Select, Form, DatePicker, Button } from 'antd';
 
-import { searchByTaskTypeSummary } from '../../../actions/reportsActions';
+import { searchByTaskTypeSummary, changeSearchField } from '../../../actions/reportsActions';
 import { DateRange } from '../DateRange'
 
 const { Option } = Select;
@@ -18,7 +18,7 @@ function handleFocus() {
 
 export const SearchByForm = (props) => {
 
-    const { dispatch, users, reports, form, handleSubmit } = props
+    const { dispatch, users, reports, form, handleSubmit, projects } = props
     const { getFieldDecorator } = form;
 
     // const startOfMonth = moment().startOf('month')
@@ -27,6 +27,22 @@ export const SearchByForm = (props) => {
     return (
         <Fragment>
             <Form layout="inline">
+                <Form.Item label="Select Project">
+                    <Select
+                        defaultValue={ reports.searchBy.project }
+                        style={{ width: 250 }}
+                        showSearch
+                        onChange={val => dispatch(changeSearchField(val, 'project'))}
+                    >
+                        <Option value="all">All Project</Option>
+                        {
+                            projects.list.map((item, index) =>
+                                <Option value={item.name} key={index}>{item.name}</Option>
+                            )
+                        }
+                    </Select>
+                </Form.Item>
+
                 <DateRange {...props}/>
 
                 <Form.Item>

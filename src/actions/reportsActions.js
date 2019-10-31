@@ -196,9 +196,9 @@ export const searchByTaskTypeSummary = (values) => (dispatch, getState) => {
 
     dispatch(toggleSpinning(true))
 
-    const { startDate, endDate } = getState().reportsReducer.searchBy
+    const { startDate, endDate, project } = getState().reportsReducer.searchBy
 
-    const searchUrl = `/upcoming-task/subtask/report-task-type-summary?startDate=${startDate}&endDate=${endDate}`
+    const searchUrl = `/upcoming-task/subtask/report-task-type-summary?startDate=${startDate}&endDate=${endDate}&projectName=${project}`
 
     const { searchBy } = getState().reportsReducer
 
@@ -227,9 +227,9 @@ export const searchBySubTaskSummary = (values) => (dispatch, getState) => {
 
     dispatch(toggleSpinning(true))
 
-    const { startDate, endDate } = getState().reportsReducer.searchBy
+    const { startDate, endDate, project } = getState().reportsReducer.searchBy
 
-    const searchUrl = `/upcoming-task/subtask/report-subtask-summary?startDate=${startDate}&endDate=${endDate}`
+    const searchUrl = `/upcoming-task/subtask/report-subtask-summary?startDate=${startDate}&endDate=${endDate}&projectName=${project}`
 
     const { searchBy } = getState().reportsReducer
 
