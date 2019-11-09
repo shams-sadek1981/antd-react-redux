@@ -286,18 +286,25 @@ export const loadTaskBySearchItems = () => (dispatch, getState) => {
             const otherTaskList = oldTaskList.filter(item => item.sprintName != sprintName)
 
             // sprint list processing
-            const otherSprintList = oldList.filter( item => item.name != sprintName)
-            const currentSprintList = oldList.find( item => item.name == sprintName)
+            const currentSprintDetails = oldList.find( item => item.name == sprintName)
 
-            const newSprintList = {
-                ...currentSprintList,
-                sprintName: data.sprintName,
+            const currentDetails = {
+                ...currentSprintDetails,
                 percent: data.percent,
                 est: data.est,
                 complete: data.complete,
                 due: data.due,
                 userDetails: data.userDetails
             }
+
+            const findIndex = oldList.findIndex( item => item.name == sprintName)
+
+
+            const newSprintList = [
+                ...oldList.slice(0, findIndex),
+                currentDetails,
+                ...oldList.slice(findIndex+1)
+            ]
 
             dispatch({
                 type: SPRINT_BY_UPCOMING_TASK,
@@ -308,10 +315,7 @@ export const loadTaskBySearchItems = () => (dispatch, getState) => {
                         data
                     ],
                     // Sprint List
-                    list: [
-                        ...otherSprintList,
-                        newSprintList
-                    ]
+                    list: newSprintList
                 }
             })
         })

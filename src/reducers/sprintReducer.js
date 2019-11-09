@@ -21,7 +21,6 @@ import {
     SPRINT_LOAD_RELEASE_BY_PROJECT,
     SPRINT_EDIT_SUBTASK,
     SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE,
-    SPRINT_FILTER_BY_USER_NAME,
     SPRINT_SET_SPRINT_AND_USER
 } from '../actions/sprintActions'
 
@@ -168,12 +167,6 @@ const sprintReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 taskList: action.payload.taskList,
                 list: action.payload.list,
-                // taskListByFilter: action.payload.taskList
-            })
-
-        case SPRINT_FILTER_BY_USER_NAME:
-            return Object.assign({}, state, {
-                // taskListByFilter: action.payload.taskListByFilter
             })
 
         case SPRINT_LOAD_BY_PROJECT:
