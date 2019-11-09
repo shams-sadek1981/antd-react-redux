@@ -208,7 +208,7 @@ export const List = (props) => {
                 dataSource={data} size="small"
                 onExpand={(expended, record) => dispatch(loadTaskBySprint(record.name))}
                 expandedRowRender={record =>
-                    <div style={{ margin: 0 }}>
+                    <div style={{ margin: 0, marginLeft: '-70px' }}>
                         <_ChangeLog {...props} description={record.description} />
 
                         <TaskList {...props} sprintName={record.name} userDetails={record.userDetails}/>

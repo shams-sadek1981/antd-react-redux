@@ -85,14 +85,14 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
 
                         <Row gutter={24}>
                             <Col span={18}>
-                                <Form.Item label="Select SubTask">
+                                <Form.Item label="Select Subtask">
                                     {getFieldDecorator('name', {
                                         initialValue: upcomingTask.subTaskModal.EditInfo.name,
-                                        rules: [{ required: true, message: 'Please select subTask' }],
+                                        rules: [{ required: true, message: 'Please select subtask' }],
                                     })(
                                         <Select
                                             showSearch
-                                            placeholder="Select a SubTask"
+                                            placeholder="Select a Subtask"
                                         >
                                             {
                                                 upcomingTask.subTaskList.map((item, index) => (

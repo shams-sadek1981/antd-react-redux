@@ -10,18 +10,14 @@ export const _ChangeLog = (props) => {
 
     return (
         <Fragment>
-            { data.lenght > 0 &&
-                <h4>Changelog...</h4>
+            {
+                data.map((item, index) => (
+                    (item != "") &&
+                    <div key={index} style={{ marginLeft: '60px'}}>
+                        {item}
+                    </div>
+                ))
             }
-            
-            <ol>
-                {
-                    data.map((item, index) => (
-                        (item != "") &&
-                        <li key={index}>{item}</li>
-                    ))
-                }
-            </ol>
         </Fragment>
     )
 }

@@ -52,7 +52,7 @@ export const addNewSubTask = (taskId) => (dispatch, getState) => {
         payload: {
             subTaskModal: {
                 ...subTaskModal,
-                modalTitle: 'Create a new SubTask',
+                modalTitle: 'Create a new Subtask',
                 okText: 'Create',
                 EditInfo,
                 modalVisible: true,
@@ -152,7 +152,7 @@ export const editSubTask = (taskId, subTaskId) => {
             payload: {
                 subTaskModal: {
                     ...subTaskModal,
-                    modalTitle: 'Edit Sub Task',
+                    modalTitle: 'Edit Subtask',
                     okText: 'Update',
                     EditInfo: {...findSubTask, taskName: findTask.taskName },
                     modalVisible: true,

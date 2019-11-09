@@ -40,7 +40,7 @@ export const _SubTaskView = (props) => {
             key: 'sl',
         },
         {
-            title: 'Sub Task',
+            title: 'Subtask',
             dataIndex: 'subtask',
             key: 'subtask',
             render: (text, record) => (
@@ -153,7 +153,7 @@ export const _SubTaskView = (props) => {
                     (handlePermission(props, 'upcoming_task_subtask_create')) &&
                         dispatch(addNewSubTask(taskId))
                 }}>
-                <Icon type="plus-circle" /> Sub Task
+                <Icon type="plus-circle" /> Subtask
             </a>
             &nbsp;
             <span style={{ marginLeft: "10px" }}>{des}</span>

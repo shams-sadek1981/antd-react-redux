@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { Tag, Button, Progress, Timeline, Icon, Popconfirm } from 'antd';
 
 
-export const _TaskEstHour = (props) => {
+export const _TaskType = (props) => {
 
     const { subTasks } = props
 
@@ -30,17 +30,15 @@ export const _TaskEstHour = (props) => {
     let color = 'orange'
     if (typeof (findItem) != 'undefined') color = findItem.color
 
-    let totalHour = 0
-    subTasks.forEach(item => {
-        totalHour += item.estHour
-    });
-
     return (
         <div style={{ float: "right"}}>
             <Tag color={color} style={{ float: 'right' }}>
-                { props.taskType }:<b>{ totalHour }</b>
+                { props.taskType }
             </Tag>
-            <div style={{ color: '#0000ffa1', float: 'left'}}>{ props.projectName}</div>
+            
+            <div style={{ color: 'rgba(0, 0, 255, 0.36)', float: 'left', width: '120px', textAlign: 'center', marginTop: '10px'}}>
+                { props.projectName}
+            </div>
         </div>
     )
 }

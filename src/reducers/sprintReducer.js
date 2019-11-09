@@ -21,7 +21,8 @@ import {
     SPRINT_LOAD_RELEASE_BY_PROJECT,
     SPRINT_EDIT_SUBTASK,
     SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE,
-    SPRINT_FILTER_BY_USER_NAME
+    SPRINT_FILTER_BY_USER_NAME,
+    SPRINT_SET_SPRINT_AND_USER
 } from '../actions/sprintActions'
 
 
@@ -37,10 +38,12 @@ const initialState = {
         project: ['all'],
         name: 'all',
         text: '',
-        status: false
+        status: false,
+        sprintName: null,
+        sprintByUser: null
     },
     taskList:[],
-    taskListByFilter:[],
+    // taskListByFilter:[],
     spinning: false,
     list: [],
     modal: {
@@ -73,7 +76,7 @@ const initialState = {
         modalVisible: false,
         taskId: '',
         taskName: 'Elementor',
-        modalTitle: 'Create Sub Task',
+        modalTitle: 'Create Subtask',
         okText: 'Create',
         EditInfo: {
             name: '',
@@ -115,7 +118,7 @@ const sprintReducer = (state = initialState, action) => {
         case RELEASE_REMOVE_TASK:
             return Object.assign({}, state, {
                 taskList: action.payload.taskList,
-                taskListByFilter: action.payload.taskList
+                // taskListByFilter: action.payload.taskList
             })
 
         case SPRINT_SEARCH_BY_RESULT:
@@ -164,12 +167,13 @@ const sprintReducer = (state = initialState, action) => {
         case SPRINT_BY_UPCOMING_TASK:
             return Object.assign({}, state, {
                 taskList: action.payload.taskList,
-                taskListByFilter: action.payload.taskList
+                list: action.payload.list,
+                // taskListByFilter: action.payload.taskList
             })
 
         case SPRINT_FILTER_BY_USER_NAME:
             return Object.assign({}, state, {
-                taskListByFilter: action.payload.taskListByFilter
+                // taskListByFilter: action.payload.taskListByFilter
             })
 
         case SPRINT_LOAD_BY_PROJECT:
@@ -192,6 +196,11 @@ const sprintReducer = (state = initialState, action) => {
         case SPRINT_EDIT_SUBTASK:
             return Object.assign({}, state, {
                 subTaskModal: action.payload.subTaskModal
+            })
+
+        case SPRINT_SET_SPRINT_AND_USER:
+            return Object.assign({}, state, {
+                searchBy: action.payload.searchBy
             })
     }
 

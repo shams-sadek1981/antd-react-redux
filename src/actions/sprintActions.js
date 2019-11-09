@@ -35,6 +35,7 @@ export const SPRINT_LOAD_RELEASE_BY_PROJECT = "SPRINT_LOAD_RELEASE_BY_PROJECT"
 export const SPRINT_EDIT_SUBTASK = "SPRINT_EDIT_SUBTASK"
 export const SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE = "SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE"
 export const SPRINT_FILTER_BY_USER_NAME = "SPRINT_FILTER_BY_USER_NAME"
+export const SPRINT_SET_SPRINT_AND_USER = "SPRINT_SET_SPRINT_AND_USER"
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -247,31 +248,76 @@ const getResult = (current, pageSize, project, status, text) => {
  * get upcoming task by sprint
  * ----------------------------------------------------------------------------------------------------
  */
-export const loadTaskBySprint = sprint => (dispatch, getState) => {
+export const loadTaskBySprint = (sprint, assignedUser = null) => (dispatch, getState) => {
 
-    const { taskList: oldTaskList } = getState().sprintReducer
+    const { searchBy } = getState().sprintReducer
 
-    const encodedSprintName = encodeURIComponent(sprint)
+    dispatch({
+        type: SPRINT_SET_SPRINT_AND_USER,
+        payload: {
+            searchBy: {
+                ...searchBy,
+                sprintName: sprint,
+                sprintByUser: assignedUser
+            }
+        }
+    })
 
-    const searchUrl = `/sprint/upcoming-task?sprintName=${encodedSprintName}`
+    // load task
+    dispatch(loadTaskBySearchItems())
+}
+
+// Load Task by Sprint & Assigned User
+export const loadTaskBySearchItems = () => (dispatch, getState) => {
+
+    const { searchBy, taskList: oldTaskList, list: oldList } = getState().sprintReducer
+
+    const { sprintName, sprintByUser } = searchBy
+
+    let searchUrl = `/sprint/upcoming-task?sprintName=${sprintName}`
+
+    if (sprintByUser) {
+        searchUrl += `&assignedUser=${sprintByUser}`
+    }
 
     get(searchUrl)
         .then(data => {
 
-            const otherTaskList = oldTaskList.filter(item => item.sprintName != sprint)
+            const otherTaskList = oldTaskList.filter(item => item.sprintName != sprintName)
+
+            // sprint list processing
+            const otherSprintList = oldList.filter( item => item.name != sprintName)
+            const currentSprintList = oldList.find( item => item.name == sprintName)
+
+            const newSprintList = {
+                ...currentSprintList,
+                sprintName: data.sprintName,
+                percent: data.percent,
+                est: data.est,
+                complete: data.complete,
+                due: data.due,
+                userDetails: data.userDetails
+            }
 
             dispatch({
                 type: SPRINT_BY_UPCOMING_TASK,
                 payload: {
+                    // task list by sprint name
                     taskList: [
                         ...otherTaskList,
                         data
+                    ],
+                    // Sprint List
+                    list: [
+                        ...otherSprintList,
+                        newSprintList
                     ]
                 }
             })
         })
         .catch(err => console.log(err))
 }
+
 
 /**
  * -------------------------------------------------------------------------------------------------
@@ -287,10 +333,7 @@ export const deleteTaskFromSprint = item => (dispatch, getState) => {
     put('/upcoming-task/update/' + _id, newValues)
         .then(data => {
 
-            dispatch(loadTaskBySprint(sprint))
-
-            //-- reload for refresh
-            dispatch(sprintSearchByResult())
+            dispatch(loadTaskBySearchItems())
 
         })
         .catch(err => console.log(err))
@@ -611,10 +654,8 @@ export const handleUpdateFromUpcomingTask = (values) => (dispatch, getState) => 
 
             dispatch(toggleTaskModalVisible())
 
-            // dispatch(loadTaskBySprint(newValues.sprint))
-            dispatch(loadTaskBySprint(upcomingTaskModal.EditInfo.sprint))
-            dispatch(sprintSearchByResult())
-
+            // load task by search items
+            dispatch(loadTaskBySearchItems())
 
 
         })
@@ -730,7 +771,7 @@ export const editSubTask = (sprintName, taskId, subTaskId) => (dispatch, getStat
         payload: {
             subTaskModal: {
                 // ...subTaskModal,
-                modalTitle: 'Edit Sub Task',
+                modalTitle: 'Edit Subtask',
                 okText: 'Update',
                 EditInfo: { ...findSubTask, taskName: findTask.taskName },
                 modalVisible: true,
@@ -754,25 +795,14 @@ export const updateSubTask = (values) => (dispatch, getState) => {
     const subTaskId = values._id
     const sprintName = subTaskModal.sprintName
 
-    // dispatch({
-    //     type: 'ABC',
-    //     payload: {
-    //         newValues,
-    //         subTaskId,
-    //         sprintName
-    //     }
-    // })
 
     put(`/upcoming-task/subtask/update/${subTaskId}`, newValues)
         .then(data => {
 
             dispatch(toggleSubtaskModalVisible())
 
-            //-- Main Line item only Sprint Info
-            dispatch(sprintSearchByResult())
-
-            //-- subTask list by sprint name
-            dispatch(loadTaskBySprint(sprintName))
+            // load task by search items
+            dispatch(loadTaskBySearchItems())
 
         })
         .catch(err => console.log(err))
@@ -799,33 +829,24 @@ export const toggleSubtaskModalVisible = () => (dispatch, getState) => {
 }
 
 
-//-- filter by user name in sptint
-export const filterByUserName = (sprintName, userName) => (dispatch, getState) => {
-    
-    const { taskList } = getState().sprintReducer
-    
-    let sprintList = taskList.find(item => item.sprintName == sprintName)
-    const sprintIndex = taskList.findIndex(item => item.sprintName == sprintName)
-    
-    const newResult = sprintList.result.filter( task => {
+/**
+ * -------------------------------------------------------------------------------------------------
+ * Update Running Task
+ * -------------------------------------------------------------------------------------------------
+ */
+export const updateRunningTask = obj => (dispatch, getState) => {
 
-        const findUser = task.subTasks.find( subTask => subTask.assignedUser == userName)
+        const { _id } = obj
 
-        if(findUser) {
-            return task
-        }
-    })
+        console.log(obj)
 
-    // set new sprint list
-    sprintList = {
-        ...sprintList,
-        result: newResult
-    }
+        put('/upcoming-task/update/' + _id, obj )
+            .then(data => {
 
-    dispatch({
-        type: SPRINT_FILTER_BY_USER_NAME,
-        payload: {
-            taskListByFilter: [sprintList]
-        }
-    })
+                // load task by search items
+                dispatch(loadTaskBySearchItems())
+
+                openNotificationWithIcon('success', 'Update Status', 'Updated successfully')
+            })
+            .catch(err => openNotificationWithIcon('error', 'Error', 'Something is wrong'))
 }
