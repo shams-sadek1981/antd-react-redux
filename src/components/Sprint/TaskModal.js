@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import moment from 'moment'
 import {
-    Button, Modal, Form, Input, Radio, Icon, Select, DatePicker, Switch, Row, Col
+    Button, Modal, Form, Input, Radio, Icon, Select, DatePicker, Switch, Row, Col, Popconfirm
 } from 'antd';
 
+import { handlePermission } from '../../functions'
 
 import { toggleTaskModalVisible, deleteTask } from '../../actions/sprintActions'
 
@@ -40,10 +41,16 @@ export const TaskModal = Form.create({ name: 'form_in_modal' })(
                     okText={sprint.upcomingTaskModal.okText}
                     onCancel={() => dispatch(toggleTaskModalVisible())}
                     footer={[
+                        (handlePermission(this.props, 'upcoming_task_delete')) &&
                         sprint.upcomingTaskModal.okText != "Create" &&
-                        <Button type="danger" key="back" onClick={ () => dispatch(deleteTask(sprint.upcomingTaskModal.EditInfo._id))}>
-                            Delete
-                        </Button>,
+                        <Popconfirm title="Are you sure to delete this task?"
+                                onConfirm={(e) => dispatch(deleteTask(sprint.upcomingTaskModal.EditInfo._id)) }
+                                okText="Yes" cancelText="No">
+
+                                <Button type="danger" key="back">
+                                    Delete
+                                </Button>
+                        </Popconfirm>,
                         <Button key="submit" type="primary" onClick={ onCreate }>
                             { sprint.subTaskModal.okText }
                         </Button>,

@@ -16,6 +16,7 @@ export const SPRINT_EDIT_ITEM = "SPRINT_EDIT_ITEM"
 export const RELEASE_UPDATE_ITEM = "RELEASE_UPDATE_ITEM"
 
 export const SPRINT_SPINNING = "SPRINT_SPINNING"
+export const SPRINT_LOADING = "SPRINT_LOADING"
 
 export const SPRINT_TOGGLE_MODAL_VISIBLE = "SPRINT_TOGGLE_MODAL_VISIBLE"
 
@@ -81,6 +82,9 @@ export const changePagination = (pagination) => {
  */
 export const changeTabKey = (value) => (dispatch, getState) => {
 
+    // start spinning
+    dispatch(toggleSpinning(true))
+
     const { searchBy, pagination } = getState().sprintReducer
     const { pageSize } = pagination
 
@@ -125,6 +129,10 @@ export const changeTabKey = (value) => (dispatch, getState) => {
                     list: data
                 }
             })
+
+            // start spinning
+            dispatch(toggleSpinning(false))
+
         }).catch(err => console.log(err))
 
 }//-- end
@@ -141,6 +149,16 @@ export const toggleSpinning = (booleanValue) => (dispatch, getState) => {
         type: SPRINT_SPINNING,
         payload: {
             spinning: booleanValue
+        }
+    })
+}
+
+//-- Toggle Loading
+export const toggleLoading = (booleanValue) => (dispatch, getState) => {
+    dispatch({
+        type: SPRINT_LOADING,
+        payload: {
+            loading: booleanValue
         }
     })
 }
@@ -272,6 +290,9 @@ export const loadTaskBySprint = (sprint, assignedUser = null) => (dispatch, getS
 // Load Task by Sprint & Assigned User
 export const loadTaskBySearchItems = () => (dispatch, getState) => {
 
+    // spinning start
+    dispatch(toggleLoading(true))
+
     const { searchBy, taskList: oldTaskList, list: oldList } = getState().sprintReducer
 
     const { sprintName, sprintByUser } = searchBy
@@ -320,6 +341,8 @@ export const loadTaskBySearchItems = () => (dispatch, getState) => {
                     list: newSprintList
                 }
             })
+
+            dispatch(toggleLoading(false))
         })
         .catch(err => console.log(err))
 }
@@ -353,6 +376,9 @@ export const deleteTaskFromSprint = item => (dispatch, getState) => {
  */
 export const sprintSearchByResult = () => async (dispatch, getState) => {
 
+    // start spinning
+    dispatch(toggleSpinning(true))
+
     let { searchBy, pagination } = getState().sprintReducer
     let { current, pageSize } = pagination
     let { project, text, status } = searchBy
@@ -370,6 +396,9 @@ export const sprintSearchByResult = () => async (dispatch, getState) => {
                     // pagination: data.pagination,
                 }
             })
+
+            // stop spinning
+            dispatch(toggleSpinning(false))
         })
 }//-- end function
 

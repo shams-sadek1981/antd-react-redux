@@ -14,6 +14,7 @@ import {
     SPRINT_CHANGE_TABKEY,
     SPRINT_BY_UPCOMING_TASK,
     SPRINT_SPINNING,
+    SPRINT_LOADING,
     SPRINT_SEARCH_BY,
     SPRINT_EDIT_TASK,
     SPRINT_TASK_TOGGLE_MODAL_VISIBLE,
@@ -46,6 +47,7 @@ const initialState = {
     taskList:[],
     // taskListByFilter:[],
     spinning: false,
+    loading: false,
     list: [],
     modal: {
         modalVisible: false,
@@ -103,6 +105,11 @@ const sprintReducer = (state = initialState, action) => {
         case SPRINT_SPINNING:
             return Object.assign({}, state, {
                 spinning: action.payload.spinning
+            })
+
+        case SPRINT_LOADING:
+            return Object.assign({}, state, {
+                loading: action.payload.loading
             })
 
         case RELEASE_UPDATE_ITEM:

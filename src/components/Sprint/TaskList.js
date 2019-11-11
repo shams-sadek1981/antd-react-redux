@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Rate, Button, Progress, Timeline, Icon, Popconfirm, Tag, Row, Col, Switch } from 'antd';
+import { Rate, Button, Progress, Timeline, Icon, Popconfirm, Tag, Row, Col, Switch, Spin } from 'antd';
 
 import { deleteTaskFromSprint, editTask, filterByUserName, loadTaskBySprint, updateRunningTask } from '../../actions/sprintActions'
 import { _SubTask } from './_SubTask'
@@ -27,8 +27,7 @@ export const TaskList = (props) => {
     }
 
     return (
-        <Fragment>
-
+        <Spin spinning={sprint.loading}>
             {/* -------------------- Sprint calculation -------------------- */}
 
             <div style={{ marginLeft: '0px' }}>
@@ -93,25 +92,16 @@ export const TaskList = (props) => {
                                             {++index}. {item.taskName}
                                         </a>
 
+
                                         {/* --- Est Hour --- */}
-                                        <span style={{ fontWeight: 'bold', color: 'green', marginLeft: '5px', marginRight: '5px' }}>
+                                        <span style={{ fontWeight: 'bold', color: 'black', marginLeft: '5px', marginRight: '5px' }}>
                                             #{item.estHour}
                                         </span>
 
-                                        {/* --- Running --- */}
-                                        <Switch
-                                            onChange = { () => dispatch(updateRunningTask({
-                                                _id: item._id,
-                                                running: ! item.running
-                                            }))}
-                                            style={{ marginRight: '5px'}}
-                                            size="small"
-                                            checked={item.running}
-                                        />
 
                                         {/* --- Task Rate --- */}
                                         <Rate
-                                            onChange = { (value) => dispatch(updateRunningTask({
+                                            onChange={(value) => dispatch(updateRunningTask({
                                                 _id: item._id,
                                                 rate: value
                                             }))}
@@ -136,6 +126,17 @@ export const TaskList = (props) => {
                                     </Col>
 
                                     <Col span={3} align="right">
+                                        {/* --- Running --- */}
+                                        <Switch
+                                            onChange={() => dispatch(updateRunningTask({
+                                                _id: item._id,
+                                                running: !item.running
+                                            }))}
+                                            style={{ marginRight: '5px' }}
+                                            size="small"
+                                            checked={item.running}
+                                        />
+
                                         <Progress type="circle" percent={item.percent} width={50} style={{ padding: '5px 10px', }} />
                                         {
                                             (handlePermission(props, 'sprint_task_delete')) &&
@@ -156,6 +157,6 @@ export const TaskList = (props) => {
                     </ul>
                 </div>
             }
-        </Fragment>
+        </Spin>
     )
 }
