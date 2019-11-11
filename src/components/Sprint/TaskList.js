@@ -17,7 +17,26 @@ export const TaskList = (props) => {
     //-- Delete Task From Sprint
     const confirm = item => dispatch(deleteTaskFromSprint(item))
 
-    const randomColor = () => {
+    let completedColor = 'green';
+    let dueColor = 'red';
+
+    const randomColor = (userName) => {
+
+        // check if search by User Name
+        if ( sprint.searchBy.sprintByUser ) {
+
+            if ( sprint.searchBy.sprintByUser == userName ) {
+                completedColor = 'green'
+                dueColor = 'red'
+                return 'rgb(74, 116, 20)'
+            } else {
+                completedColor = 'silver'
+                dueColor = 'silver'
+                return 'silver'
+            }
+        }
+
+
         var letters = '0123456789ABCDEF'.split('');
         var color = '#';
         for (var i = 0; i < 6; i++) {
@@ -49,18 +68,18 @@ export const TaskList = (props) => {
                         style={{ float: 'left', border: '1px solid #c0c0c057', borderRadius: '5px', padding: '10px', marginRight: '10px', cursor: 'pointer' }}
                         onClick={() => dispatch(loadTaskBySprint(sprintName, item.userName))}
                     >
-                        <Progress type="circle" percent={item.percent} width={50} style={{ marginRight: '25px' }} />
-                        <Tag color={randomColor()} style={{ fontStyle: 'italic', fontWeight: 'bold' }}>
+                        <Progress type="circle" strokeColor={ randomColor(item.userName)} percent={item.percent} width={50} style={{ marginRight: '25px' }} />
+                        <Tag color={ randomColor(item.userName) } style={{ fontStyle: 'italic', fontWeight: 'bold' }}>
                             {item.userName}:
                             <span style={{ fontWeight: 'bold', fontSize: '115%', paddingLeft: '5px' }}>
                                 {item.estHour}
                             </span>
                         </Tag>
                         <div style={{ marginTop: '5px', fontStyle: 'italic' }}>
-                            <div style={{ paddingLeft: '5px', color: 'green', float: 'left' }}>
+                            <div style={{ paddingLeft: '5px', color: completedColor, float: 'left' }}>
                                 Complete: <b>{item.complete}</b>
                             </div>
-                            <div style={{ paddingLeft: '5px', color: 'red', float: 'right' }}>
+                            <div style={{ paddingLeft: '5px', color: dueColor, float: 'right' }}>
                                 Due: <b>{item.due}</b>
                             </div>
                         </div>

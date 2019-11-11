@@ -47,24 +47,28 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                     visible={sprint.subTaskModal.modalVisible}
                     title={sprint.subTaskModal.modalTitle}
                     onCancel={() => dispatch(toggleSubtaskModalVisible())}
-                    
+
                     footer={[
                         (handlePermission(this.props, 'upcoming_task_subtask_delete')) &&
                         sprint.subTaskModal.okText != "Create" &&
                         <Popconfirm title="Are you sure to delete this task?"
-                                onConfirm={(e) => dispatch(deleteSubTask(sprint.subTaskModal.taskId, sprint.subTaskModal.EditInfo._id)) }
-                                okText="Yes" cancelText="No">
+                            onConfirm={(e) => dispatch(deleteSubTask(sprint.subTaskModal.taskId, sprint.subTaskModal.EditInfo._id))}
+                            okText="Yes" cancelText="No">
 
-                                <Button type="danger" key="back">
-                                    Delete
+                            <Button type="danger" key="back">
+                                Delete
                                 </Button>
                         </Popconfirm>,
-                        <Button key="submit" type="primary" onClick={ onCreate }>
-                            { sprint.subTaskModal.okText }
+                        <Button key="submit" type="primary" onClick={onCreate}>
+                            {sprint.subTaskModal.okText}
                         </Button>,
                     ]}
                 >
-                    <div style={{ paddingBottom: '5px', fontSize: '11pt' }}><Icon type="bulb" theme="twoTone" />{sprint.subTaskModal.EditInfo.taskName}</div>
+                    <div style={{ paddingBottom: '5px', fontSize: '11pt' }}>
+                        <Icon type="bulb" theme="twoTone" style={{ paddingRight: '5px'}}/>
+                        {sprint.subTaskModal.EditInfo.taskName}
+                    </div>
+
                     <Form layout="vertical">
 
                         {/* <Form.Item label="" type="hidden"> */}
@@ -125,6 +129,18 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                                         rules: [{ required: true, message: 'Please input the Est. Hour!' }],
                                     })(
                                         <InputNumber min={0} max={24} autoComplete="off" />
+                                    )}
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item label="Description">
+                                    {getFieldDecorator('description', {
+                                        initialValue: sprint.subTaskModal.EditInfo.description
+                                    })(
+                                        <Input autoComplete="off" />
                                     )}
                                 </Form.Item>
                             </Col>

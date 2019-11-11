@@ -50,7 +50,11 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                     onCancel={() => dispatch(toggleSubtaskModalVisible())}
                     onOk={onCreate}
                 >
-                    <div style={{ paddingBottom: '5px', fontSize: '11pt' }}><Icon type="bulb" theme="twoTone" />{upcomingTask.subTaskModal.EditInfo.taskName}</div>
+                    <div style={{ paddingBottom: '5px', fontSize: '11pt' }}>
+                        <Icon type="bulb" theme="twoTone" style={{ paddingRight: '5px'}}/>
+                        {upcomingTask.subTaskModal.EditInfo.taskName}
+                    </div>
+
                     <Form layout="vertical">
 
                         {/* <Form.Item label="" type="hidden"> */}
@@ -117,6 +121,17 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                         </Row>
 
 
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item label="Description">
+                                    {getFieldDecorator('description', {
+                                        initialValue: upcomingTask.subTaskModal.EditInfo.description
+                                    })(
+                                        <Input autoComplete="off" />
+                                    )}
+                                </Form.Item>
+                            </Col>
+                        </Row>
 
                         {/* { upcomingTask.subTaskModal.EditInfo.startDate } */}
 
