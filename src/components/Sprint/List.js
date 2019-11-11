@@ -7,7 +7,7 @@ import {
 } from '../../actions/releaseActions';
 
 import {
-    editItem, removeItem, updateStatus, loadTaskBySprint
+    editItem, removeItem, updateStatus, loadTaskBySprint, addNewTask
 } from '../../actions/sprintActions';
 
 
@@ -169,6 +169,16 @@ export const List = (props) => {
                                     <Icon type="delete" theme="twoTone" />
                                 </a>
                             </Popconfirm>
+                        </span>
+                    }
+
+                    {
+                        (handlePermission(props, 'sprint_create_new')) &&
+                        <span>
+                            <Divider type="vertical" />
+                            <a onClick={() => dispatch(addNewTask(record.name))} href="javascript:;">
+                                <Icon type="plus-circle" theme="twoTone" />
+                            </a>
                         </span>
                     }
                 </span>

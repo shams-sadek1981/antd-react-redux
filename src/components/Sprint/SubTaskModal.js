@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react'
 import moment from 'moment'
 import {
-    Modal, Form, Input, Select, AutoComplete, DatePicker, Row, Col, Icon, Divider, InputNumber
+    Modal, Form, Input, Select, AutoComplete, DatePicker, Row, Col, Icon, Divider, InputNumber, Button
 } from 'antd';
 
 
-import { toggleSubtaskModalVisible } from '../../actions/sprintActions'
+import { toggleSubtaskModalVisible, deleteSubTask } from '../../actions/sprintActions'
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -45,10 +45,18 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
             return (
                 <Modal
                     visible={sprint.subTaskModal.modalVisible}
-                    title={ sprint.subTaskModal.modalTitle }
-                    okText={sprint.subTaskModal.okText}
+                    title={sprint.subTaskModal.modalTitle}
                     onCancel={() => dispatch(toggleSubtaskModalVisible())}
-                    onOk={onCreate}
+                    
+                    footer={[
+                        sprint.subTaskModal.okText != "Create" &&
+                        <Button type="danger" key="back" onClick={ () => dispatch(deleteSubTask(sprint.subTaskModal.taskId, sprint.subTaskModal.EditInfo._id))}>
+                            Delete
+                        </Button>,
+                        <Button key="submit" type="primary" onClick={ onCreate }>
+                            { sprint.subTaskModal.okText }
+                        </Button>,
+                    ]}
                 >
                     <div style={{ paddingBottom: '5px', fontSize: '11pt' }}><Icon type="bulb" theme="twoTone" />{sprint.subTaskModal.EditInfo.taskName}</div>
                     <Form layout="vertical">

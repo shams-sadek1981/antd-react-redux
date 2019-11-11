@@ -5,7 +5,7 @@ import {
 } from 'antd';
 
 
-import { toggleTaskModalVisible } from '../../actions/sprintActions'
+import { toggleTaskModalVisible, deleteTask } from '../../actions/sprintActions'
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -30,13 +30,24 @@ export const TaskModal = Form.create({ name: 'form_in_modal' })(
                 completedAt = {}
             }
 
+            let modalTitle = sprint.upcomingTaskModal.modalTitle
+            modalTitle += " ( " + sprint.upcomingTaskModal.EditInfo.sprint + " )"
+
             return (
                 <Modal
                     visible={sprint.upcomingTaskModal.modalVisible}
-                    title={sprint.upcomingTaskModal.modalTitle}
+                    title={ modalTitle }
                     okText={sprint.upcomingTaskModal.okText}
                     onCancel={() => dispatch(toggleTaskModalVisible())}
-                    onOk={onCreate}
+                    footer={[
+                        sprint.upcomingTaskModal.okText != "Create" &&
+                        <Button type="danger" key="back" onClick={ () => dispatch(deleteTask(sprint.upcomingTaskModal.EditInfo._id))}>
+                            Delete
+                        </Button>,
+                        <Button key="submit" type="primary" onClick={ onCreate }>
+                            { sprint.subTaskModal.okText }
+                        </Button>,
+                    ]}
                 >
                     <Form layout="vertical">
 
@@ -91,8 +102,8 @@ export const TaskModal = Form.create({ name: 'form_in_modal' })(
                                             placeholder="Select a project"
                                         >
                                             {
-                                                project.list.map((item, index) =>
-                                                    <Option value={item.name} key={index}>{item.name}</Option>
+                                                sprint.upcomingTaskModal.sprintProjects.map((projectName, index) =>
+                                                    <Option value={projectName} key={index}>{projectName}</Option>
                                                 )
                                             }
                                         </Select>
@@ -124,66 +135,72 @@ export const TaskModal = Form.create({ name: 'form_in_modal' })(
                         </Row>
 
 
-                        <Form.Item label="Select Sprint">
-                            {getFieldDecorator('sprint', {
-                                initialValue: sprint.upcomingTaskModal.EditInfo.sprint,
-                                // rules: [{ required: true, message: 'Please select release' }],
-                            })(
-                                <Select
-                                    showSearch
-                                    // style={{ width: 200 }}
-                                    placeholder="Select a Sprint"
-                                >
-                                    <Option value={null}>Select Sprint</Option>
-                                    {
-                                        sprint.sprintList.map((item, index) =>
-                                            <Option value={item.name} key={index}>
-                                                <span style={{ color: 'blue' }}>{item.name}</span>
-                                                <span style={{ paddingLeft: '5px' }}>{item.endDate}</span>
-                                            </Option>
-                                        )
-                                    }
-                                </Select>
-                            )}
-                        </Form.Item>
+                        {
+                            sprint.upcomingTaskModal.okText != "Create" &&
+                            <Form.Item label="Select Sprint">
+                                {getFieldDecorator('sprint', {
+                                    initialValue: sprint.upcomingTaskModal.EditInfo.sprint,
+                                    rules: [{ required: true, message: 'Please select sprint' }],
+                                })(
+                                    <Select
+                                        showSearch
+                                        // style={{ width: 200 }}
+                                        placeholder="Select a Sprint"
+                                    >
+                                        <Option value={null}>Select Sprint</Option>
+                                        {
+                                            sprint.sprintList.map((item, index) =>
+                                                <Option value={item.name} key={index}>
+                                                    <span style={{ color: 'blue' }}>{item.name}</span>
+                                                    <span style={{ paddingLeft: '5px' }}>{item.endDate}</span>
+                                                </Option>
+                                            )
+                                        }
+                                    </Select>
+                                )}
+                            </Form.Item>
+                        }
 
-                        <Row gutter={24}>
-                            <Col span={10}>
-                                <Form.Item label="Closing Date">
-                                    {getFieldDecorator('completedAt', {
-                                        ...completedAt
-                                        // initialValue: startDate,
-                                    })(
-                                        <DatePicker format={dateFormat} />
-                                    )}
-                                </Form.Item>
-                            </Col>
+                        {
+                            sprint.upcomingTaskModal.okText != "Create" &&
+                            <Row gutter={24}>
+                                <Col span={10}>
+                                    <Form.Item label="Closing Date">
+                                        {getFieldDecorator('completedAt', {
+                                            ...completedAt
+                                            // initialValue: startDate,
+                                        })(
+                                            <DatePicker format={dateFormat} />
+                                        )}
+                                    </Form.Item>
+                                </Col>
 
-                            <Col span={14}>
-                                <Form.Item label="Select Version">
-                                    {getFieldDecorator('release', {
-                                        initialValue: sprint.upcomingTaskModal.EditInfo.release,
-                                        // rules: [{ required: true, message: 'Please select release' }],
-                                    })(
-                                        <Select
-                                            showSearch
-                                            // style={{ width: 200 }}
-                                            placeholder="Select a release"
-                                        >
-                                            <Option value={null}>Select Version</Option>
-                                            {
-                                                sprint.releaseList.map((item, index) =>
-                                                    <Option value={item.version} key={index}>
-                                                        <span style={{ color: 'blue' }}>{item.version}</span>
-                                                        <span style={{ paddingLeft: '5px' }}>{item.releaseDate}</span>
-                                                    </Option>
-                                                )
-                                            }
-                                        </Select>
-                                    )}
-                                </Form.Item>
-                            </Col>
-                        </Row>
+                                <Col span={14}>
+                                    <Form.Item label="Select Version">
+                                        {getFieldDecorator('release', {
+                                            initialValue: sprint.upcomingTaskModal.EditInfo.release,
+                                            // rules: [{ required: true, message: 'Please select release' }],
+                                        })(
+                                            <Select
+                                                showSearch
+                                                // style={{ width: 200 }}
+                                                placeholder="Select a release"
+                                            >
+                                                <Option value={null}>Select Version</Option>
+                                                {
+                                                    sprint.releaseList.map((item, index) =>
+                                                        <Option value={item.version} key={index}>
+                                                            <span style={{ color: 'blue' }}>{item.version}</span>
+                                                            <span style={{ paddingLeft: '5px' }}>{item.releaseDate}</span>
+                                                        </Option>
+                                                    )
+                                                }
+                                            </Select>
+                                        )}
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                        }
 
                     </Form>
                 </Modal>

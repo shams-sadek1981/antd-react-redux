@@ -36,6 +36,8 @@ export const SPRINT_EDIT_SUBTASK = "SPRINT_EDIT_SUBTASK"
 export const SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE = "SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE"
 export const SPRINT_FILTER_BY_USER_NAME = "SPRINT_FILTER_BY_USER_NAME"
 export const SPRINT_SET_SPRINT_AND_USER = "SPRINT_SET_SPRINT_AND_USER"
+export const SPRINT_ADD_NEW_SUBTASK = "SPRINT_ADD_NEW_SUBTASK"
+export const SPRINT_ADD_NEW_TASK = "SPRINT_ADD_NEW_TASK"
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -286,7 +288,7 @@ export const loadTaskBySearchItems = () => (dispatch, getState) => {
             const otherTaskList = oldTaskList.filter(item => item.sprintName != sprintName)
 
             // sprint list processing
-            const currentSprintDetails = oldList.find( item => item.name == sprintName)
+            const currentSprintDetails = oldList.find(item => item.name == sprintName)
 
             const currentDetails = {
                 ...currentSprintDetails,
@@ -297,13 +299,13 @@ export const loadTaskBySearchItems = () => (dispatch, getState) => {
                 userDetails: data.userDetails
             }
 
-            const findIndex = oldList.findIndex( item => item.name == sprintName)
+            const findIndex = oldList.findIndex(item => item.name == sprintName)
 
 
             const newSprintList = [
                 ...oldList.slice(0, findIndex),
                 currentDetails,
-                ...oldList.slice(findIndex+1)
+                ...oldList.slice(findIndex + 1)
             ]
 
             dispatch({
@@ -587,27 +589,83 @@ export const removeItem = (id) => (dispatch, getState) => {
 
 /**
  * ------------------------------------------------------------------------------------------------------
+ * Add New Task
+ * ------------------------------------------------------------------------------------------------------
+ */
+export const addNewTask = (sprintName) => (dispatch, getState) => {
+
+    const { upcomingTaskModal, list } = getState().sprintReducer
+
+    const findSprintInfo = list.find(item => item.name == sprintName)
+
+    const EditInfo = {
+        taskName: '',
+        projectName: '',
+        taskType: '',
+        description: '',
+        assignedUser: '',
+        sprint: sprintName
+    }
+
+    dispatch({
+        type: SPRINT_ADD_NEW_TASK,
+        payload: {
+            upcomingTaskModal: {
+                ...upcomingTaskModal,
+                modalTitle: 'Create a new task',
+                okText: 'Create',
+                EditInfo,
+                modalVisible: true,
+                sprintProjects: findSprintInfo.projects
+            }
+        }
+    })
+}
+
+
+//-- Save New Task
+export const saveNewTask = (values) => (dispatch, getState) => {
+
+    const { upcomingTaskModal } = getState().sprintReducer
+    const { sprint } = upcomingTaskModal.EditInfo
+
+    //-- get User Name from userInfo
+    const { userInfo } = getState().userReducer
+
+    let newValues = { ...values, updatedBy: userInfo.name, sprint }
+
+    if (values.completedAt != null) {
+        newValues = {
+            ...values,
+            completedAt: moment(values.completedAt).format('YYYY-MM-DD'),
+        }
+    }
+
+    post('/upcoming-task/create', newValues)
+        .then(data => {
+
+            dispatch(toggleTaskModalVisible())
+
+            // load task by search items
+            dispatch(loadTaskBySearchItems())
+
+        })
+        .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
+}
+
+/**
+ * ------------------------------------------------------------------------------------------------------
  * Edit Task
  * ------------------------------------------------------------------------------------------------------
  */
 export const editTask = (sprintName, id) => (dispatch, getState) => {
 
-    const { taskList, upcomingTaskModal } = getState().sprintReducer
+    const { taskList, upcomingTaskModal, list } = getState().sprintReducer
 
     const findSprint = taskList.find(item => item.sprintName == sprintName)
     const findTask = findSprint.result.find(item => item._id == id)
 
-    // dispatch({
-    //     type: 'BBB',
-    //     payload: {
-    //         findSprint,
-    //         findTask
-    //     }
-    // })
-
-    //-- load project releated release
-    // dispatch(loadRelease(findTask.projectName))
-    // dispatch(loadSprint(findTask.projectName))
+    const findSprintInfo = list.find(item => item.name == sprintName)
 
     dispatch({
         type: SPRINT_EDIT_TASK,
@@ -617,7 +675,8 @@ export const editTask = (sprintName, id) => (dispatch, getState) => {
                 modalTitle: 'Edit Task',
                 okText: 'Update',
                 EditInfo: findTask,
-                modalVisible: true
+                modalVisible: true,
+                sprintProjects: findSprintInfo.projects
             }
         }
     })
@@ -626,23 +685,32 @@ export const editTask = (sprintName, id) => (dispatch, getState) => {
     dispatch(loadReleaseByProject(findTask.projectName))
 }
 
+
+//-- Handle Submit Task
+export const handleTaskSubmit = (values) => (dispatch, getState) => {
+
+    const { upcomingTaskModal } = getState().sprintReducer
+    const { okText } = upcomingTaskModal
+
+    if (okText == "Create") {
+        //-- Create New Task
+        dispatch(saveNewTask(values))
+
+    } else {
+        //-- Update Task
+        dispatch(updateTask(values))
+    }
+}
+
 //-- Handle Submit
-export const handleUpdateFromUpcomingTask = (values) => (dispatch, getState) => {
+export const updateTask = (values) => (dispatch, getState) => {
 
     const { upcomingTaskModal } = getState().sprintReducer
 
-    //-- Update Task
-    // dispatch(updateTask(values))
     //-- get User Name from userInfo
     const { userInfo } = getState().userReducer
 
     let newValues = { ...values, updatedBy: userInfo.name }
-
-    dispatch({
-        type: 'KKK',
-        oldSprint: upcomingTaskModal.EditInfo.sprint,
-        newSprint: newValues.sprint
-    })
 
     if (values.completedAt != null) {
         newValues = {
@@ -759,6 +827,40 @@ export const loadReleaseByProject = projectName => (dispatch, getState) => {
 
 /**
  * ------------------------------------------------------------------------------------------------------
+ * Add New Sub Task
+ * ------------------------------------------------------------------------------------------------------
+ */
+export const addNewSubTask = (taskId) => (dispatch, getState) => {
+
+    const { subTaskModal, taskList } = getState().sprintReducer
+
+
+    const EditInfo = {
+        taskName: 'task.taskName',
+        name: '',
+        assignedUser: '',
+        estHour: '',
+    }
+
+    dispatch({
+        type: SPRINT_ADD_NEW_SUBTASK,
+        payload: {
+            subTaskModal: {
+                ...subTaskModal,
+                modalTitle: 'Create a new Subtask',
+                okText: 'Create',
+                EditInfo,
+                modalVisible: true,
+                taskId
+            }
+        }
+    })
+}
+
+
+
+/**
+ * ------------------------------------------------------------------------------------------------------
  * Edit Sub Task
  * ------------------------------------------------------------------------------------------------------
  */
@@ -799,8 +901,99 @@ export const updateSubTask = (values) => (dispatch, getState) => {
     const subTaskId = values._id
     const sprintName = subTaskModal.sprintName
 
+    const { okText } = subTaskModal
 
-    put(`/upcoming-task/subtask/update/${subTaskId}`, newValues)
+    if (okText == "Create") {
+        //-- Create New Task
+        dispatch(saveNewSubTask(values))
+    } else {
+        //-- Update Task
+        put(`/upcoming-task/subtask/update/${subTaskId}`, newValues)
+            .then(data => {
+
+                dispatch(toggleSubtaskModalVisible())
+
+                // load task by search items
+                dispatch(loadTaskBySearchItems())
+
+            })
+            .catch(err => console.log(err))
+    }
+
+}
+
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * Sub Task Delete
+ * ----------------------------------------------------------------------------------------------------
+ */
+export const deleteSubTask = (taskId, subTaskId) => (dispatch, getState) => {
+
+    deleteMethod(`/upcoming-task/subtask/delete/${subTaskId}`, { id: taskId })
+        .then(data => {
+
+            dispatch(toggleSubtaskModalVisible())
+
+            // load task by search items
+            dispatch(loadTaskBySearchItems())
+
+        })
+        .catch(err => console.log(err))
+}
+
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * Task Delete
+ * ----------------------------------------------------------------------------------------------------
+ */
+export const deleteTask = (taskId) => (dispatch, getState) => {
+
+    deleteMethod('/upcoming-task/delete/' + taskId)
+        .then(data => {
+            dispatch(toggleTaskModalVisible())
+
+            // load task by search items
+            dispatch(loadTaskBySearchItems())
+
+        }).catch(err => console.log(err))
+}
+
+
+/**
+ * ----------------------------------------------------------------------------------------------------
+ * Sub Task Create
+ * ----------------------------------------------------------------------------------------------------
+ */
+export const saveNewSubTask = (values) => (dispatch, getState) => {
+
+    const { subTaskModal } = getState().sprintReducer
+    const { userInfo } = getState().userReducer
+    const { taskId } = subTaskModal
+
+    //-- set new values
+    let newValues = { ...values, createdBy: userInfo.name }
+    if (values.startDate != undefined) {
+        newValues = {
+            ...values,
+            startDate: moment(values.startDate).format("YYYY-MM-DD")
+        }
+    }
+
+    if (values.dueDate != undefined) {
+        newValues = {
+            ...values,
+            dueDate: moment(values.dueDate).format("YYYY-MM-DD")
+        }
+    }
+
+    if (values.completedAt != undefined) {
+        newValues = {
+            ...values,
+            completedAt: moment(values.completedAt).format("YYYY-MM-DD")
+        }
+    }
+
+    post('/upcoming-task/subtask/create/' + taskId, newValues)
         .then(data => {
 
             dispatch(toggleSubtaskModalVisible())
@@ -840,17 +1033,17 @@ export const toggleSubtaskModalVisible = () => (dispatch, getState) => {
  */
 export const updateRunningTask = obj => (dispatch, getState) => {
 
-        const { _id } = obj
+    const { _id } = obj
 
-        console.log(obj)
+    console.log(obj)
 
-        put('/upcoming-task/update/' + _id, obj )
-            .then(data => {
+    put('/upcoming-task/update/' + _id, obj)
+        .then(data => {
 
-                // load task by search items
-                dispatch(loadTaskBySearchItems())
+            // load task by search items
+            dispatch(loadTaskBySearchItems())
 
-                openNotificationWithIcon('success', 'Update Status', 'Updated successfully')
-            })
-            .catch(err => openNotificationWithIcon('error', 'Error', 'Something is wrong'))
+            openNotificationWithIcon('success', 'Update Status', 'Updated successfully')
+        })
+        .catch(err => openNotificationWithIcon('error', 'Error', 'Something is wrong'))
 }

@@ -21,7 +21,9 @@ import {
     SPRINT_LOAD_RELEASE_BY_PROJECT,
     SPRINT_EDIT_SUBTASK,
     SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE,
-    SPRINT_SET_SPRINT_AND_USER
+    SPRINT_SET_SPRINT_AND_USER,
+    SPRINT_ADD_NEW_SUBTASK,
+    SPRINT_ADD_NEW_TASK
 } from '../actions/sprintActions'
 
 
@@ -84,17 +86,7 @@ const initialState = {
         },
         startDate: null
     },
-    projects: [
-        'All Plugin',
-        'Dokan',
-        'Dokan App',
-        'weMail',
-        'WPUF',
-        'weForms',
-        'ERP',
-        'Project Manager',
-        'wePOS'
-    ],
+    projects: [],
     sprintList: [{
         // name: 'ERP Sprint Oct-2019'
     }],
@@ -181,12 +173,14 @@ const sprintReducer = (state = initialState, action) => {
 
         case SPRINT_TASK_TOGGLE_MODAL_VISIBLE:
         case SPRINT_EDIT_TASK:
+        case SPRINT_ADD_NEW_TASK:
             return Object.assign({}, state, {
                 upcomingTaskModal: action.payload.upcomingTaskModal
             })
 
         case SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE:
         case SPRINT_EDIT_SUBTASK:
+        case SPRINT_ADD_NEW_SUBTASK:
             return Object.assign({}, state, {
                 subTaskModal: action.payload.subTaskModal
             })

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { Rate, Button, Progress, Timeline, Icon, Popconfirm, Tag, Row, Col, Switch } from 'antd';
 
 import { deleteTaskFromSprint, editTask, filterByUserName, loadTaskBySprint, updateRunningTask } from '../../actions/sprintActions'
-import { _TaskStatus } from './_TaskStatus'
+import { _SubTask } from './_SubTask'
 import { _TaskType } from './_TaskType'
 import { handlePermission } from '../../functions'
 
@@ -119,7 +119,7 @@ export const TaskList = (props) => {
                                         />
 
                                         {/* ----- Sub Task ----- */}
-                                        <_TaskStatus
+                                        <_SubTask
                                             {...props}
                                             subTasks={item.subTasks}
                                             taskId={item._id}

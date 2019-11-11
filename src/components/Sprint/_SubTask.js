@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react'
-import { Tag, Badge } from 'antd';
+import { Tag, Badge, Icon } from 'antd';
 
-import { editSubTask } from '../../actions/sprintActions'
+import { editSubTask, addNewSubTask } from '../../actions/sprintActions'
 
-export const _TaskStatus = (props) => {
+export const _SubTask = (props) => {
 
     const { subTasks, dispatch, taskId, sprintName } = props
 
@@ -12,7 +12,7 @@ export const _TaskStatus = (props) => {
             {
                 subTasks.map((subTask, index) => {
 
-                    let style = { color: 'red' }
+                    let style = { color: '#ff0000d4' }
                     let badgeStyle = { backgroundColor: '#ff0000ab' }
 
                     if (subTask.completedAt) {
@@ -38,6 +38,13 @@ export const _TaskStatus = (props) => {
 
                 })
             }
+
+            {/* ---- Add Subtask Plus Icon ----  */}
+            <Icon
+                onClick={ () => dispatch(addNewSubTask(taskId))}
+                type="plus-circle"
+                style={{ cursor: 'pointer', marginLeft: '5px', color: 'green'}}
+            />
         </div>
     )
 }

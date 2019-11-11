@@ -23,8 +23,8 @@ import {
     handleSubmit,
     sprintSearchByResult,
     changeTabKey,
-    handleUpdateFromUpcomingTask,
-    updateSubTask
+    updateSubTask,
+    handleTaskSubmit
 } from '../../actions/sprintActions'
 
 import { getAllProject, getProjectByUser } from '../../actions/projectActions';
@@ -79,7 +79,7 @@ class Sprint extends Component {
             }
             // console.log('Received values of form: ', values);
 
-            this.props.dispatch(handleUpdateFromUpcomingTask(values))
+            this.props.dispatch(handleTaskSubmit(values))
 
             form.resetFields();
 
