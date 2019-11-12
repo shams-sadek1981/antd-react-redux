@@ -23,9 +23,9 @@ export const TaskList = (props) => {
     const randomColor = (userName) => {
 
         // check if search by User Name
-        if ( sprint.searchBy.sprintByUser ) {
+        if (sprint.searchBy.sprintByUser) {
 
-            if ( sprint.searchBy.sprintByUser == userName ) {
+            if (sprint.searchBy.sprintByUser == userName) {
                 completedColor = 'green'
                 dueColor = 'red'
                 return 'rgb(74, 116, 20)'
@@ -68,8 +68,11 @@ export const TaskList = (props) => {
                         style={{ float: 'left', border: '1px solid #c0c0c057', borderRadius: '5px', padding: '10px', marginRight: '10px', cursor: 'pointer' }}
                         onClick={() => dispatch(loadTaskBySprint(sprintName, item.userName))}
                     >
-                        <Progress type="circle" strokeColor={ randomColor(item.userName)} percent={item.percent} width={50} style={{ marginRight: '25px' }} />
-                        <Tag color={ randomColor(item.userName) } style={{ fontStyle: 'italic', fontWeight: 'bold' }}>
+
+                        {/* ---- Task Status for KanbanBoard ---- */}
+                        <Progress type="circle" strokeColor={randomColor(item.userName)} percent={item.percent} width={50} style={{ marginRight: '25px' }} />
+
+                        <Tag color={randomColor(item.userName)} style={{ fontStyle: 'italic', fontWeight: 'bold' }}>
                             {item.userName}:
                             <span style={{ fontWeight: 'bold', fontSize: '115%', paddingLeft: '5px' }}>
                                 {item.estHour}
@@ -145,16 +148,20 @@ export const TaskList = (props) => {
                                     </Col>
 
                                     <Col span={3} align="right">
-                                        {/* --- Running --- */}
-                                        <Switch
-                                            onChange={() => dispatch(updateRunningTask({
-                                                _id: item._id,
-                                                running: !item.running
-                                            }))}
-                                            style={{ marginRight: '5px' }}
-                                            size="small"
-                                            checked={item.running}
-                                        />
+
+                                        {/* ---- Task status for KanbanBoard ---- */}
+                                        {item.completedAt && 'Done'}
+                                        {!item.completedAt &&
+                                            <Switch
+                                                onChange={() => dispatch(updateRunningTask({
+                                                    _id: item._id,
+                                                    running: !item.running
+                                                }))}
+                                                style={{ marginRight: '5px' }}
+                                                size="small"
+                                                checked={item.running}
+                                            />
+                                        }
 
                                         <Progress type="circle" percent={item.percent} width={50} style={{ padding: '5px 10px', }} />
                                         {

@@ -52,6 +52,8 @@ class Sprint extends Component {
         this.props.dispatch(sprintSearchByResult())
         
         this.props.dispatch(getProjectByUser())
+
+        this.props.dispatch(loadUser())
     }
 
     //-- Modal form submit
