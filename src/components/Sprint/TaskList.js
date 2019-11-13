@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Rate, Button, Progress, Timeline, Icon, Popconfirm, Tag, Row, Col, Switch, Spin } from 'antd';
 
-import { deleteTaskFromSprint, editTask, filterByUserName, loadTaskBySprint, updateRunningTask } from '../../actions/sprintActions'
+import { deleteTaskFromSprint, editTask, filterByUserName, loadTaskBySprint, updateRunningTask, addNewSubTask } from '../../actions/sprintActions'
 import { _SubTask } from './_SubTask'
 import { _TaskType } from './_TaskType'
 import { handlePermission } from '../../functions'
@@ -129,6 +129,14 @@ export const TaskList = (props) => {
                                             allowHalf value={item.rate} style={{ fontSize: '13px', marginLeft: '10px' }}
                                         />
 
+
+                                        {/* ---- Add Subtask Plus Icon ----  */}
+                                        <Icon
+                                            onClick={() => dispatch(addNewSubTask(item._id))}
+                                            type="plus-circle"
+                                            style={{ cursor: 'pointer', marginLeft: '5px', color: 'green' }}
+                                        />
+
                                         {/* ----- Sub Task ----- */}
                                         <_SubTask
                                             {...props}
@@ -162,7 +170,9 @@ export const TaskList = (props) => {
                                             />
                                         }
 
+                                        {/* ---- Task Percent ---- */}
                                         <Progress type="circle" percent={item.percent} width={50} style={{ padding: '5px 10px', }} />
+
                                         {
                                             (handlePermission(props, 'sprint_task_delete')) &&
                                             <Popconfirm title="Are you sure to remove from sprint?"

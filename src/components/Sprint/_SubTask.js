@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Tag, Badge, Icon, Tooltip } from 'antd';
 
-import { editSubTask, addNewSubTask } from '../../actions/sprintActions'
+import { editSubTask } from '../../actions/sprintActions'
 
 export const _SubTask = (props) => {
 
@@ -45,13 +45,6 @@ export const _SubTask = (props) => {
 
                 })
             }
-
-            {/* ---- Add Subtask Plus Icon ----  */}
-            <Icon
-                onClick={() => dispatch(addNewSubTask(taskId))}
-                type="plus-circle"
-                style={{ cursor: 'pointer', marginLeft: '5px', color: 'green' }}
-            />
         </div>
     )
 }
