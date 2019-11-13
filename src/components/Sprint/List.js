@@ -173,7 +173,7 @@ export const List = (props) => {
                     }
 
                     {
-                        (handlePermission(props, 'sprint_create_new')) &&
+                        (handlePermission(props, 'upcoming_task_create')) &&
                         <span>
                             <Divider type="vertical" />
                             <a onClick={() => dispatch(addNewTask(record.name))} href="javascript:;">
