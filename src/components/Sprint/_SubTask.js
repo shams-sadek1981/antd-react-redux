@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Tag, Badge, Icon } from 'antd';
+import { Tag, Badge, Icon, Tooltip } from 'antd';
 
 import { editSubTask, addNewSubTask } from '../../actions/sprintActions'
 
@@ -22,15 +22,22 @@ export const _SubTask = (props) => {
 
                     return (
                         <div key={index} style={style}>
-                            <a style={style} href="javascript:;" onClick={() => {
+                            <a key={index} style={style} href="javascript:;" onClick={() => {
                                 dispatch(editSubTask(sprintName, taskId, subTask._id))
                             }}>
                                 |
+                                <Tooltip title={subTask.description}>
                                     <span style={{ padding: '5px', fontStyle: 'italic' }}>
-                                    <span>{subTask.assignedUser}:</span>
-                                    <span style={{ fontWeight: 'bold' }}>{subTask.estHour}:</span>
-                                    <span style={{ color: "#0000ffbd" }}>{subTask.name}</span>
-                                </span>
+                                        <span>{subTask.assignedUser}:</span>
+                                        <span style={{ fontWeight: 'bold' }}>{subTask.estHour}:</span>
+                                        <span style={{ color: "#0000ffbd" }}>{subTask.name}</span>
+                                    </span>
+                                    {subTask.refLink &&
+                                        <a href={subTask.refLink} target="_blank" style={{ marginLeft: '2px', marginRight: '2px' }}>
+                                            <Icon type="link" style={{ fontSize: '17px', color: '#08c' }} />
+                                        </a>
+                                    }
+                                </Tooltip>
                                 |
                             </a>
                         </div>
@@ -41,9 +48,9 @@ export const _SubTask = (props) => {
 
             {/* ---- Add Subtask Plus Icon ----  */}
             <Icon
-                onClick={ () => dispatch(addNewSubTask(taskId))}
+                onClick={() => dispatch(addNewSubTask(taskId))}
                 type="plus-circle"
-                style={{ cursor: 'pointer', marginLeft: '5px', color: 'green'}}
+                style={{ cursor: 'pointer', marginLeft: '5px', color: 'green' }}
             />
         </div>
     )

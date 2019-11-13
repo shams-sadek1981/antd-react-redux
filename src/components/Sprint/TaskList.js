@@ -110,14 +110,13 @@ export const TaskList = (props) => {
                                         <a style={{ color: 'black' }} href="javascript:;" onClick={() => {
                                             dispatch(editTask(sprintName, item._id))
                                         }}>
-
                                             {++index}. {item.taskName}
                                         </a>
 
 
                                         {/* --- Est Hour --- */}
-                                        <span style={{ fontWeight: 'bold', color: 'black', marginLeft: '5px', marginRight: '5px' }}>
-                                            #{item.estHour}
+                                        <span style={{ color: 'black', marginLeft: '5px', marginRight: '5px' }}>
+                                            #<b>{item.estHour}</b>
                                         </span>
 
 
@@ -127,7 +126,7 @@ export const TaskList = (props) => {
                                                 _id: item._id,
                                                 rate: value
                                             }))}
-                                            allowHalf value={item.rate} style={{ fontSize: '13px' }}
+                                            allowHalf value={item.rate} style={{ fontSize: '13px', marginLeft: '10px' }}
                                         />
 
                                         {/* ----- Sub Task ----- */}

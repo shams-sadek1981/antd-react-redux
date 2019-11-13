@@ -44,9 +44,16 @@ export const _SubTaskView = (props) => {
             dataIndex: 'subtask',
             key: 'subtask',
             render: (text, record) => (
-                <a href="javascript:;" onClick={() => dispatch(editSubTask(taskId, record._id))}>
-                    {record.subtask}
-                </a>
+                <div>
+                    <a href="javascript:;" onClick={() => dispatch(editSubTask(taskId, record._id))}>
+                        {record.subtask}
+                    </a>
+                    {record.refLink &&
+                        <a href={record.refLink} target="_blank" style={{ marginLeft: '5px'}}>
+                            <Icon type="link" style={{ fontSize: '17px', color: '#08c' }} />
+                        </a>
+                    }
+                </div>
             )
         },
         {
@@ -54,20 +61,22 @@ export const _SubTaskView = (props) => {
             dataIndex: 'assignedUser',
             key: 'assignedUser',
             render: (text, record) => (
-                record.completedAt
-                    ? <Tag color={`geekblue`}>{record.assignedUser}</Tag>
-                    : <Tag color={`magenta`}>{record.assignedUser}</Tag>
+                <div>
+                    {
+                        record.completedAt
+                            ? <Tag color={`geekblue`}>{record.assignedUser}</Tag>
+                            : <Tag color={`magenta`}>{record.assignedUser}</Tag>
+                    }
+                </div>
             )
         },
         {
-            title: 'Ref. Link',
-            dataIndex: 'refLink',
-            key: 'refLink',
+            title: 'Description',
+            dataIndex: 'description',
+            key: 'description',
+            width: 350,
             render: (text, record) => (
-                record.refLink &&
-                <a href={record.refLink} target="_blank">
-                    <Icon type="link" style={{ fontSize: '17px', color: '#08c' }} />
-                </a>
+                record.description
             )
         },
         {
@@ -137,6 +146,7 @@ export const _SubTaskView = (props) => {
             key: index,
             _id: item._id,
             subtask: item.name,
+            description: item.description,
             assignedUser: item.assignedUser,
             estHour: item.estHour,
             startDate: item.startDate && moment(item.startDate).format("DD-MMM-YYYY"),
