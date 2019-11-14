@@ -106,7 +106,7 @@ export const TaskList = (props) => {
                                 }}
                             >
                                 <Row gutter={24}>
-                                    <Col span={19}>
+                                    <Col span={18}>
                                         <a style={{ color: 'black' }} href="javascript:;" onClick={() => {
                                             dispatch(editTask(sprintName, item._id))
                                         }}>
@@ -154,36 +154,51 @@ export const TaskList = (props) => {
                                         />
                                     </Col>
 
-                                    <Col span={3} align="right">
+                                    <Col span={4} align="right">
 
-                                        {/* ---- Task status for KanbanBoard ---- */}
-                                        {item.completedAt && 'Done'}
-                                        {!item.completedAt &&
-                                            <Switch
-                                                onChange={() => dispatch(updateRunningTask({
-                                                    _id: item._id,
-                                                    running: !item.running
-                                                }))}
-                                                style={{ marginRight: '5px' }}
-                                                size="small"
-                                                checked={item.running}
-                                            />
-                                        }
+                                        <Row gutter={24}>
+                                            <Col span={14} align="center">
+                                                {/* ---- Task status for KanbanBoard ---- */}
+                                                {item.completedAt && 'Done'}
+                                                {!item.completedAt &&
+                                                    <Switch
+                                                        onChange={() => dispatch(updateRunningTask({
+                                                            _id: item._id,
+                                                            running: !item.running
+                                                        }))}
+                                                        style={{ marginRight: '5px' }}
+                                                        size="small"
+                                                        checked={item.running}
+                                                    />
+                                                }
 
-                                        {/* ---- Task Percent ---- */}
-                                        <Progress type="circle" percent={item.percent} width={50} style={{ padding: '5px 10px', }} />
+                                                <div style={{ marginTop: '10px'}}>
+                                                    { item.release }
+                                                </div>
+                                            </Col>
 
-                                        {
-                                            (handlePermission(props, 'sprint_task_delete')) &&
-                                            <Popconfirm title="Are you sure to remove from sprint?"
-                                                onConfirm={(e) => confirm(item)}
-                                                okText="Yes" cancelText="No">
+                                            <Col span={10} align="right">
 
-                                                <a href="javascript:;">
-                                                    <Icon type="close-circle" theme="twoTone" />
-                                                </a>
-                                            </Popconfirm>
-                                        }
+                                                <div style={{ display: 'flex' }}>
+                                                    {/* ---- Task Percent ---- */}
+                                                    <Progress type="circle" percent={item.percent} width={50} style={{ padding: '5px', }} />
+
+                                                    {
+                                                        (handlePermission(props, 'sprint_task_delete')) &&
+                                                        <Popconfirm title="Are you sure to remove from sprint?"
+                                                            onConfirm={(e) => confirm(item)}
+                                                            okText="Yes" cancelText="No">
+
+                                                            <a href="javascript:;">
+                                                                <Icon type="close-circle" theme="twoTone" />
+                                                            </a>
+                                                        </Popconfirm>
+                                                    }
+                                                </div>
+
+                                            </Col>
+                                        </Row>
+
                                     </Col>
 
                                 </Row>
