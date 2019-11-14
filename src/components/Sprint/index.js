@@ -28,6 +28,7 @@ import {
 } from '../../actions/sprintActions'
 
 import { getAllProject, getProjectByUser } from '../../actions/projectActions';
+import { getAllTaskType } from '../../actions/taskTypeActions';
 
 import { loadUser, getPermissions } from '../../actions/userActions'
 
@@ -52,6 +53,8 @@ class Sprint extends Component {
         this.props.dispatch(sprintSearchByResult())
         
         this.props.dispatch(getProjectByUser())
+
+        this.props.dispatch(getAllTaskType())
 
         this.props.dispatch(loadUser())
     }

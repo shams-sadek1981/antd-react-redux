@@ -91,7 +91,7 @@ export const TaskList = (props) => {
             <div style={{ clear: 'both', marginBottom: '15px' }}></div>
 
             {sprintTaskList &&
-                <div className={styles.taskList} style={{ marginLeft: '-40px' }}>
+                <div style={{ marginLeft: '-40px' }} className={styles.taskList}>
                     <ul>
                         {sprintTaskList.result.map((item, index) => (
                             <li key={index}
@@ -147,7 +147,7 @@ export const TaskList = (props) => {
                                     </Col>
 
                                     {/* ----- Task Type----- */}
-                                    <Col span={2} align="right">
+                                    <Col span={2} align="left">
                                         <_TaskType
                                             taskType={item.taskType}
                                             projectName={item.projectName}
@@ -158,23 +158,26 @@ export const TaskList = (props) => {
 
                                         <Row gutter={24}>
                                             <Col span={14} align="center">
+
+                                                {
+                                                    item.release &&
+                                                    // <Tooltip title={item.description}>
+                                                    <Tag color="blue">{item.release}</Tag>
+                                                    // </Tooltip>
+                                                }
+
                                                 {/* ---- Task status for KanbanBoard ---- */}
-                                                {item.completedAt && 'Done'}
                                                 {!item.completedAt &&
                                                     <Switch
                                                         onChange={() => dispatch(updateRunningTask({
                                                             _id: item._id,
                                                             running: !item.running
                                                         }))}
-                                                        style={{ marginRight: '5px' }}
+                                                        style={{ marginRight: '5px', marginTop: '10px' }}
                                                         size="small"
                                                         checked={item.running}
                                                     />
                                                 }
-
-                                                <div style={{ marginTop: '10px'}}>
-                                                    { item.release }
-                                                </div>
                                             </Col>
 
                                             <Col span={10} align="right">

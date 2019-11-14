@@ -17,7 +17,7 @@ export const _TaskType = (props) => {
         },
         {
             name: 'Plugin Issue',
-            color: ''
+            color: 'lightBlue'
         },
         {
             name: 'Client Issue',
@@ -31,12 +31,12 @@ export const _TaskType = (props) => {
     if (typeof (findItem) != 'undefined') color = findItem.color
 
     return (
-        <div style={{ float: "right"}}>
-            <Tag color={color} style={{ float: 'right' }}>
+        <div style={{ }}>
+            <Tag color={color} style={{}}>
                 { props.taskType }
             </Tag>
             
-            <div style={{ color: 'rgba(0, 0, 255, 0.36)', float: 'left', width: '120px', textAlign: 'center', marginTop: '10px'}}>
+            <div style={{ color: 'rgba(0, 0, 255, 0.36)', width: '120px', marginTop: '10px'}}>
                 { props.projectName}
             </div>
         </div>
