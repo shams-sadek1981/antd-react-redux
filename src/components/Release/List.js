@@ -149,7 +149,6 @@ export const List = (props) => {
         }
     ];
 
-
     //-- Set Data for Table Data
     const data = release.list.map((item, index) => {
 
@@ -177,6 +176,7 @@ export const List = (props) => {
                 columns={columns}
                 dataSource={data} size="small"
                 onExpand={(expended, record) => dispatch(loadTaskByRelease(record.version))}
+                pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '20', '30']}}
                 expandedRowRender={record =>
                     <div style={{ margin: 0 }}>
                         <_ChangeLog {...props} description={record.description} />

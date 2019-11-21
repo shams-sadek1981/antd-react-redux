@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { List, Button, Progress, Timeline, Icon, Popconfirm, Tag } from 'antd';
+import { List, Button, Progress, Timeline, Icon, Popconfirm, Tag, Table } from 'antd';
 
 import { deleteTaskFromRelease } from '../../actions/releaseActions'
 import { _TaskStatus } from './_TaskStatus'
@@ -18,46 +18,72 @@ export const TaskList = (props) => {
 
     const confirm = item => dispatch(deleteTaskFromRelease(item))
 
-    return (
-        <Fragment>
+    let subTasks = []
+    if (releaseList) {
+        subTasks = releaseList.result
+    }
 
-            {releaseList &&
-                <div className={styles.taskList}>
-                    <ul>
-                        {releaseList.result.map((item, index) => (
-                            <li key={index} style={{ background: 'rgb(255, 255, 255)', marginBottom: '3px', borderBottom: '1px solid rgba(0, 0, 0, 0.1)' }}>
-                                <div>
-                                    <div style={{ float: 'left' }}>
-                                        {++index}. {item.taskName}
-                                        <_TaskStatus subTasks={item.subTasks} />
-                                    </div>
-
-                                    <div style={{ float: 'right' }}>
-
-                                        <Progress type="circle" percent={item.percent} width={50} style={{ padding: '5px 10px', }} />
-                                        {
-                                            (handlePermission(props, 'release_task_delete')) &&
-                                            <Popconfirm title="Are you sure to remove from release?"
-                                                onConfirm={(e) => confirm(item)}
-                                                okText="Yes" cancelText="No">
-
-                                                <a href="javascript:;">
-                                                    <Icon type="close-circle" theme="twoTone" />
-                                                </a>
-                                            </Popconfirm>
-                                        }
-                                    </div>
-
-                                    <_TaskEstHour subTasks={item.subTasks} taskType={item.taskType} />
-
-                                    <div style={{ clear: 'both' }}></div>
-
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
+    const columns = [
+        {
+            title: 'Task Name',
+            dataIndex: 'taskName',
+            key: 'taskName',
+            // width: 150,
+            render: (text, record) => 
+                <div>
+                    { record.taskName }
+                    <_TaskStatus subTasks={record.subTasks} />
                 </div>
-            }
-        </Fragment>
+        },
+        {
+            title: 'Task Type',
+            dataIndex: 'taskType',
+            key: 'taskType',
+            width: 100,
+            render: (text, record) => 
+                <div>
+                    <_TaskEstHour subTasks={record.subTasks} taskType={record.taskType} />
+                </div>
+        },
+        {
+            title: 'Progress',
+            dataIndex: 'progress',
+            key: 'progress',
+            width: 100,
+            render: (text, record) => 
+                <div>
+                    <Progress type="circle" percent={record.percent} width={50} style={{ padding: '5px 10px', }} />
+                </div>
+        },
+        {
+            title: 'Action',
+            dataIndex: 'action',
+            key: 'action',
+            width: 50,
+            render: (text, record) =>
+                (handlePermission(props, 'release_task_delete')) &&
+                <Popconfirm title="Are you sure to remove from release?"
+                    onConfirm={(e) => confirm(record)}
+                    okText="Yes" cancelText="No">
+
+                    <a href="javascript:;">
+                        <Icon type="close-circle" theme="twoTone" />
+                    </a>
+                </Popconfirm>
+        },
+    ]
+
+    return (
+            <Table
+                rowKey={record => record._id}
+                style={{ marginLeft: '-60px' }}
+                // loading={release.spinning}
+                // pagination={release.pagination}
+                // onChange={handleTableChange}
+                columns={columns}
+                dataSource={ subTasks }
+                size="small"
+                pagination={{ defaultPageSize: 20, showSizeChanger: true, pageSizeOptions: ['10', '20', '30']}}
+            />
     )
 }

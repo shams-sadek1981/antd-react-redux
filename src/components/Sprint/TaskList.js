@@ -162,21 +162,22 @@ export const TaskList = (props) => {
                                                 {
                                                     item.release &&
                                                     // <Tooltip title={item.description}>
-                                                    <Tag color="blue">{item.release}</Tag>
+                                                    <Tag color="blue" style={{ marginBottom: '10px'}}>{item.release}</Tag>
                                                     // </Tooltip>
                                                 }
 
                                                 {/* ---- Task status for KanbanBoard ---- */}
                                                 {!item.completedAt &&
-                                                    <Switch
-                                                        onChange={() => dispatch(updateRunningTask({
+                                                    <div
+                                                        style={{ cursor: 'pointer' }}
+                                                        onClick={() => dispatch(updateRunningTask({
                                                             _id: item._id,
                                                             running: !item.running
                                                         }))}
-                                                        style={{ marginRight: '5px', marginTop: '10px' }}
-                                                        size="small"
-                                                        checked={item.running}
-                                                    />
+                                                    >
+                                                        {item.running && <span style={{ color: 'green'}}>Progress</span>}
+                                                        { ! item.running && <span style={{ color: 'silver'}}>Todo</span>}
+                                                    </div>
                                                 }
                                             </Col>
 
