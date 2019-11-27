@@ -59,7 +59,60 @@ export const List = (props) => {
         dispatch(removeItem(id))
     }
 
-    const columns = [
+    
+    const actionColumn = {
+            title: 'Action',
+            key: 'action',
+            width: 150,
+            render: (text, record) => (
+                <div className="sprint-action">
+                    {
+                        (handlePermission(props, 'sprint_complete')) &&
+                        <Popconfirm title="Are you sure to change the status?"
+                            onConfirm={(e) => dispatch(
+                                updateStatus({
+                                    _id: record._id,
+                                    status: !record.status
+                                })
+                            )}
+                            okText="Yes" cancelText="No">
+
+                            <Checkbox checked={record.status}
+
+                            />
+                        </Popconfirm>
+                    }
+
+
+                    {
+                        (handlePermission(props, 'sprint_edit')) &&
+                        <span>
+                            <Divider type="vertical" />
+                            <a onClick={() => dispatch(editItem(record._id))} href="javascript:;">
+                                <Icon type="edit" theme="twoTone" />
+                            </a>
+                        </span>
+                    }
+
+                    {
+                        (handlePermission(props, 'sprint_delete')) &&
+                        <span>
+                            <Divider type="vertical" />
+                            <Popconfirm title="Are you sure to delete this Sprint?"
+                                onConfirm={(e) => confirm(record._id)}
+                                okText="Yes" cancelText="No">
+
+                                <a href="javascript:;">
+                                    <Icon type="delete" theme="twoTone" />
+                                </a>
+                            </Popconfirm>
+                        </span>
+                    }
+                </div>
+            ),
+        }
+
+    let columns = [
         {
             title: 'Sprint',
             dataIndex: 'name',
@@ -122,60 +175,13 @@ export const List = (props) => {
                         item + ', '
                     ))}
                 </div>
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            width: 150,
-            render: (text, record) => (
-                <div className="sprint-action">
-                    {
-                        (handlePermission(props, 'sprint_complete')) &&
-                        <Popconfirm title="Are you sure to change the status?"
-                            onConfirm={(e) => dispatch(
-                                updateStatus({
-                                    _id: record._id,
-                                    status: !record.status
-                                })
-                            )}
-                            okText="Yes" cancelText="No">
-
-                            <Checkbox checked={record.status}
-
-                            />
-                        </Popconfirm>
-                    }
-
-
-                    {
-                        (handlePermission(props, 'sprint_edit')) &&
-                        <span>
-                            <Divider type="vertical" />
-                            <a onClick={() => dispatch(editItem(record._id))} href="javascript:;">
-                                <Icon type="edit" theme="twoTone" />
-                            </a>
-                        </span>
-                    }
-
-                    {
-                        (handlePermission(props, 'sprint_delete')) &&
-                        <span>
-                            <Divider type="vertical" />
-                            <Popconfirm title="Are you sure to delete this Sprint?"
-                                onConfirm={(e) => confirm(record._id)}
-                                okText="Yes" cancelText="No">
-
-                                <a href="javascript:;">
-                                    <Icon type="delete" theme="twoTone" />
-                                </a>
-                            </Popconfirm>
-                        </span>
-                    }
-                </div>
-            ),
         }
     ];
 
+    (handlePermission(props, 'sprint_delete')) &&
+    (handlePermission(props, 'sprint_edit')) &&
+    (handlePermission(props, 'sprint_complete')) &&
+    columns.push(actionColumn)
 
     //-- Set Data for Table Data
     const data = sprint.list.map((item, index) => {

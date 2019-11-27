@@ -8,7 +8,7 @@ export const _SubTask = (props) => {
     const { subTasks, dispatch, taskId, sprintName } = props
 
     return (
-        <div style={{ paddingTop: '10px', display: 'flex' }}>
+        <div style={{ paddingTop: '10px', display: 'flex', flexWrap: 'wrap' }}>
             {
                 subTasks.map((subTask, index) => {
 
@@ -22,7 +22,7 @@ export const _SubTask = (props) => {
 
                     return (
                         <div key={index} style={style}>
-                            <a key={index} style={style} href="javascript:;" onClick={() => {
+                            <a style={style} href="javascript:;" onClick={() => {
                                 dispatch(editSubTask(sprintName, taskId, subTask._id))
                             }}>
                                 |
