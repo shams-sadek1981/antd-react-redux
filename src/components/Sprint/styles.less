@@ -4,7 +4,7 @@
         thead {
             .add-task, .add-subtask  {
                 margin-left: 15px;
-                opacity: 0%;
+                opacity: 0;
                 font-size: 15px;
                 transition: transform .5s, opacity .4s, font-size .5s;
                 transform: translate(200px);
@@ -13,7 +13,7 @@
 
         thead:hover {
             .add-task, .add-subtask  {
-                opacity: 100%;
+                opacity: 1;
                 transform: translate(0px);
             }
         }
@@ -22,7 +22,7 @@
         tbody {
             tr {
                 .sprint-action {
-                    opacity: 0%;
+                    opacity: 0;
                     font-size: 15px;
                     transition: transform .5s, opacity .4s, font-size .5s;
                     transform: translate(150px);
@@ -31,7 +31,7 @@
 
             tr:hover {  
                 .sprint-action {
-                    opacity: 100%;
+                    opacity: 1;
                     transform: translate(0px);
                 }
             }
@@ -44,7 +44,7 @@
         tbody {
             tr {
                 .remove-task-from-sprint {
-                    opacity: 0%;
+                    opacity: 0;
                     font-size: 15px;
                     transition: transform .5s, opacity .4s, font-size .5s;
                     transform: translate(20px);
@@ -52,7 +52,7 @@
             }
             tr:hover {
                 .remove-task-from-sprint {
-                    opacity: 100%;
+                    opacity: 1;
                     transform: translate(0px);
                 }
             }
