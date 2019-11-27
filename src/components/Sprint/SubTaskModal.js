@@ -57,7 +57,7 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
 
                             <Button type="danger" key="back">
                                 Delete
-                                </Button>
+                            </Button>
                         </Popconfirm>,
                         <Button key="submit" type="primary" onClick={onCreate}>
                             {sprint.subTaskModal.okText}

@@ -7,7 +7,7 @@ import {
 } from '../../actions/releaseActions';
 
 import {
-    editItem, removeItem, updateStatus, loadTaskBySprint, addNewTask
+    editItem, removeItem, updateStatus, loadTaskBySprint
 } from '../../actions/sprintActions';
 
 
@@ -69,17 +69,17 @@ export const List = (props) => {
                 const findItem = weekDays.find(item => item.name == moment(record.endDate).format('ddd'))
                 const color = findItem.color
                 return <div>
-                    <Tag color={color} onClick={ () => dispatch(loadTaskBySprint(record.name))}>{record.name}</Tag>
-                    <span style={{ fontStyle: 'italic', color: '#0000ff9e'}}>
-                        { record.restOfDays > 1 && record.restOfDays + ' Days' }
-                        { record.restOfDays == 1 && '1 Day' }
-                        { record.restOfDays == 0 && ' Last Day' }
+                    <Tag color={color} onClick={() => dispatch(loadTaskBySprint(record.name))}>{record.name}</Tag>
+                    <span style={{ fontStyle: 'italic', color: '#0000ff9e' }}>
+                        {record.restOfDays > 1 && record.restOfDays + ' Days'}
+                        {record.restOfDays == 1 && '1 Day'}
+                        {record.restOfDays == 0 && ' Last Day'}
                     </span>
 
-                    <div style={{ fontStyle: 'italic', paddingTop: '5px'}}>
-                        Est:<span style={{color: 'blue', paddingRight: '5px'}}>{ record.est }</span>
-                        Due:<span style={{color: 'red', paddingRight: '5px'}}>{record.due}</span>
-                        Complete:<span style={{color: 'green', paddingLeft: '5px'}}>{record.complete}</span>
+                    <div style={{ fontStyle: 'italic', paddingTop: '5px' }}>
+                        Est:<span style={{ color: 'blue', paddingRight: '5px' }}>{record.est}</span>
+                        Due:<span style={{ color: 'red', paddingRight: '5px' }}>{record.due}</span>
+                        Complete:<span style={{ color: 'green', paddingLeft: '5px' }}>{record.complete}</span>
                     </div>
                 </div>
             }
@@ -118,7 +118,7 @@ export const List = (props) => {
             width: 150,
             render: (text, record) =>
                 <div>
-                    { record.projects.map( item => (
+                    {record.projects.map(item => (
                         item + ', '
                     ))}
                 </div>
@@ -128,7 +128,7 @@ export const List = (props) => {
             key: 'action',
             width: 150,
             render: (text, record) => (
-                <span>
+                <div className="sprint-action">
                     {
                         (handlePermission(props, 'sprint_complete')) &&
                         <Popconfirm title="Are you sure to change the status?"
@@ -141,7 +141,7 @@ export const List = (props) => {
                             okText="Yes" cancelText="No">
 
                             <Checkbox checked={record.status}
-                            
+
                             />
                         </Popconfirm>
                     }
@@ -171,17 +171,7 @@ export const List = (props) => {
                             </Popconfirm>
                         </span>
                     }
-
-                    {
-                        (handlePermission(props, 'upcoming_task_create')) &&
-                        <span>
-                            <Divider type="vertical" />
-                            <a onClick={() => dispatch(addNewTask(record.name))} href="javascript:;">
-                                <Icon type="plus-circle" theme="twoTone" />
-                            </a>
-                        </span>
-                    }
-                </span>
+                </div>
             ),
         }
     ];
@@ -209,22 +199,20 @@ export const List = (props) => {
     })
 
     return (
-        <Fragment>
-            <Table
-                loading={sprint.spinning}
-                pagination={sprint.pagination}
-                onChange={handleTableChange}
-                columns={columns}
-                dataSource={data} size="small"
-                onExpand={(expended, record) => dispatch(loadTaskBySprint(record.name))}
-                expandedRowRender={record =>
-                    <div style={{ margin: 0, marginLeft: '-70px' }}>
-                        <_ChangeLog {...props} description={record.description} />
+        <Table
+            loading={sprint.spinning}
+            pagination={sprint.pagination}
+            onChange={handleTableChange}
+            columns={columns}
+            dataSource={data} size="small"
+            onExpand={(expended, record) => dispatch(loadTaskBySprint(record.name))}
+            expandedRowRender={record =>
+                <div style={{ margin: 0, marginLeft: '-70px' }}>
+                    <_ChangeLog {...props} description={record.description} />
 
-                        <TaskList {...props} sprintName={record.name} userDetails={record.userDetails}/>
-                    </div>
-                }
-            />
-        </Fragment>
+                    <TaskList {...props} sprintName={record.name} userDetails={record.userDetails} />
+                </div>
+            }
+        />
     )
 }

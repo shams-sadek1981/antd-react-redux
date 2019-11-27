@@ -859,13 +859,12 @@ export const loadReleaseByProject = projectName => (dispatch, getState) => {
  * Add New Sub Task
  * ------------------------------------------------------------------------------------------------------
  */
-export const addNewSubTask = (taskId) => (dispatch, getState) => {
+export const addNewSubTask = (taskId, taskName) => (dispatch, getState) => {
 
     const { subTaskModal, taskList } = getState().sprintReducer
 
-
     const EditInfo = {
-        taskName: 'task.taskName',
+        taskName: taskName,
         name: '',
         assignedUser: '',
         estHour: '',
@@ -951,6 +950,7 @@ export const updateSubTask = (values) => (dispatch, getState) => {
 
 }
 
+
 /**
  * ----------------------------------------------------------------------------------------------------
  * Sub Task Delete
@@ -961,7 +961,7 @@ export const deleteSubTask = (taskId, subTaskId) => (dispatch, getState) => {
     deleteMethod(`/upcoming-task/subtask/delete/${subTaskId}`, { id: taskId })
         .then(data => {
 
-            dispatch(toggleSubtaskModalVisible())
+            // dispatch(toggleSubtaskModalVisible())
 
             // load task by search items
             dispatch(loadTaskBySearchItems())

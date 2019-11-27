@@ -1,0 +1,61 @@
+#sprint {
+    table {
+
+        thead {
+            .add-task, .add-subtask  {
+                margin-left: 15px;
+                opacity: 0%;
+                font-size: 15px;
+                transition: transform .5s, opacity .4s, font-size .5s;
+                transform: translate(200px);
+            }
+        }
+
+        thead:hover {
+            .add-task, .add-subtask  {
+                opacity: 100%;
+                transform: translate(0px);
+            }
+        }
+
+        // 1st Sprint List in table
+        tbody {
+            tr {
+                .sprint-action {
+                    opacity: 0%;
+                    font-size: 15px;
+                    transition: transform .5s, opacity .4s, font-size .5s;
+                    transform: translate(150px);
+                }
+            }
+
+            tr:hover {  
+                .sprint-action {
+                    opacity: 100%;
+                    transform: translate(0px);
+                }
+            }
+        }
+    }
+
+
+    // 2nd Task name in Sprint Section
+    table .sprint-task {
+        tbody {
+            tr {
+                .remove-task-from-sprint {
+                    opacity: 0%;
+                    font-size: 15px;
+                    transition: transform .5s, opacity .4s, font-size .5s;
+                    transform: translate(20px);
+                }
+            }
+            tr:hover {
+                .remove-task-from-sprint {
+                    opacity: 100%;
+                    transform: translate(0px);
+                }
+            }
+        }
+    }
+}

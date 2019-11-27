@@ -33,6 +33,7 @@ import { getAllTaskType } from '../../actions/taskTypeActions';
 import { loadUser, getPermissions } from '../../actions/userActions'
 
 import styles from './styles.module.less'
+import './styles.less'
 
 const { TabPane } = Tabs;
 const Search = Input.Search;
@@ -117,7 +118,7 @@ class Sprint extends Component {
         const { size } = this.state;
 
         return (
-            <div className={styles.wrapper}>
+            <div id="sprint" className={styles.wrapper}>
 
                 {sprint.modal.modalVisible &&
                     <NewModal
