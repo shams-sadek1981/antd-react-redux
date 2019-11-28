@@ -178,10 +178,9 @@ export const List = (props) => {
         }
     ];
 
-    (handlePermission(props, 'sprint_delete')) &&
-    (handlePermission(props, 'sprint_edit')) &&
-    (handlePermission(props, 'sprint_complete')) &&
-    columns.push(actionColumn)
+    if ( handlePermission(props, 'sprint_delete') || handlePermission(props, 'sprint_edit') || handlePermission(props, 'sprint_complete') ) {
+        columns.push(actionColumn)
+    }
 
     //-- Set Data for Table Data
     const data = sprint.list.map((item, index) => {

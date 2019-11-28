@@ -22,6 +22,16 @@ export const UserSummary = (props) => {
     let completedColor = 'green';
     let dueColor = 'red';
 
+
+    const backgroundColor = (userName) => {
+        if (sprint.searchBy.sprintByUser == userName) {
+            return "single-user-active"
+        }
+
+        return "single-user-inactive"
+    }
+
+    
     const randomColor = (userName) => {
 
         // check if search by User Name
@@ -49,23 +59,14 @@ export const UserSummary = (props) => {
 
 
     return (
-        <div style={{ marginLeft: '0px' }}>
-
-            {/* ------ Filter BY User ------ */}
-            {sprint.searchBy.sprintByUser &&
-                <div>
-                    Filter By:
-                        <span style={{ color: '#4F5CB8', fontWeight: 'bold', marginLeft: '5px', fontFamily: 'sans-serif' }}>
-                        {sprint.searchBy.sprintByUser}
-                    </span>
-                </div>
-            }
+        <div className="user-summary" style={{ marginLeft: '0px', display: 'flex' }}>
 
             {/* ----- User Details ---- */}
             {userDetails.map((item, index) =>
                 <div
+                    className={ backgroundColor(item.userName) }
                     key={index}
-                    style={{ float: 'left', border: '1px solid #c0c0c057', borderRadius: '5px', padding: '10px', marginRight: '10px', cursor: 'pointer' }}
+                    style={{ border: '1px solid #c0c0c057', borderRadius: '5px', padding: '10px', marginRight: '10px', cursor: 'pointer' }}
                     onClick={() => dispatch(loadTaskBySprint(sprintName, item.userName))}
                 >
 

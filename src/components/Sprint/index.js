@@ -35,6 +35,8 @@ import { loadUser, getPermissions } from '../../actions/userActions'
 import styles from './styles.module.less'
 import './styles.less'
 
+import Test from './Test'
+
 const { TabPane } = Tabs;
 const Search = Input.Search;
 
