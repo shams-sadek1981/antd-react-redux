@@ -199,8 +199,6 @@ export const searchBy = (fieldName, value) => async (dispatch, getState) => {
     dispatch(sprintSearchByResult({ status, tabKey }))
 
 
-    dispatch(toggleSpinning(false))
-
 }//-- end
 
 

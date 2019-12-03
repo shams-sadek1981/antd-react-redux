@@ -26,7 +26,6 @@ export const _SubTask = (props) => {
                                 dispatch(editSubTask(sprintName, taskId, subTask._id))
                             }}>
                                 |
-                                <Tooltip title={subTask.description}>
                                     <span style={{ padding: '5px', fontStyle: 'italic' }}>
                                         <span>{subTask.assignedUser}:</span>
                                         <span style={{ fontWeight: 'bold' }}>{subTask.estHour}:</span>
@@ -37,7 +36,6 @@ export const _SubTask = (props) => {
                                             <Icon type="link" style={{ fontSize: '17px', color: '#08c' }} />
                                         </a>
                                     }
-                                </Tooltip>
                                 |
                             </a>
                         </div>

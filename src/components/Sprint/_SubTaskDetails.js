@@ -22,7 +22,7 @@ export const _SubTaskDetails = (props) => {
             </div>,
             dataIndex: 'user',
             key: 'user',
-            width: 150,
+            width: 130,
             render: (text, record) => <div>
                 {record.completedAt &&
                     <span
@@ -47,7 +47,7 @@ export const _SubTaskDetails = (props) => {
             title: 'Description',
             dataIndex: 'description',
             key: 'description',
-            width: 200,
+            // width: 250,
             render: (text, record) => <div>
                 {record.description}
                 {record.refLink &&
@@ -61,7 +61,7 @@ export const _SubTaskDetails = (props) => {
             title: 'Subtask',
             dataIndex: 'subtask',
             key: 'subtask',
-            width: 150,
+            width: 120,
             render: (text, record) => <div>
                 {record.name}
             </div>
@@ -70,7 +70,7 @@ export const _SubTaskDetails = (props) => {
             title: 'Est. Hour',
             dataIndex: 'estHour',
             key: 'estHour',
-            width: 80,
+            width: 100,
             align: 'center',
             render: (text, record) => record.estHour
         },
@@ -78,7 +78,7 @@ export const _SubTaskDetails = (props) => {
             title: 'Completed At',
             dataIndex: 'completedAt',
             key: 'completedAt',
-            width: 150,
+            width: 120,
             render: (text, record) => <div>
                 {record.completedAt &&
                     moment(record.completedAt).format("DD-MMM-YYYY")
@@ -89,7 +89,7 @@ export const _SubTaskDetails = (props) => {
             title: 'Action',
             dataIndex: 'action',
             key: 'action',
-            width: 50,
+            width: 100,
             align: 'right',
             render: (text, record) => <div>
                 {
@@ -97,7 +97,7 @@ export const _SubTaskDetails = (props) => {
                     <Icon
                         onClick={() => dispatch(editSubTask(sprintName, taskId, record._id))}
                         type="edit"
-                        style={{ cursor: 'pointer', marginRight: '10px' }}
+                        style={{ cursor: 'pointer', marginRight: '15px' }}
                     />
                 }
 
