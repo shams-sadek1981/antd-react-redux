@@ -290,6 +290,8 @@ export const releaseSearchByResult = () => {
                         // pagination: data.pagination,
                     }
                 })
+
+                dispatch(toggleSpinning(false))
             })
     }
 }//-- end function
