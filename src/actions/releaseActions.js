@@ -162,9 +162,6 @@ export const searchBy = (fieldName, value) => {
         //-- Load Result
         dispatch(releaseSearchByResult({ status, tabKey }))
 
-
-        dispatch(toggleSpinning(false))
-
     }
 }//-- end
 
