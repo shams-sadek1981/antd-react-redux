@@ -59,7 +59,7 @@ export const UserSummary = (props) => {
 
 
     return (
-        <div className="user-summary" style={{ marginLeft: '0px', display: 'flex' }}>
+        <div className="user-summary" style={{ marginLeft: '0px', display: 'flex', flexWrap: 'wrap' }}>
 
             {/* ----- User Details ---- */}
             {userDetails.map((item, index) =>
