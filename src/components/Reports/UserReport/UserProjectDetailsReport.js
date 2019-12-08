@@ -11,7 +11,7 @@ export const UserProjectDetailsReport = (props) => {
 
             <table className="user-details-table report-table">
                 <thead>
-                    <tr>
+                    <tr style={{ background: "#eee"}}>
                         <th>Project Name</th>
                         <th style={{ width: '12%'}}>Est. Hour</th>
                     </tr>

@@ -41,24 +41,28 @@ export const UserDetailsReport = (props) => {
 
             <table className="user-details-table report-table">
                 <thead>
-                    <tr>
-                        <th style={{ width: "10%"}}>Completed_At</th>
-                        <th>Task_Name</th>
+                    <tr style={{ background: "#eee", textAlign: 'center'}}>
+                        <th style={{ width: "120px"}}>Completed At</th>
+                        <th>Task Name</th>
                         <th>Subtask</th>
-                        <th style={{ width: "10%"}}>Project_Name</th>
-                        <th>Task Type</th>
-                        <th style={{ width: '10%'}}>Est._Hour</th>
+                        <th style={{ width: "100px"}}>Project</th>
+                        <th style={{ width: "120px"}}>Task Type</th>
+                        <th style={{ width: '70px'}}>Hour</th>
                     </tr>
                 </thead>
 
                 <tbody>
-
                     {
                         reports.data.result.map((item, index) => (
                             <tr key={index}>
                                 <td>{item.completedAt}</td>
                                 <td>{item.taskName}</td>
-                                <td>{item.subTask}</td>
+                                <td>
+                                    {item.subTask}
+                                    { item.subTaskDescription &&
+                                        " - " + item.subTaskDescription
+                                    }
+                                </td>
                                 <td>{item.projectName}</td>
                                 <td>{item.taskType}</td>
                                 <td style={{ textAlign: 'right' }}>{item.estHour}</td>
@@ -68,7 +72,7 @@ export const UserDetailsReport = (props) => {
 
                     <tr>
                         <td colSpan="5" style={{ textAlign: 'right' }}>Total = </td>
-                        <td style={{ textAlign: 'right' }}>{reports.data.totalEst}</td>
+                        <td style={{ textAlign: 'right', fontWeight: 'bold' }}>{reports.data.totalEst}</td>
                     </tr>
                 </tbody>
             </table>
