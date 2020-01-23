@@ -26,7 +26,7 @@ export const RELEASE_CAL_EST_HOUR = "RELEASE_CAL_EST_HOUR"
 
 export const SPRINT_SEARCH_BY = "SPRINT_SEARCH_BY"
 
-export const RELEASE_CHANGE_PAGINATION = "RELEASE_CHANGE_PAGINATION"
+export const SPRINT_CHANGE_PAGINATION = "SPRINT_CHANGE_PAGINATION"
 
 export const SPRINT_BY_UPCOMING_TASK = "SPRINT_BY_UPCOMING_TASK"
 export const SPRINT_EDIT_TASK = "SPRINT_EDIT_TASK"
@@ -50,23 +50,22 @@ const openNotificationWithIcon = (type, message, description) => {
 
 
 //-- Change Pagination (Table Pagination)
-export const changePagination = (pagination) => {
-    return (dispatch, getState) => {
+export const changePagination = (pagination) => (dispatch, getState) => {
 
-        dispatch(toggleSpinning(true))
+    dispatch(toggleSpinning(true))
 
-        dispatch({
-            type: RELEASE_CHANGE_PAGINATION,
-            payload: {
-                pagination
-            }
-        })
+    dispatch({
+        type: SPRINT_CHANGE_PAGINATION,
+        payload: {
+            pagination
+        }
+    })
 
-        //-- Load Result
-        dispatch(sprintSearchByResult())
+    //-- Load Result
+    dispatch(sprintSearchByResult())
 
-        dispatch(toggleSpinning(false))
-    }
+    dispatch(toggleSpinning(false))
+
 }
 
 
@@ -126,7 +125,7 @@ export const changeTabKey = (value) => (dispatch, getState) => {
                         current: 1, //-- set current while changing tabkey
                         pageSize
                     },
-                    list: data
+                    list: data.result
                 }
             })
 
@@ -253,7 +252,7 @@ const getResult = (current, pageSize, project, status, text) => {
         newProjectParams = "project=" + project
     }
 
-    const searchUrl = `/sprint?page=${current}&limit=${pageSize}&${newProjectParams}&status=${status}&text=${text}`
+    const searchUrl = `/sprint?page=${current}&pageSize=${pageSize}&${newProjectParams}&status=${status}&text=${text}`
 
     return get(searchUrl)
         .then(data => data)
@@ -390,8 +389,8 @@ export const sprintSearchByResult = () => async (dispatch, getState) => {
             dispatch({
                 type: SPRINT_SEARCH_BY_RESULT,
                 payload: {
-                    list: data,
-                    // pagination: data.pagination,
+                    list: data.result,
+                    pagination: data.pagination,
                 }
             })
 

@@ -8,7 +8,6 @@ import { UserSummary } from './UserSummary'
 import { _TaskType } from './_TaskType'
 import { handlePermission } from '../../functions'
 
-import styles from './styles.module.less'
 import { link } from 'fs';
 
 export const TaskList = (props) => {

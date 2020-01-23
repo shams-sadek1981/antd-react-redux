@@ -37,7 +37,6 @@ const { Option } = Select;
 const { TabPane } = Tabs;
 
 
-
 class Reports extends Component {
     componentDidMount() {
         this.props.dispatch(loadUser())

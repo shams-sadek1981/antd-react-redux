@@ -3,7 +3,6 @@ import {
     RELEASE_REMOVE_TASK,
     RELEASE_UPDATE_ITEM,
     RELEASE_CAL_EST_HOUR,
-    RELEASE_CHANGE_PAGINATION,
 } from '../actions/releaseActions'
 
 import {
@@ -24,7 +23,8 @@ import {
     SPRINT_SUBTASK_MODAL_TOGGLE_VISIBLE,
     SPRINT_SET_SPRINT_AND_USER,
     SPRINT_ADD_NEW_SUBTASK,
-    SPRINT_ADD_NEW_TASK
+    SPRINT_ADD_NEW_TASK,
+    SPRINT_CHANGE_PAGINATION
 } from '../actions/sprintActions'
 
 
@@ -122,7 +122,7 @@ const sprintReducer = (state = initialState, action) => {
         case SPRINT_SEARCH_BY_RESULT:
             return Object.assign({}, state, {
                 list: action.payload.list,
-                // pagination: action.payload.pagination,
+                pagination: action.payload.pagination,
                 // "totalEstHour": action.payload.totalEstHour,
                 // "totalSubTask": action.payload.totalSubTask,
                 // "userName": action.payload.userName,
@@ -157,7 +157,7 @@ const sprintReducer = (state = initialState, action) => {
                 pagination: action.payload.pagination
             })
 
-        case RELEASE_CHANGE_PAGINATION:
+        case SPRINT_CHANGE_PAGINATION:
             return Object.assign({}, state, {
                 pagination: action.payload.pagination
             })

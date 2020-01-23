@@ -1,6 +1,14 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    useParams,
+    useRouteMatch
+} from "react-router-dom";
 
 import { Tabs, Radio, Form, Modal, Button, Icon, Row, Col, Input, Divider } from 'antd';
 
@@ -32,7 +40,6 @@ import { getAllTaskType } from '../../actions/taskTypeActions';
 
 import { loadUser, getPermissions } from '../../actions/userActions'
 
-import styles from './styles.module.less'
 import './styles.less'
 
 import Test from './Test'
@@ -50,11 +57,11 @@ class Sprint extends Component {
     };
 
     componentDidMount = async () => {
-        
-        await this.props.dispatch( getPermissions() )
+
+        await this.props.dispatch(getPermissions())
 
         this.props.dispatch(sprintSearchByResult())
-        
+
         this.props.dispatch(getProjectByUser())
 
         this.props.dispatch(getAllTaskType())
@@ -120,7 +127,7 @@ class Sprint extends Component {
         const { size } = this.state;
 
         return (
-            <div id="sprint" className={styles.wrapper}>
+            <div id="sprint">
 
                 {sprint.modal.modalVisible &&
                     <NewModal
@@ -139,7 +146,7 @@ class Sprint extends Component {
                         onCreate={this.handleTaskUpdate}
                     />
                 }
-                
+
                 {sprint.subTaskModal.modalVisible &&
                     <SubTaskModal
                         {...this.props}

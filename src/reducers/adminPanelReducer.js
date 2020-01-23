@@ -89,6 +89,14 @@ const initialState = {
             permission: 'menu_reports'
         },
         {
+            keyNo:14,
+            label: 'Evaluation',
+            to: '/admin-panel/evaluation',
+            breadcrumb: ['Admin Panel','Evaluation'],
+            iconType: 'bar-chart',
+            permission: 'menu_reports'
+        },
+        {
             keyNo:7,
             label: 'Upload',
             to: '/admin-panel/upload',

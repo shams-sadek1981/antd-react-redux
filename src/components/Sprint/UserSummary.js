@@ -7,7 +7,6 @@ import { _SubTaskDetails } from './_SubTaskDetails'
 import { _TaskType } from './_TaskType'
 import { handlePermission } from '../../functions'
 
-import styles from './styles.module.less'
 import { link } from 'fs';
 
 export const UserSummary = (props) => {

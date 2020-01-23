@@ -10,7 +10,6 @@ import { AssignPermission } from './AssignPermission'
 import { NewRoleModal } from './NewRoleModal'
 
 import { SearchHeader } from './SearchHeader'
-import styles from './styles.module.less'
 
 import {
     handleSubmit,
@@ -72,7 +71,7 @@ class UserRole extends Component {
         const { size } = this.state;
 
         return (
-            <div className={styles.wrapper}>
+            <div>
 
                 <SearchHeader {...this.props} />
 

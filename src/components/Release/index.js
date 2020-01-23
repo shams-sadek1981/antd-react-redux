@@ -17,8 +17,6 @@ import {
 } from '../../actions/releaseActions'
 import { getAllProject } from '../../actions/projectActions';
 
-import styles from './styles.module.less'
-
 const { TabPane } = Tabs;
 const Search = Input.Search;
 
@@ -63,7 +61,7 @@ class Release extends Component {
         const { size } = this.state;
 
         return (
-            <div className={styles.wrapper}>
+            <div>
 
                 {release.modal.modalVisible &&
                     <NewModal

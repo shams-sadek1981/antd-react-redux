@@ -2,12 +2,12 @@ import React, { Fragment } from 'react'
 import moment from 'moment'
 import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm, Progress } from 'antd';
 
-import {
-    updateTask, changePagination, loadTaskByRelease
-} from '../../actions/releaseActions';
+// import {
+//     updateTask, changePagination, loadTaskByRelease
+// } from '../../actions/releaseActions';
 
 import {
-    editItem, removeItem, updateStatus, loadTaskBySprint
+    editItem, removeItem, updateStatus, loadTaskBySprint, changePagination
 } from '../../actions/sprintActions';
 
 
@@ -58,7 +58,6 @@ export const List = (props) => {
     const confirm = (id) => {
         dispatch(removeItem(id))
     }
-
     
     const actionColumn = {
             title: 'Action',
@@ -117,7 +116,7 @@ export const List = (props) => {
             title: 'Sprint',
             dataIndex: 'name',
             key: 'name',
-            width: 150,
+            width: 250,
             render: (text, record) => {
                 const findItem = weekDays.find(item => item.name == moment(record.endDate).format('ddd'))
                 const color = findItem.color

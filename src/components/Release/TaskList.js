@@ -7,7 +7,6 @@ import { _TaskEstHour } from './_TaskEstHour'
 
 import { handlePermission } from '../../functions'
 
-import styles from './styles.module.less'
 
 export const TaskList = (props) => {
 
