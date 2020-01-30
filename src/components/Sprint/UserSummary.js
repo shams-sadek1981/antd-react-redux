@@ -72,7 +72,7 @@ export const UserSummary = (props) => {
                     {/* ---- Task Status for KanbanBoard ---- */}
                     <Progress type="circle" strokeColor={randomColor(item.userName)} percent={item.percent} width={50} style={{ marginRight: '25px' }} />
 
-                    <Tag color={randomColor(item.userName)} style={{ fontStyle: 'italic', fontWeight: 'bold' }}>
+                    <Tag color={randomColor(item.userName)} style={{ fontStyle: 'italic', fontWeight: 'bold', cursor: 'pointer' }}>
                         {item.userName}:
                             <span style={{ fontWeight: 'bold', fontSize: '115%', paddingLeft: '5px' }}>
                             {item.estHour}

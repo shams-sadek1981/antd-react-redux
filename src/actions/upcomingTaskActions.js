@@ -534,30 +534,29 @@ export const loadUpcomingTask = () => (dispatch, getState) => {
  * Edit Task
  * ------------------------------------------------------------------------------------------------------
  */
-export const editTask = (id) => {
-    return (dispatch, getState) => {
+export const editTask = (id) => (dispatch, getState) => {
 
-        const { taskList, modal } = getState().upcomingTaskReducer
+    const { taskList, modal } = getState().upcomingTaskReducer
 
-        const findTask = taskList.find(item => item._id == id)
+    const findTask = taskList.find(item => item._id == id)
 
-        //-- load project releated release
-        dispatch(loadRelease(findTask.projectName))
-        dispatch(loadSprint(findTask.projectName))
+    //-- load project releated release
+    dispatch(loadRelease(findTask.projectName))
+    dispatch(loadSprint(findTask.projectName))
 
-        dispatch({
-            type: UPCOMING_TASK_EDIT_TASK,
-            payload: {
-                modal: {
-                    ...modal,
-                    modalTitle: 'Edit Task',
-                    okText: 'Update',
-                    EditInfo: findTask,
-                    modalVisible: true
-                }
+    dispatch({
+        type: UPCOMING_TASK_EDIT_TASK,
+        payload: {
+            modal: {
+                ...modal,
+                modalTitle: 'Edit Task',
+                okText: 'Update',
+                EditInfo: findTask,
+                modalVisible: true
             }
-        })
-    }
+        }
+    })
+
 }
 
 
@@ -607,14 +606,15 @@ export const loadSprint = projectName => (dispatch, getState) => {
     const pageSize = 10
     const status = false
 
-    const searchUrl = `/sprint?page=${current}&limit=${pageSize}&project=${projectName}&status=${status}&text=`
+    // get Sprint list by Project
+    const searchUrl = `/sprint?page=${current}&pageSize=${pageSize}&project=${projectName}&status=${status}&text=`
 
-    console.log('projectName', projectName)
+    // console.log('projectName', searchUrl)
 
     return get(searchUrl)
         .then(data => {
 
-            const sprintList = data.map(item => {
+            const sprintList = data.result.map(item => {
                 return {
                     name: item.name,
                     endDate: moment(item.endDate).format("DD-MMM-YYYY"),

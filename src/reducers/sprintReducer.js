@@ -147,8 +147,8 @@ const sprintReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 tabKey: action.payload.tabKey,
                 searchBy: action.payload.searchBy,
-                pagination: action.payload.pagination,
-                list: action.payload.list,
+                // pagination: action.payload.pagination,
+                // list: action.payload.list,
             })
 
         case SPRINT_SEARCH_BY:

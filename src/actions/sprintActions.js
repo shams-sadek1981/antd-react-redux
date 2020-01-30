@@ -39,6 +39,7 @@ export const SPRINT_FILTER_BY_USER_NAME = "SPRINT_FILTER_BY_USER_NAME"
 export const SPRINT_SET_SPRINT_AND_USER = "SPRINT_SET_SPRINT_AND_USER"
 export const SPRINT_ADD_NEW_SUBTASK = "SPRINT_ADD_NEW_SUBTASK"
 export const SPRINT_ADD_NEW_TASK = "SPRINT_ADD_NEW_TASK"
+export const SPRINT_STATUS_UPDATE = "SPRINT_STATUS_UPDATE"
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -79,13 +80,13 @@ export const changePagination = (pagination) => (dispatch, getState) => {
  * Step-2 => searchBy: { status: true/false } true=completed task, false=incomplete task
  * Step-3 =>fetch data from API
  */
-export const changeTabKey = (value) => (dispatch, getState) => {
+export const changeTabKey = value => async (dispatch, getState) => {
 
     // start spinning
     dispatch(toggleSpinning(true))
 
     const { searchBy, pagination } = getState().sprintReducer
-    const { pageSize } = pagination
+    // const { pageSize } = pagination
 
     //-- Step-2 task status
     let newStatus = false
@@ -98,7 +99,6 @@ export const changeTabKey = (value) => (dispatch, getState) => {
         status: newStatus
     }
 
-
     //-- step-3 fetch data from API
     const current = 1
     const status = newStatus
@@ -109,30 +109,22 @@ export const changeTabKey = (value) => (dispatch, getState) => {
     const { userInfo } = getState().userReducer
     project = getProjectSearchBy(userInfo, project)
 
-    // console.log(pageSize)
 
-    getResult(current, pageSize, project, status, text)
-        .then(data => {
+    // Change Tab Key
+    await dispatch({
+        type: SPRINT_CHANGE_TABKEY,
+        payload: {
+            tabKey: value,
+            searchBy: newSearchBy
+        }
+    })
 
-            dispatch({
-                type: SPRINT_CHANGE_TABKEY,
-                payload: {
-                    status,
-                    tabKey: value,
-                    searchBy: newSearchBy,
-                    pagination: {
-                        ...data.pagination,
-                        current: 1, //-- set current while changing tabkey
-                        pageSize
-                    },
-                    list: data.result
-                }
-            })
-
-            // start spinning
-            dispatch(toggleSpinning(false))
-
-        }).catch(err => console.log(err))
+    // Get Result
+    setTimeout( () => {
+        dispatch(sprintSearchByResult())
+    }, 600);
+    
+    
 
 }//-- end
 
@@ -162,6 +154,7 @@ export const toggleLoading = (booleanValue) => (dispatch, getState) => {
     })
 }
 
+// Search By
 export const searchBy = (fieldName, value) => async (dispatch, getState) => {
 
     dispatch(toggleSpinning(true))
@@ -246,17 +239,23 @@ const getResult = (current, pageSize, project, status, text) => {
     let newProjectParams = ''
     if (Array.isArray(project)) {
         project.forEach(item => {
-            newProjectParams += "project=" + item + "&"
+            newProjectParams += "&project=" + item
         })
     } else {
-        newProjectParams = "project=" + project
+        newProjectParams = "&project=" + project
     }
 
-    const searchUrl = `/sprint?page=${current}&pageSize=${pageSize}&${newProjectParams}&status=${status}&text=${text}`
+    const searchUrl = `/sprint?page=${current}&pageSize=${pageSize}${newProjectParams}&status=${status}&text=${text}`
 
-    return get(searchUrl)
-        .then(data => data)
-        .catch(err => console.log(err))
+    // return get(searchUrl)
+    //     .then(data => data)
+    //     .catch(err => err)
+
+    return new Promise((resolve, reject) => {
+        get(searchUrl)
+            .then(data => resolve(data))
+            .catch(err => reject(err))
+    })
 }
 
 
@@ -382,9 +381,10 @@ export const sprintSearchByResult = () => async (dispatch, getState) => {
 
     const { userInfo } = getState().userReducer
 
+    // get project for search
     project = await getProjectSearchBy(userInfo, project)
 
-    await getResult(current, pageSize, project, status, text)
+    getResult(current, pageSize, project, status, text)
         .then(data => {
             dispatch({
                 type: SPRINT_SEARCH_BY_RESULT,
@@ -397,6 +397,13 @@ export const sprintSearchByResult = () => async (dispatch, getState) => {
             // stop spinning
             dispatch(toggleSpinning(false))
         })
+        .catch(err => {
+
+            console.log(err)
+
+            dispatch(toggleSpinning(false))
+        })
+
 }//-- end function
 
 
@@ -1061,13 +1068,40 @@ export const updateRunningTask = obj => (dispatch, getState) => {
 
     const { _id } = obj
 
-    console.log(obj)
+    // console.log(obj)
 
     put('/upcoming-task/update/' + _id, obj)
         .then(data => {
 
             // load task by search items
             dispatch(loadTaskBySearchItems())
+
+            openNotificationWithIcon('success', 'Update Status', 'Updated successfully')
+        })
+        .catch(err => openNotificationWithIcon('error', 'Error', 'Something is wrong'))
+}
+
+
+/**
+ * 
+ * SPRINT Status Update
+ */
+
+export const sprintStatusUpdate = sprintName => (dispatch, getState) => {
+
+    put('/sprint/status-update/' + sprintName, {})
+        .then(data => {
+
+            dispatch({
+                type: 'TEST',
+                payload: {
+                    sprintName,
+                    data
+                }
+            })
+
+            // load task by search items
+            // dispatch(loadTaskBySearchItems())
 
             openNotificationWithIcon('success', 'Update Status', 'Updated successfully')
         })

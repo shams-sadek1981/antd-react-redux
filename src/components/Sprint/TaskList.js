@@ -21,7 +21,7 @@ export const TaskList = (props) => {
 
     const columns = [
         {
-            title: <div style={{ display: 'flex'}}>
+            title: <div style={{ display: 'flex' }}>
                 <div>Task Name</div>
                 {
                     (handlePermission(props, 'upcoming_task_create')) &&
@@ -61,14 +61,16 @@ export const TaskList = (props) => {
                     allowHalf value={record.rate} style={{ fontSize: '13px', marginLeft: '10px' }}
                 />
 
-
                 {/* ----- Sub Task ----- */}
                 <_SubTask
                     {...props}
                     subTasks={record.subTasks}
                     taskId={record._id}
+                    taskName={record.taskName}
                     sprintName={sprintName}
                 />
+
+
             </div>
         },
         {

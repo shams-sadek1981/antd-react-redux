@@ -7,7 +7,7 @@ import { Table, Divider, Tag, Icon, Checkbox, Spin, Popconfirm, Progress } from 
 // } from '../../actions/releaseActions';
 
 import {
-    editItem, removeItem, updateStatus, loadTaskBySprint, changePagination
+    editItem, removeItem, updateStatus, loadTaskBySprint, changePagination, sprintStatusUpdate
 } from '../../actions/sprintActions';
 
 
@@ -59,6 +59,7 @@ export const List = (props) => {
         dispatch(removeItem(id))
     }
     
+    // Set Action Column on sprint item list
     const actionColumn = {
             title: 'Action',
             key: 'action',
@@ -107,6 +108,21 @@ export const List = (props) => {
                             </Popconfirm>
                         </span>
                     }
+                    
+                    {
+                        (handlePermission(props, 'sprint_delete')) &&
+                        <span>
+                            <Divider type="vertical" />
+                            <Popconfirm title="Are you sure to update status in this Sprint?"
+                                onConfirm={(e) => dispatch(sprintStatusUpdate(record.name))}
+                                okText="Yes" cancelText="No">
+
+                                <a href="javascript:;">
+                                    <Icon type="thunderbolt" theme="twoTone" />
+                                </a>
+                            </Popconfirm>
+                        </span>
+                    }
                 </div>
             ),
         }
@@ -120,8 +136,14 @@ export const List = (props) => {
             render: (text, record) => {
                 const findItem = weekDays.find(item => item.name == moment(record.endDate).format('ddd'))
                 const color = findItem.color
-                return <div>
-                    <Tag color={color} onClick={() => dispatch(loadTaskBySprint(record.name))}>{record.name}</Tag>
+                return <div style={{ cursor: 'pointer'}}>
+                    <Tag
+                        color={color}
+                        onClick={() => dispatch(loadTaskBySprint(record.name))}
+                        style={{ cursor: 'pointer'}}
+                    >
+                        {record.name}
+                    </Tag>
                     <span style={{ fontStyle: 'italic', color: '#0000ff9e' }}>
                         {record.restOfDays > 1 && record.restOfDays + ' Days'}
                         {record.restOfDays == 1 && '1 Day'}
@@ -210,6 +232,7 @@ export const List = (props) => {
             columns={columns}
             dataSource={data} size="small"
             onExpand={(expended, record) => dispatch(loadTaskBySprint(record.name))}
+            pagination={{ defaultPageSize: 20, showSizeChanger: true, pageSizeOptions: ['10', '20', '30', '40', '50'] }}
             expandedRowRender={record =>
                 <div style={{ margin: 0, marginLeft: '-70px' }}>
                     <_ChangeLog {...props} description={record.description} />
