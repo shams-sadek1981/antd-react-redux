@@ -58,74 +58,74 @@ export const List = (props) => {
     const confirm = (id) => {
         dispatch(removeItem(id))
     }
-    
+
     // Set Action Column on sprint item list
     const actionColumn = {
-            title: 'Action',
-            key: 'action',
-            width: 150,
-            render: (text, record) => (
-                <div className="sprint-action">
-                    {
-                        (handlePermission(props, 'sprint_complete')) &&
-                        <Popconfirm title="Are you sure to change the status?"
-                            onConfirm={(e) => dispatch(
-                                updateStatus({
-                                    _id: record._id,
-                                    status: !record.status
-                                })
-                            )}
+        title: 'Action',
+        key: 'action',
+        width: 150,
+        render: (text, record) => (
+            <div className="sprint-action">
+                {
+                    (handlePermission(props, 'sprint_complete')) &&
+                    <Popconfirm title="Are you sure to change the status?"
+                        onConfirm={(e) => dispatch(
+                            updateStatus({
+                                _id: record._id,
+                                status: !record.status
+                            })
+                        )}
+                        okText="Yes" cancelText="No">
+
+                        <Checkbox checked={record.status}
+
+                        />
+                    </Popconfirm>
+                }
+
+
+                {
+                    (handlePermission(props, 'sprint_edit')) &&
+                    <span>
+                        <Divider type="vertical" />
+                        <a onClick={() => dispatch(editItem(record._id))} href="javascript:;">
+                            <Icon type="edit" theme="twoTone" />
+                        </a>
+                    </span>
+                }
+
+                {
+                    (handlePermission(props, 'sprint_delete')) &&
+                    <span>
+                        <Divider type="vertical" />
+                        <Popconfirm title="Are you sure to delete this Sprint?"
+                            onConfirm={(e) => confirm(record._id)}
                             okText="Yes" cancelText="No">
 
-                            <Checkbox checked={record.status}
-
-                            />
-                        </Popconfirm>
-                    }
-
-
-                    {
-                        (handlePermission(props, 'sprint_edit')) &&
-                        <span>
-                            <Divider type="vertical" />
-                            <a onClick={() => dispatch(editItem(record._id))} href="javascript:;">
-                                <Icon type="edit" theme="twoTone" />
+                            <a href="javascript:;">
+                                <Icon type="delete" theme="twoTone" />
                             </a>
-                        </span>
-                    }
+                        </Popconfirm>
+                    </span>
+                }
 
-                    {
-                        (handlePermission(props, 'sprint_delete')) &&
-                        <span>
-                            <Divider type="vertical" />
-                            <Popconfirm title="Are you sure to delete this Sprint?"
-                                onConfirm={(e) => confirm(record._id)}
-                                okText="Yes" cancelText="No">
+                {
+                    (handlePermission(props, 'sprint_delete')) &&
+                    <span>
+                        <Divider type="vertical" />
+                        <Popconfirm title="Are you sure to update status in this Sprint?"
+                            onConfirm={(e) => dispatch(sprintStatusUpdate(record.name))}
+                            okText="Yes" cancelText="No">
 
-                                <a href="javascript:;">
-                                    <Icon type="delete" theme="twoTone" />
-                                </a>
-                            </Popconfirm>
-                        </span>
-                    }
-                    
-                    {
-                        (handlePermission(props, 'sprint_delete')) &&
-                        <span>
-                            <Divider type="vertical" />
-                            <Popconfirm title="Are you sure to update status in this Sprint?"
-                                onConfirm={(e) => dispatch(sprintStatusUpdate(record.name))}
-                                okText="Yes" cancelText="No">
-
-                                <a href="javascript:;">
-                                    <Icon type="thunderbolt" theme="twoTone" />
-                                </a>
-                            </Popconfirm>
-                        </span>
-                    }
-                </div>
-            ),
-        }
+                            <a href="javascript:;">
+                                <Icon type="thunderbolt" theme="twoTone" />
+                            </a>
+                        </Popconfirm>
+                    </span>
+                }
+            </div>
+        ),
+    }
 
     let columns = [
         {
@@ -136,11 +136,11 @@ export const List = (props) => {
             render: (text, record) => {
                 const findItem = weekDays.find(item => item.name == moment(record.endDate).format('ddd'))
                 const color = findItem.color
-                return <div style={{ cursor: 'pointer'}}>
+                return <div style={{ cursor: 'pointer' }}>
                     <Tag
                         color={color}
                         onClick={() => dispatch(loadTaskBySprint(record.name))}
-                        style={{ cursor: 'pointer'}}
+                        style={{ cursor: 'pointer' }}
                     >
                         {record.name}
                     </Tag>
@@ -192,14 +192,20 @@ export const List = (props) => {
             width: 150,
             render: (text, record) =>
                 <div>
-                    {record.projects.map(item => (
-                        item + ', '
-                    ))}
+                    {
+                        record.projects.map((item, index) => {
+
+                            // Remove last comma
+                            if ( record.projects.length > ++index) return item + ', '
+                            
+                            return item
+                        })
+                    }
                 </div>
         }
     ];
 
-    if ( handlePermission(props, 'sprint_delete') || handlePermission(props, 'sprint_edit') || handlePermission(props, 'sprint_complete') ) {
+    if (handlePermission(props, 'sprint_delete') || handlePermission(props, 'sprint_edit') || handlePermission(props, 'sprint_complete')) {
         columns.push(actionColumn)
     }
 

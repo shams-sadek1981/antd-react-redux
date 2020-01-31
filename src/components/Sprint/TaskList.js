@@ -87,7 +87,7 @@ export const TaskList = (props) => {
             title: 'Release',
             dataIndex: 'release',
             key: 'release',
-            width: 70,
+            width: 80,
             render: (text, record) => <div>
                 {
                     record.release &&

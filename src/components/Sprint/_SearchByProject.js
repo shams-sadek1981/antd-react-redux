@@ -18,7 +18,7 @@ function handleFocus() {
 
 export const _SearchByProject = (props) => {
 
-    const { dispatch, release, project } = props
+    const { dispatch, sprint, project } = props
 
     const handleChange = (projectName) => {
         dispatch(searchBy('project', [projectName]))
@@ -28,7 +28,7 @@ export const _SearchByProject = (props) => {
         <Fragment>
             <Select
                 showSearch
-                defaultValue={ release.searchBy.project }
+                defaultValue={ sprint.searchBy.project }
                 style={{ width: 200 }}
                 placeholder="Select a project"
                 optionFilterProp="children"
