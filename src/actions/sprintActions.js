@@ -804,13 +804,12 @@ export const loadSprintByProject = projectName => (dispatch, getState) => {
     const pageSize = 10
     const status = false
 
-    const searchUrl = `/sprint?page=${current}&limit=${pageSize}&project=${projectName}&status=${status}&text=`
-
+    const searchUrl = `/sprint?page=${current}&pageSize=${pageSize}&project=${projectName}&status=${status}&text=`
 
     return get(searchUrl)
         .then(data => {
 
-            const sprintList = data.map(item => {
+            const sprintList = data.result.map(item => {
                 return {
                     name: item.name,
                     endDate: moment(item.endDate).format("DD-MMM-YYYY"),
