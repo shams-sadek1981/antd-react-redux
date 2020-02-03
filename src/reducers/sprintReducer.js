@@ -34,7 +34,7 @@ const initialState = {
     pagination: {
         current: 1,
         total: 0,
-        pageSize: 10
+        pageSize: 20
     },
     searchBy: {
         project: ['all'],

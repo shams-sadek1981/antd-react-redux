@@ -238,7 +238,7 @@ export const List = (props) => {
             columns={columns}
             dataSource={data} size="small"
             onExpand={(expended, record) => dispatch(loadTaskBySprint(record.name))}
-            pagination={{ defaultPageSize: 20, showSizeChanger: true, pageSizeOptions: ['10', '20', '30', '40', '50'] }}
+            pagination={{ defaultPageSize: sprint.pagination.pageSize, showSizeChanger: true, pageSizeOptions: ['10', '20', '30', '40', '50'] }}
             expandedRowRender={record =>
                 <div style={{ margin: 0, marginLeft: '-70px' }}>
                     <_ChangeLog {...props} description={record.description} />

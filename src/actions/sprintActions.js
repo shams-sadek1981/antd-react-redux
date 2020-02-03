@@ -445,8 +445,9 @@ export const handleSubmit = (values) => {
 
 /**
  * ------------------------------------------------------------------------------------------------------
- * Add New
+ * Add New Sprint
  * ------------------------------------------------------------------------------------------------------
+ * @param null
  */
 export const addNew = () => (dispatch, getState) => {
 
@@ -629,6 +630,8 @@ export const addNewTask = (sprintName) => (dispatch, getState) => {
 
     const { upcomingTaskModal, list } = getState().sprintReducer
 
+
+    // filter projects by sprint name
     const findSprintInfo = list.find(item => item.name == sprintName)
 
     const EditInfo = {
@@ -865,7 +868,7 @@ export const loadReleaseByProject = projectName => (dispatch, getState) => {
  */
 export const addNewSubTask = (taskId, taskName) => (dispatch, getState) => {
 
-    const { subTaskModal, taskList } = getState().sprintReducer
+    const { subTaskModal, taskList, list, searchBy } = getState().sprintReducer
 
     const EditInfo = {
         taskName: taskName,
