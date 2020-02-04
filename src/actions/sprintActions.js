@@ -948,7 +948,10 @@ export const updateSubTask = (values) => (dispatch, getState) => {
                 dispatch(toggleSubtaskModalVisible())
 
                 // load task by search items
-                dispatch(loadTaskBySearchItems())
+                setTimeout( ()=> {
+                    dispatch(loadTaskBySearchItems())
+                },600)
+                
 
             })
             .catch(err => console.log(err))
