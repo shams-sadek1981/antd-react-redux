@@ -233,12 +233,11 @@ export const List = (props) => {
     return (
         <Table
             loading={sprint.spinning}
-            pagination={sprint.pagination}
             onChange={handleTableChange}
             columns={columns}
             dataSource={data} size="small"
             onExpand={(expended, record) => dispatch(loadTaskBySprint(record.name))}
-            pagination={{ defaultPageSize: sprint.pagination.pageSize, showSizeChanger: true, pageSizeOptions: ['10', '20', '30', '40', '50'] }}
+            pagination={{ ...sprint.pagination, showSizeChanger: true, pageSizeOptions: ['10', '20', '30', '40', '50'] }}
             expandedRowRender={record =>
                 <div style={{ margin: 0, marginLeft: '-70px' }}>
                     <_ChangeLog {...props} description={record.description} />

@@ -77,7 +77,7 @@ export const TaskList = (props) => {
             title: 'Task Type',
             dataIndex: 'taskType',
             key: 'taskType',
-            width: 70,
+            width: 90,
             render: (text, record) => <_TaskType
                 taskType={record.taskType}
                 projectName={record.projectName}
@@ -115,7 +115,7 @@ export const TaskList = (props) => {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
-            width: 50,
+            width: 60,
             render: (text, record) => <div style={{ display: 'flex' }}>
                 {/* ---- Task Percent ---- */}
                 <Progress type="circle" percent={record.percent} width={50} style={{ padding: '5px', }} />
