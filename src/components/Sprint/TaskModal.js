@@ -34,6 +34,32 @@ export const TaskModal = Form.create({ name: 'form_in_modal' })(
             let modalTitle = sprint.upcomingTaskModal.modalTitle
             modalTitle += " ( " + sprint.upcomingTaskModal.EditInfo.sprint + " )"
 
+
+            /**
+             * Selected Project Name
+             * 
+             */
+            let selectedProjectName = sprint.upcomingTaskModal.EditInfo.projectName
+            if (sprint.upcomingTaskModal.okText == "Create"){
+                if ( sprint.upcomingTaskModal.sprintProjects.length > 0) {
+                    
+                    // select first element from project list
+                    selectedProjectName = sprint.upcomingTaskModal.sprintProjects[0]
+                }
+            }
+
+
+
+            /**
+             * Selected assignedBy
+             * 
+             */
+            let selectedAssignedBy = sprint.upcomingTaskModal.EditInfo.assignedBy
+            if (sprint.upcomingTaskModal.okText == "Create"){
+                selectedAssignedBy = users.userInfo.name
+            }
+
+
             return (
                 <Modal
                     visible={sprint.upcomingTaskModal.modalVisible}
@@ -52,7 +78,7 @@ export const TaskModal = Form.create({ name: 'form_in_modal' })(
                                 </Button>
                         </Popconfirm>,
                         <Button key="submit" type="primary" onClick={ onCreate }>
-                            { sprint.subTaskModal.okText }
+                            { sprint.upcomingTaskModal.okText }
                         </Button>,
                     ]}
                 >
@@ -100,7 +126,7 @@ export const TaskModal = Form.create({ name: 'form_in_modal' })(
                             <Col span={12}>
                                 <Form.Item label="Select Project">
                                     {getFieldDecorator('projectName', {
-                                        initialValue: sprint.upcomingTaskModal.EditInfo.projectName,
+                                        initialValue: selectedProjectName,
                                         rules: [{ required: true, message: 'Please select project' }],
                                     })(
                                         <Select
@@ -121,7 +147,7 @@ export const TaskModal = Form.create({ name: 'form_in_modal' })(
                             <Col span={12}>
                                 <Form.Item label="Assigned By">
                                     {getFieldDecorator('assignedBy', {
-                                        initialValue: sprint.upcomingTaskModal.EditInfo.assignedBy,
+                                        initialValue: selectedAssignedBy,
                                         // rules: [{ required: true, message: 'Please select user' }],
                                     })(
                                         <Select

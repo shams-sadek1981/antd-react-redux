@@ -150,7 +150,7 @@ export const TaskList = (props) => {
                     rowKey={record => record._id}
                     columns={columns}
                     dataSource={sprintTaskList.result} size="small"
-                    pagination={{ defaultPageSize: 40, showSizeChanger: true, pageSizeOptions: ['10', '20', '30', '40'] }}
+                    // pagination={{ defaultPageSize: 40, showSizeChanger: true, pageSizeOptions: ['10', '20', '30', '40'] }}
                     expandedRowRender={record => <_SubTaskDetails {...props} subTasks={record.subTasks} taskId={record._id} taskName={record.taskName} />}
                 />
             }

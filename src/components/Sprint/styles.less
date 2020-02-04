@@ -7,40 +7,56 @@
         }
     }
 
-    table {
+    // Sprint Task
+    .sprint-task {
 
-        thead {
-            .add-task, .add-subtask  {
+        .add-subtask-top {
+            display: none;
+        }
+        
+        table {
+
+            // thead {
+            .add-task,
+            .add-subtask {
                 margin-left: 15px;
                 opacity: 0;
                 font-size: 15px;
                 // transition: transform .4s, opacity .4s, font-size .4s;
                 transform: translate(200px);
             }
-        }
 
-        thead:hover {
-            .add-task, .add-subtask  {
-                opacity: 1;
-                transform: translate(0px);
-            }
-        }
+            // }
 
-        // 1st Sprint List in table
-        tbody {
-            tr {
-                .sprint-action {
-                    opacity: 0;
-                    font-size: 15px;
-                    transition: transform .4s, opacity .4s, font-size .4s;
-                    transform: translate(150px);
+            thead:hover {
+
+                .add-task,
+                .add-subtask {
+                    opacity: 1;
+                    transform: translate(0px);
                 }
             }
 
-            tr:hover {  
-                .sprint-action {
-                    opacity: 1;
-                    transform: translate(0px);
+            // 1st Sprint List in table
+            tbody {
+                tr {
+                    .sprint-action {
+                        opacity: 0;
+                        font-size: 15px;
+                        transition: transform .4s, opacity .4s, font-size .4s;
+                        transform: translate(150px);
+                    }
+                }
+
+                tr:hover {
+                    .sprint-action {
+                        opacity: 1;
+                        transform: translate(0px);
+                    }
+
+                    .add-subtask-top {
+                        display: block;
+                    }
                 }
             }
         }
@@ -58,6 +74,7 @@
                     transform: translate(20px);
                 }
             }
+
             tr:hover {
                 .remove-task-from-sprint {
                     opacity: 1;

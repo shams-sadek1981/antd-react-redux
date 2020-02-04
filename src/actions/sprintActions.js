@@ -969,7 +969,7 @@ export const deleteSubTask = (taskId, subTaskId) => (dispatch, getState) => {
     deleteMethod(`/upcoming-task/subtask/delete/${subTaskId}`, { id: taskId })
         .then(data => {
 
-            // dispatch(toggleSubtaskModalVisible())
+            dispatch(toggleSubtaskModalVisible())
 
             // load task by search items
             dispatch(loadTaskBySearchItems())

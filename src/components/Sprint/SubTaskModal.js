@@ -49,6 +49,15 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
             const sprintDetails = sprint.list.find( item => item.name == sprint.searchBy.sprintName)
             
 
+            /**
+             * Selected assignedBy
+             * 
+             */
+            let selectedAssignedUser = sprint.subTaskModal.EditInfo.assignedUser
+            if (sprint.subTaskModal.okText == "Create"){
+                selectedAssignedUser = users.userInfo.name
+            }
+
             return (
                 <Modal
                     visible={sprint.subTaskModal.modalVisible}
@@ -58,7 +67,7 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                     footer={[
                         (handlePermission(this.props, 'upcoming_task_subtask_delete')) &&
                         sprint.subTaskModal.okText != "Create" &&
-                        <Popconfirm title="Are you sure to delete this task?"
+                        <Popconfirm title="Are you sure to delete this subtask?"
                             onConfirm={(e) => dispatch(deleteSubTask(sprint.subTaskModal.taskId, sprint.subTaskModal.EditInfo._id))}
                             okText="Yes" cancelText="No">
 
@@ -89,7 +98,7 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
 
                         <Form.Item label="Select User">
                             {getFieldDecorator('assignedUser', {
-                                initialValue: sprint.subTaskModal.EditInfo.assignedUser,
+                                initialValue: selectedAssignedUser,
                                 rules: [{ required: true, message: 'Please select user' }],
                             })(
                                 <Select

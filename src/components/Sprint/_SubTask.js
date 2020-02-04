@@ -38,12 +38,19 @@ export const _SubTask = (props) => {
                                 }
                                 |
                             </a>
-                            
+
                         </div>
                     )
 
                 })
             }
+
+            <Icon
+                className="add-subtask-top"
+                onClick={() => dispatch(addNewSubTask(taskId, taskName))}
+                type="plus-circle"
+                style={{ cursor: 'pointer', marginLeft: '10px', color: 'green' }}
+            />
         </div>
     )
 }
