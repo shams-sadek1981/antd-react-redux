@@ -951,7 +951,6 @@ export const updateSubTask = (values) => (dispatch, getState) => {
                 setTimeout( ()=> {
                     dispatch(loadTaskBySearchItems())
                 },600)
-                
 
             })
             .catch(err => console.log(err))

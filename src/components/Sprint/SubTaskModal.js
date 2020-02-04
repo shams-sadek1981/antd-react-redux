@@ -46,8 +46,8 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
              * User list by sprint name
              * 
              */
-            const sprintDetails = sprint.list.find( item => item.name == sprint.searchBy.sprintName)
-            const userListBySprint = sprintDetails.userDetails
+            // const sprintDetails = sprint.list.find( item => item.name == sprint.searchBy.sprintName)
+            // const userListBySprint = sprintDetails.userDetails
 
             return (
                 <Modal
@@ -99,8 +99,8 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                                     placeholder="Select a user"
                                 >
                                     {
-                                        userListBySprint.map((item, index) => (
-                                            <Option value={item.userName} key={index}>{item.userName}</Option>
+                                        users.allUser.map((item, index) => (
+                                            <Option value={item.name} key={index}>{item.name}</Option>
                                         ))
                                     }
 
