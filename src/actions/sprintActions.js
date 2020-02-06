@@ -80,7 +80,7 @@ export const changePagination = (pagination) => (dispatch, getState) => {
  * Step-2 => searchBy: { status: true/false } true=completed task, false=incomplete task
  * Step-3 =>fetch data from API
  */
-export const changeTabKey = value => async (dispatch, getState) => {
+export const changeTabKey = (value) => async (dispatch, getState) => {
 
     // start spinning
     dispatch(toggleSpinning(true))
@@ -120,11 +120,11 @@ export const changeTabKey = value => async (dispatch, getState) => {
     })
 
     // Get Result
-    setTimeout( () => {
+    setTimeout(() => {
         dispatch(sprintSearchByResult())
     }, 600);
-    
-    
+
+
 
 }//-- end
 
@@ -948,9 +948,9 @@ export const updateSubTask = (values) => (dispatch, getState) => {
                 dispatch(toggleSubtaskModalVisible())
 
                 // load task by search items
-                setTimeout( ()=> {
+                setTimeout(() => {
                     dispatch(loadTaskBySearchItems())
-                },600)
+                }, 600)
 
             })
             .catch(err => console.log(err))

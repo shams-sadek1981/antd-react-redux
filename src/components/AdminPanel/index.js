@@ -40,7 +40,6 @@ class AdminPanel extends Component {
             collapsed: !this.state.collapsed,
         });
 
-        console.log('HH:', this.state.collapsed)
     }
 
     logout = () => {
@@ -111,7 +110,10 @@ class AdminPanel extends Component {
                             margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280,
                         }}
                         >
-                            <AdminRoutes {...this.props} />
+                            {
+                                (users.permissions.length > 0)&&
+                                <AdminRoutes {...this.props} />
+                            }
                         </Content>
 
                     </Layout>

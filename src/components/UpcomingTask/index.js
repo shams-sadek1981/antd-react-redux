@@ -60,7 +60,6 @@ class UpcomingTask extends Component {
         });
     }
 
-
     //-- Modal form subtask submit
     handleSubTaskCreate = () => {
 

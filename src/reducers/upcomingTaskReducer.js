@@ -39,7 +39,8 @@ const initialState = {
         text: '',
         completedAt: null,
         running: false,
-        newlyAdded: true
+        newlyAdded: true,
+        releaseStatus: 'all'
     },
     spinning: false,
     taskList: [],

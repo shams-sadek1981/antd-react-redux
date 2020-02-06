@@ -41,12 +41,17 @@ export const PrivateRoute = ({ component: Component, ...rest }) => {
  */
 export const PermissionRoute = ({ component: Component, ...rest }) => {
 
+    const { permissionName, users } = rest
+    const result = handlePermission({ users }, permissionName)
+    
+    // console.log('result: ', result)
+    // console.log('permissionName: ', permissionName)
+    // console.log('users: ', users)
+
     return (
         <Route
             {...rest}
             render={ props => {
-
-                const { permissionName, users } = rest
 
                 return handlePermission({ users }, permissionName) ?
                     (<Component {...props} />) :

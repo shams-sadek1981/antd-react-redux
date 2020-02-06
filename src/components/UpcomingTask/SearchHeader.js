@@ -31,7 +31,7 @@ export const SearchHeader = (props) => {
 
         window.clearTimeout(timer);
 
-        timer = window.setTimeout( (value) => { 
+        timer = window.setTimeout((value) => {
             dispatch(searchBy('text', value))
         }, 700, e.target.value);
     }
@@ -57,11 +57,11 @@ export const SearchHeader = (props) => {
                             checkedChildren="Latest"
                             unCheckedChildren="Default"
                             checked={upcomingTask.searchBy.newlyAdded}
-                            onChange={ (checked) => dispatch(toggleNewlyAdded())} />
+                            onChange={(checked) => dispatch(toggleNewlyAdded())} />
                     </div>
                 </Col>
 
-                <Col span={2}>
+                <Col span={3}>
                     <div> <i>Total Est. <b>{upcomingTask.totalEstHour} </b></i></div>
                     <div> <i>Total Task: <b>{upcomingTask.pagination.total} </b></i></div>
                 </Col>
@@ -71,23 +71,39 @@ export const SearchHeader = (props) => {
                     <div> <i>Total Subtask: <b>{upcomingTask.totalSubTask} </b></i></div>
                 </Col>
 
-                <Col span={5}>
+                <Col span={4}>
                     <_SearchByUser {...props} />
                 </Col>
 
-                <Col span={5}>
+                <Col span={4}>
                     <_SearchByProject {...props} />
                 </Col>
 
-                <Col span={5}>
+                <Col span={4}>
                     <Search
                         placeholder="input search text"
                         defaultValue={upcomingTask.searchBy.text}
                         onSearch={value => dispatch(searchBy('text', value))}
-                        onChange={ searchByTextChange }
+                        onChange={searchByTextChange}
                         style={{ width: 200 }}
                         autoFocus
                     />
+                </Col>
+                <Col span={2}>
+                    <Select
+                        showSearch
+                        style={{ width: "100%" }}
+                        value={upcomingTask.searchBy.releaseStatus}
+                        placeholder="Select a release option"
+                        optionFilterProp="children"
+                        onChange={ value => dispatch(searchBy("releaseStatus", value))}
+                        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                        <Option value="all" key={-1}>ALL</Option>
+                        <Option value="release" key={1}>Release</Option>
+                        <Option value="not_release" key={2}>Not Release</Option>
+                        
+                    </Select>
                 </Col>
             </Row>
         </Fragment>

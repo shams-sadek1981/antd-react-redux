@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, useLocation } from 'react-router-dom'
 import {
     BrowserRouter as Router,
     Switch,
@@ -48,6 +48,7 @@ const { TabPane } = Tabs;
 const Search = Input.Search;
 
 
+
 class Sprint extends Component {
 
     state = {
@@ -57,6 +58,26 @@ class Sprint extends Component {
     };
 
     componentDidMount = async () => {
+
+        /**
+         * url params settings for tab key
+         */
+        const { path, url } = this.props.match
+
+        let searchParams = new URLSearchParams(this.props.history.location.search);
+
+        switch (searchParams.get('tab')) {
+            case "completed":
+                this.props.dispatch(changeTabKey("2"))
+                break;
+
+            case "upcoming":
+                this.props.dispatch(changeTabKey("1"))
+                break;
+        }
+
+        
+
 
         await this.props.dispatch(getPermissions())
 
@@ -121,10 +142,53 @@ class Sprint extends Component {
         this.formRef = formRef;
     }
 
+    /**
+     * Sprint change key
+     */
+    sprintChangeTabKey = (key) => {
+
+        const { path, url } = this.props.match
+
+        let searchParams = new URLSearchParams(this.props.history.location.search);
+
+        switch (key) {
+            case "1":
+                searchParams.set('tab', 'upcoming')
+                this.props.history.push(path + "?" + searchParams.toString())
+                break;
+
+            case "2":
+                searchParams.set('tab', 'completed')
+                this.props.history.push(path + "?" + searchParams.toString())
+                break;
+        }
+
+        this.props.dispatch(changeTabKey(key))
+
+    }
+
     render() {
 
         const { dispatch, release, sprint, upcomingTask } = this.props
         const { size } = this.state;
+
+        // const { path, url } = this.props.match
+
+        // console.log('Path:', path)
+        // console.log('URL:', url)
+
+        // const params = new URLSearchParams(this.props.location.search);
+        // // let searchParams = new URLSearchParams(props.history.location.search);
+        // const tab = params.get('tab')
+
+        // console.log("TEST URL:", this.props.match.params.tab)
+
+        // this.props.dispatch({
+        //     type: "URL_PARAMS2",
+        //     payload: {
+        //         tab
+        //     }
+        // })
 
         return (
             <div id="sprint">
@@ -164,7 +228,7 @@ class Sprint extends Component {
                 <Tabs
                     activeKey={sprint.tabKey}
                     size={size}
-                    onChange={(key) => dispatch(changeTabKey(key))}
+                    onChange={this.sprintChangeTabKey}
                 >
                     <TabPane tab="Upcoming Sprint" key="1">
                         <Row>

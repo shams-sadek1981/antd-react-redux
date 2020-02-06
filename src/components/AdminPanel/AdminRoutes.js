@@ -31,7 +31,7 @@ export const AdminRoutes = (props) => {
             
             <Route path={`${path}/user-report`} component={UserPersonalReport}/>
 
-            <Route path={`${path}/evaluation`} component={EvaluationReport}/>
+            <PermissionRoute path={`${path}/evaluation`} component={EvaluationReport} permissionName="menu_user_role" users={users}/>
 
             <PermissionRoute path={`${path}/users-role`} component={UserRole} permissionName="menu_user_role" users={users}/>
             
@@ -39,12 +39,11 @@ export const AdminRoutes = (props) => {
             
             <PermissionRoute path={`${path}/public-holiday`} component={PublicHoliday} permissionName="menu_public_holiday" users={users}/>
             
-            <Route path={`${path}/upcoming-task`} component={UpcomingTask} />
+            <PermissionRoute path={`${path}/upcoming-task`} component={UpcomingTask} permissionName="menu_upcoming_task" users={users}/>
             
-            {/* <PermissionRoute path={`${path}/release`} component={Release} permissionName="menu_release" users={users}/> */}
-            <Route path={`${path}/release`} component={Release} permissionName="menu_release" users={users}/>
+            <PermissionRoute path={`${path}/release`} component={Release} permissionName="menu_release" users={users}/>
             
-            <Route path={`${path}/sprint`} component={Sprint} permissionName="menu_sprint" users={users}/>
+            <PermissionRoute path={`${path}/sprint`} component={Sprint} permissionName="menu_sprint" users={users}/>
             
             <PermissionRoute path={`${path}/reports`} component={Reports} permissionName="menu_reports" users={users}/>
             

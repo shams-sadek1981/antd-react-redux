@@ -44,10 +44,14 @@ const openNotificationWithIcon = (type, message, description) => {
     });
 };
 
+
+
 /**
  * ------------------------------------------------------------------------------------------
  * Task Result
  * ------------------------------------------------------------------------------------------
+ * 
+ * @param null
  */
 export const upcomingTaskSearchByResult = () => async (dispatch, getState) => {
 
@@ -55,12 +59,12 @@ export const upcomingTaskSearchByResult = () => async (dispatch, getState) => {
     const { userInfo } = getState().userReducer
 
     let { current, pageSize } = pagination
-    let { name, project, text, completedAt, running, newlyAdded } = searchBy
+    let { name, project, text, completedAt, running, newlyAdded, releaseStatus } = searchBy
 
 
     project = await getProjectSearchBy(userInfo, project)
 
-    await getTaskResult(current, pageSize, name, project, completedAt, text, running, newlyAdded)
+    await getTaskResult(current, pageSize, name, project, completedAt, text, running, newlyAdded, releaseStatus)
         .then(data => {
 
             dispatch({
@@ -240,6 +244,13 @@ export const toggleSpinning = (booleanValue) => {
     }
 }
 
+
+/**
+ * Search By from search header
+ * 
+ * @param {*} fieldName 
+ * @param {*} value 
+ */
 export const searchBy = (fieldName, value) => async (dispatch, getState) => {
 
     // console.log('value:', value)
@@ -318,7 +329,7 @@ const setObjForSearchResult = (obj) => {
  * @param {*} text 
  */
 
-const getTaskResult = async (current, pageSize, name, project, completedAt, text, running, newlyAdded) => {
+const getTaskResult = async (current, pageSize, name, project, completedAt, text, running, newlyAdded, releaseStatus) => {
 
     let newProjectParams = ''
 
@@ -330,7 +341,7 @@ const getTaskResult = async (current, pageSize, name, project, completedAt, text
         newProjectParams = "project=" + project
     }
 
-    const searchUrl = `/upcoming-task/search-running?page=${current}&pageSize=${pageSize}&name=${name}&${newProjectParams}&completedAt=${completedAt}&text=${text}&running=${running}&newlyAdded=${newlyAdded}`
+    const searchUrl = `/upcoming-task/search-running?page=${current}&pageSize=${pageSize}&name=${name}&${newProjectParams}&completedAt=${completedAt}&text=${text}&running=${running}&newlyAdded=${newlyAdded}&releaseStatus=${releaseStatus}`
 
     return await get(searchUrl)
         .then(data => data)
