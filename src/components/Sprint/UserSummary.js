@@ -75,15 +75,20 @@ export const UserSummary = (props) => {
                     <Tag color={randomColor(item.userName)} style={{ fontStyle: 'italic', fontWeight: 'bold', cursor: 'pointer' }}>
                         {item.userName}:
                             <span style={{ fontWeight: 'bold', fontSize: '115%', paddingLeft: '5px' }}>
-                            {item.estHour}
+                            {item.estHour.toString().match(/\.\d+/) ? parseFloat(item.estHour).toFixed(2) : item.estHour}
                         </span>
                     </Tag>
                     <div style={{ marginTop: '5px', fontStyle: 'italic' }}>
                         <div style={{ paddingLeft: '5px', color: completedColor, float: 'left' }}>
-                            Complete: <b>{item.complete}</b>
+                            Complete: <b>
+                                    { item.complete.toString().match(/\.\d+/) ? parseFloat(item.complete).toFixed(2) : item.complete}
+                                </b>
                         </div>
                         <div style={{ paddingLeft: '5px', color: dueColor, float: 'right' }}>
-                            Due: <b>{item.due}</b>
+                            Due: <b>
+                                {item.due.toString().match(/\.\d+/) ? parseFloat(item.due).toFixed(2) : item.due}
+                            </b>
+                            
                         </div>
                     </div>
                 </div>)}

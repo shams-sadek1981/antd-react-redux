@@ -27,7 +27,7 @@ import {
     // changeTabKey
 } from '../../actions/releaseActions'
 
-import {
+import {    
     handleSubmit,
     sprintSearchByResult,
     changeTabKey,
@@ -46,6 +46,7 @@ import Test from './Test'
 
 const { TabPane } = Tabs;
 const Search = Input.Search;
+
 
 
 
@@ -76,7 +77,7 @@ class Sprint extends Component {
                 break;
         }
 
-        
+
 
 
         await this.props.dispatch(getPermissions())

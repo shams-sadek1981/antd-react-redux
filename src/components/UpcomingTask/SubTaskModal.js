@@ -42,6 +42,15 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                 completedAt = {}
             }
 
+            /**
+             * Selected assignedBy
+             * 
+             */
+            let selectedAssignedUser = upcomingTask.subTaskModal.EditInfo.assignedUser
+            if (upcomingTask.subTaskModal.okText == "Create"){
+                selectedAssignedUser = users.userInfo.name
+            }
+
             return (
                 <Modal
                     visible={upcomingTask.subTaskModal.modalVisible}
@@ -68,7 +77,8 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
 
                         <Form.Item label="Select User">
                             {getFieldDecorator('assignedUser', {
-                                initialValue: upcomingTask.subTaskModal.EditInfo.assignedUser,
+                                // initialValue: upcomingTask.subTaskModal.EditInfo.assignedUser,
+                                initialValue: selectedAssignedUser,
                                 rules: [{ required: true, message: 'Please select user' }],
                             })(
                                 <Select
