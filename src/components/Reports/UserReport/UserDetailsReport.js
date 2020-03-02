@@ -16,38 +16,56 @@ export const UserDetailsReport = (props) => {
     return (
         <Fragment>
 
+            <div>
+                {
+                    (reports.data.result.length > 0) &&
+                    <div>
+                        <strong style={{ fontSize: '16pt' }}>{reports.searchBy.name}</strong>
+                        <span style={{ marginLeft: '10px'}}>
+                            Total: <b style={{ fontSize: '110%'}}>{reports.data.totalEst}</b> Hours
+                        </span>
+                    </div>
+                }
+            </div>
+
             <Row gutter={24} className="no-print">
                 <Col span={8}>
-                    <ProjectSummaryChart {...props}/>
+                    <ProjectSummaryChart {...props} />
                 </Col>
-                
+
                 <Col span={8}>
-                    <TaskTypeSummaryChart {...props}/>
+                    <TaskTypeSummaryChart {...props} />
                 </Col>
-                
+
                 <Col span={8}>
-                    <SubTaskSummaryChart {...props}/>
+                    <SubTaskSummaryChart {...props} />
                 </Col>
             </Row>
-            
-            <Divider/>
+
+            <Divider />
+
+            <div style={{ fontSize: '16pt' }}>
+                <strong>
+                    {
+                        (reports.searchBy.name != 'all') &&
+                        reports.searchBy.name
+                    }
+                </strong>
+            </div>
 
             <div>
-                Date Between: { reports.searchBy.startDate } to { reports.searchBy.endDate } 
-            </div>
-            <div>
-                User Name: <strong>{ reports.searchBy.name }</strong>
+                Date Between: {reports.searchBy.startDate} to {reports.searchBy.endDate}
             </div>
 
             <table className="user-details-table report-table">
                 <thead>
-                    <tr style={{ background: "#eee", textAlign: 'center'}}>
-                        <th style={{ width: "120px"}}>Completed At</th>
+                    <tr style={{ background: "#eee", textAlign: 'center' }}>
+                        <th style={{ width: "120px" }}>Completed At</th>
                         <th>Task Name</th>
                         <th>Subtask</th>
-                        <th style={{ width: "100px"}}>Project</th>
-                        <th style={{ width: "120px"}}>Task Type</th>
-                        <th style={{ width: '70px'}}>Hour</th>
+                        <th style={{ width: "100px" }}>Project</th>
+                        <th style={{ width: "120px" }}>Task Type</th>
+                        <th style={{ width: '70px' }}>Hour</th>
                     </tr>
                 </thead>
 
@@ -59,7 +77,7 @@ export const UserDetailsReport = (props) => {
                                 <td>{item.taskName}</td>
                                 <td>
                                     {item.subTask}
-                                    { item.subTaskDescription &&
+                                    {item.subTaskDescription &&
                                         " - " + item.subTaskDescription
                                     }
                                 </td>
@@ -79,17 +97,17 @@ export const UserDetailsReport = (props) => {
 
 
             {/* ------------ Project Details by user ------------- */}
-            <Divider/>
-            <UserProjectDetailsReport {...props}/>
-            
+            <Divider />
+            <UserProjectDetailsReport {...props} />
+
 
             {/* ------------ Task Type Details by user ------------- */}
-            <Divider/>
-            <UserTaskTypeDetailsReport {...props}/>
-            
+            <Divider />
+            <UserTaskTypeDetailsReport {...props} />
+
             {/* ------------ SubTask Details by user ------------- */}
-            <Divider/>
-            <UserSubTaskDetailsReport {...props}/>
+            <Divider />
+            <UserSubTaskDetailsReport {...props} />
 
         </Fragment>
     )

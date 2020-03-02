@@ -21,7 +21,7 @@ const cols = {
 class AdminDashboard extends Component {
 
     componentDidMount = async () => {
-        console.log('Admin Panel Dashboard')
+        // console.log('Admin Panel Dashboard')
         // await console.log(localStorage.getItem('token'))
 
         this.props.dispatch(userSummaryLoading())
