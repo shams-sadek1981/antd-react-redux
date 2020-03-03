@@ -146,8 +146,7 @@ export const List = (props) => {
                     </Tag>
                     <span style={{ fontStyle: 'italic', color: '#0000ff9e' }}>
                         {record.restOfDays > 1 && record.restOfDays + ' Days'}
-                        {record.restOfDays == 1 && '1 Day'}
-                        {record.restOfDays == 0 && ' Last Day'}
+                        {record.restOfDays == 1 && ' Last Day'}
                     </span>
 
                     <div style={{ fontStyle: 'italic', paddingTop: '5px' }}>
