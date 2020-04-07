@@ -12,6 +12,14 @@ export const ProjectSummaryDetailsReport = (props) => {
 
             <Row gutter={24} className="no-print">
                 <Col span={24}>
+                    
+                    <div style={{ fontSize: '110%',  fontStyle: 'italic', marginBottom: '5px'}}>Date Between {reports.projectSummary.startDate} to { reports.projectSummary.endDate }</div>
+
+                    <div style={{ fontSize: '110%', marginBottom: '-20px'}}>
+                        Total Hours: <b>{ reports.projectSummary.totalEst }</b>
+                        &nbsp; & Total Tasks: <b>{ reports.projectSummary.totalTask }</b>
+                    </div>
+
                     <_ProjectSummaryChart {...props}/>
                 </Col>
             </Row>
@@ -41,7 +49,10 @@ export const ProjectSummaryDetailsReport = (props) => {
                         reports.projectSummary.result.map((item, index) => (
                             <tr key={index}>
                                 <td>{++index}</td>
-                                <td>{item.projectName}</td>
+                                <td>
+                                    <b> {item.projectName} : </b>
+                                    { item.assignedUser.map( userName => userName + ", ")}
+                                </td>
                                 <td style={{ textAlign: 'right' }}>{item.myCount}</td>
                                 <td style={{ textAlign: 'right' }}>{item.estHour}</td>
                             </tr>

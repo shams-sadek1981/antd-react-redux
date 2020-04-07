@@ -10,13 +10,27 @@ export const UserSummaryDetailsReport = (props) => {
         <Fragment>
 
             <div className="no-print">
-                <_UserSummaryChart {...props}/>
+                <div style={{ fontSize: '110%', fontStyle: 'italic', marginBottom: '5px' }}>Date Between {reports.searchBy.startDate} to {reports.searchBy.endDate}</div>
+
+                <div style={{ fontSize: '110%' }}>
+                    Total Hours: <b>{reports.userSummary.totalEst}</b>
+                    &nbsp; & Total Tasks: <b>{reports.userSummary.totalTask}</b>
+                </div>
+
+                <div style={{ marginBottom: '-20px', marginTop: '5px'}}>
+                    {reports.userSummary.project &&
+                        <h3>
+                            { reports.userSummary.project.map( item => item + ', ') }
+                        </h3>
+                    }
+                </div>
+                <_UserSummaryChart {...props} />
             </div>
 
             <Divider />
 
             <div>
-                Date Between: { reports.searchBy.startDate } to { reports.searchBy.endDate } 
+                Date Between: {reports.searchBy.startDate} to {reports.searchBy.endDate}
             </div>
             <div>
                 User Summary Report
@@ -25,7 +39,7 @@ export const UserSummaryDetailsReport = (props) => {
             <table className="user-summary-details-table report-table">
                 <thead>
                     <tr>
-                        <th style={{width: '60px'}}>SL</th>
+                        <th style={{ width: '60px' }}>SL</th>
                         <th>User Name</th>
                         <th>Task</th>
                         <th>Est. Hour</th>
@@ -37,7 +51,7 @@ export const UserSummaryDetailsReport = (props) => {
                     {
                         reports.userSummary.result.map((item, index) => (
                             <tr key={index}>
-                                <td>{ ++index }</td>
+                                <td>{++index}</td>
                                 <td>{item.userName}</td>
                                 <td style={{ textAlign: 'right' }}>{item.myCount}</td>
                                 <td style={{ textAlign: 'right' }}>{item.estHour}</td>

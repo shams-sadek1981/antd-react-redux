@@ -11,13 +11,28 @@ export const TaskTypeSummaryDetailsReport = (props) => {
         <Fragment>
 
             <div className="no-print">
-                <_TaskTypeSummaryChart {...props}/>
+                <div style={{ fontSize: '110%', fontStyle: 'italic', marginBottom: '5px' }}>Date Between {reports.searchBy.startDate} to {reports.searchBy.endDate}</div>
+
+                <div style={{ fontSize: '110%' }}>
+                    Total Hours: <b>{reports.taskTypeSummary.totalEst}</b>
+                    &nbsp; & Total Tasks: <b>{reports.taskTypeSummary.totalTask}</b>
+                </div>
+
+                <div style={{ marginBottom: '-20px', marginTop: '5px' }}>
+                    {reports.taskTypeSummary.project &&
+                        <h3>
+                            {reports.taskTypeSummary.project.map(item => item + ', ')}
+                        </h3>
+                    }
+                </div>
+                
+                <_TaskTypeSummaryChart {...props} />
             </div>
-    
+
             <Divider />
 
             <div>
-                Date Between: { reports.searchBy.startDate } to { reports.searchBy.endDate } 
+                Date Between: {reports.searchBy.startDate} to {reports.searchBy.endDate}
             </div>
             <div>
                 Task Type Summary Report
@@ -26,10 +41,10 @@ export const TaskTypeSummaryDetailsReport = (props) => {
             <table className="user-summary-details-table report-table">
                 <thead>
                     <tr>
-                        <th style={{width: '60px'}}>SL</th>
+                        <th style={{ width: '60px' }}>SL</th>
                         <th>Task Type</th>
-                        <th style={{width: '200px'}}>Task</th>
-                        <th style={{width: '200px'}}>Est. Hour</th>
+                        <th style={{ width: '200px' }}>Task</th>
+                        <th style={{ width: '200px' }}>Est. Hour</th>
                     </tr>
                 </thead>
 

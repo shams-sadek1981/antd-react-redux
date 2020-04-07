@@ -36,6 +36,10 @@ export const _ProjectSummaryChart = (props) => {
                         <LabelList dataKey="myCount" position="right"/>
                     </Bar>
 
+                    <Bar dataKey="totalUser" fill="#FFBB28" name="User">
+                        <LabelList dataKey="totalUser" position="right"/>
+                    </Bar>
+
                 </BarChart>
             }
         </div>

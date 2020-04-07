@@ -12,14 +12,29 @@ export const SubTaskSummaryDetailsReport = (props) => {
 
             <Row gutter={24} className="no-print">
                 <Col span={24}>
-                    <SubTaskSummaryChart {...props}/>
+                    <div style={{ fontSize: '110%', fontStyle: 'italic', marginBottom: '5px' }}>Date Between {reports.searchBy.startDate} to {reports.searchBy.endDate}</div>
+
+                    <div style={{ fontSize: '110%' }}>
+                        Total Hours: <b>{reports.subTaskSummary.totalEst}</b>
+                        &nbsp; & Total Tasks: <b>{reports.subTaskSummary.totalTask}</b>
+                    </div>
+
+                    <div style={{ marginBottom: '-20px', marginTop: '5px' }}>
+                        {reports.subTaskSummary.project &&
+                            <h3>
+                                {reports.subTaskSummary.project.map(item => item + ', ')}
+                            </h3>
+                        }
+                    </div>
+
+                    <SubTaskSummaryChart {...props} />
                 </Col>
             </Row>
 
             <Divider />
 
             <div>
-                Date Between: { reports.searchBy.startDate } to { reports.searchBy.endDate } 
+                Date Between: {reports.searchBy.startDate} to {reports.searchBy.endDate}
             </div>
             <div>
                 SubTask Summary Report
@@ -28,10 +43,10 @@ export const SubTaskSummaryDetailsReport = (props) => {
             <table className="user-summary-details-table report-table">
                 <thead>
                     <tr>
-                        <th style={{width: '60px'}}>SL</th>
+                        <th style={{ width: '60px' }}>SL</th>
                         <th>SubTask Name</th>
-                        <th style={{ width: '250px'}}>Task</th>
-                        <th style={{ width: '250px'}}>Est. Hour</th>
+                        <th style={{ width: '250px' }}>Task</th>
+                        <th style={{ width: '250px' }}>Est. Hour</th>
                     </tr>
                 </thead>
 
