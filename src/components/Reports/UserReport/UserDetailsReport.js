@@ -20,10 +20,28 @@ export const UserDetailsReport = (props) => {
                 {
                     (reports.data.result.length > 0) &&
                     <div>
-                        <strong style={{ fontSize: '16pt' }}>{reports.searchBy.name}</strong>
-                        <span style={{ marginLeft: '10px'}}>
-                            Total: <b style={{ fontSize: '110%'}}>{reports.data.totalEst}</b> Hours
+                        <span style={{ fontSize: '16pt', paddingRight: '10px' }}><b>{reports.searchBy.name}</b></span>
+                        <span>
+                            &nbsp; From <i style={{ fontSize: '110%' }}>{reports.data.startDate}</i>
+                            &nbsp; To <i style={{ fontSize: '110%' }}>{reports.data.endDate}</i>
                         </span>
+                        <div style={{ marginTop: '10px' }}>
+                            <span>
+                                Completed <b style={{ fontSize: '110%' }}>{reports.data.totalEst}</b> Hours
+                            </span>
+
+                            <span>
+                                &nbsp; by <b style={{ fontSize: '110%' }}>{reports.data.totalTask}</b> Tasks
+                            </span>
+
+                        </div>
+
+                        <div style={{ fontSize: '110%', marginTop: '5px' }}>
+                            Avg. Hour Per Task: <span style={{ fontWeight: 'bold' }}>{reports.data.avgTaskHour}</span>,
+                            &nbsp; Avg. Hour Per Day: <span style={{ fontWeight: 'bold' }}>{reports.data.avgHourPerDay}</span>
+                            &nbsp; & Avg. Task Per Day: <span style={{ fontWeight: 'bold' }}>{reports.data.avgTaskPerDay}</span>
+                        </div>
+
                     </div>
                 }
             </div>

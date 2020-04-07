@@ -25,24 +25,31 @@ export const _UserSummaryChart = (props) => {
                 data.length > 0 &&
                 <BarChart
                     width={1100}
-                    height={750}
+                    height={850}
                     data={data}
                     margin={{ top: 30, right: 30, left: 20, bottom: 5 }}
                     layout="vertical"
                 >
                     <CartesianGrid strokeDasharray="3 4" />
                     <XAxis type="number" />
-                    <YAxis dataKey="userName" type="category" width={120}>
+                    <YAxis dataKey="userName" type="category" width={160}>
                         {/* <Label value="User Name" offset={0} position="top" /> */}
                     </YAxis>
                     <Tooltip />
-                    <Legend />
-                    <Bar dataKey="estHour" fill="#82ca9d">
+                    
+                    <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
+                
+
+                    <Bar dataKey="estHour" fill="#82ca9d" name="Est. Hour">
                         <LabelList dataKey="estHour" position="insideRight" />
                     </Bar>
                     
-                    <Bar dataKey="officeHour" fill="#8884d8">
+                    <Bar dataKey="officeHour" fill="#8884d8" name="Office Hour">
                         {/* <LabelList dataKey="officeHour" position="right" /> */}
+                    </Bar>
+
+                    <Bar dataKey="myCount" fill="#FFBB28" name="Task">
+                        <LabelList dataKey="myCount" position="insideRight" />
                     </Bar>
                     
                     {/* <Bar dataKey="timeLog" fill="#778899">

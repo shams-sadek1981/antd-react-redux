@@ -14,7 +14,7 @@ export const SubTaskSummaryChart = (props) => {
                 data.length > 0 &&
                 <BarChart
                     width={1000}
-                    height={600}
+                    height={750}
                     data={data}
                     margin={{ top: 30, right: 30, left: 20, bottom: 5 }}
                     layout="vertical"
@@ -25,10 +25,22 @@ export const SubTaskSummaryChart = (props) => {
                         <Label value="SubTask" offset={0} position="top" />
                     </YAxis>
                     <Tooltip />
-                    <Legend />
-                    <Bar dataKey="estHour" fill="#8884d8" >
+
+                    <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
+
+                    <Bar dataKey="estHour" fill="#8884d8" name="Est. Hour">
                         <LabelList dataKey="estHour" position="right" />
                     </Bar>
+
+                    <Bar
+                        style={{ cursor: 'pointer' }}
+                        dataKey="myCount" fill="#82ca9d"
+                        name="Task"
+                        onClick={(e) => console.log(e.myCount)}
+                    >
+                        <LabelList dataKey="myCount" position="right" />
+                    </Bar>
+
                 </BarChart>
             }
         </div>

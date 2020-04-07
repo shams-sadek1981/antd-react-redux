@@ -30,7 +30,8 @@ export const ProjectSummaryDetailsReport = (props) => {
                     <tr>
                         <th style={{width: '60px'}}>SL</th>
                         <th>Project Name</th>
-                        <th>Est. Hour</th>
+                        <th style={{width: '200px'}}>Task</th>
+                        <th style={{width: '200px'}}>Est. Hour</th>
                     </tr>
                 </thead>
 
@@ -41,6 +42,7 @@ export const ProjectSummaryDetailsReport = (props) => {
                             <tr key={index}>
                                 <td>{++index}</td>
                                 <td>{item.projectName}</td>
+                                <td style={{ textAlign: 'right' }}>{item.myCount}</td>
                                 <td style={{ textAlign: 'right' }}>{item.estHour}</td>
                             </tr>
                         ))
@@ -48,6 +50,7 @@ export const ProjectSummaryDetailsReport = (props) => {
 
                     <tr>
                         <td colSpan="2" style={{ textAlign: 'right' }}>Total = </td>
+                        <td style={{ textAlign: 'right' }}>{reports.projectSummary.totalTask}</td>
                         <td style={{ textAlign: 'right' }}>{reports.projectSummary.totalEst}</td>
                     </tr>
                 </tbody>

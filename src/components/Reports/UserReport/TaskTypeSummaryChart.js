@@ -14,15 +14,21 @@ export const TaskTypeSummaryChart = (props) => {
                 data.length > 0 &&
                 <BarChart
                     width={400}
-                    height={500}
+                    height={550}
                     data={data}
                     margin={{ top: 50, right: 30, left: 20, bottom: 5 }}
                     layout="horizontal"
                 >
                     <CartesianGrid strokeDasharray="3 3" />
                     
-                    <XAxis dataKey="taskType" interval={0} width={30} angle={-15}>
-                    </XAxis>
+                    <XAxis
+                        dataKey="taskType"
+                        interval={0}
+                        width={30}
+                        height={80}
+                        angle={-45}
+                        textAnchor="end"
+                    />
 
                     <YAxis>
                         <Label value="Task Type" offset={30} position="top" />
@@ -30,11 +36,20 @@ export const TaskTypeSummaryChart = (props) => {
 
 
                     <Tooltip />
-                    <Legend />
-                    <Bar dataKey="estHour" fill="#A64CA6">
+                    <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
+                    <Bar dataKey="estHour" fill="#A64CA6" name="Est. Hour">
                         <LabelList dataKey="estHour" position="top" />
-                        {/* <LabelList dataKey="taskType" position="bottom" /> */}
                     </Bar>
+
+                    <Bar
+                        style={{ cursor: 'pointer' }}
+                        dataKey="myCount" fill="#82ca9d"
+                        name="Task"
+                        onClick={(e) => console.log(e.myCount)}
+                    >
+                        <LabelList dataKey="myCount" position="top" />
+                    </Bar>
+
                 </BarChart>
             }
         </div>

@@ -131,12 +131,24 @@ export const searchByUserSummary = (values) => (dispatch, getState) => {
 
     dispatch(toggleSpinning(true))
 
-    let { startDate, endDate } = getState().reportsReducer.searchBy
+    let { startDate, endDate, project } = getState().reportsReducer.searchBy
 
     // startDate = moment(startDate).format('YYYY-MMM-DD')
     // endDate = moment(endDate).format('YYYY-MMM-DD')
 
-    const searchUrl = `/upcoming-task/subtask/report-user-summary?startDate=${startDate}&endDate=${endDate}`
+
+    let searchUrl = `/upcoming-task/subtask/report-user-summary?startDate=${startDate}&endDate=${endDate}`
+
+    // Single project or multi project
+    if (project) {
+        if (Array.isArray(project)) {
+            project.forEach(item => {
+                searchUrl += `&project=${item}`
+            })
+        } else {
+            searchUrl += `&project=${project}`
+        }
+    }
 
     const { searchBy } = getState().reportsReducer
 
@@ -198,7 +210,18 @@ export const searchByTaskTypeSummary = (values) => (dispatch, getState) => {
 
     const { startDate, endDate, project } = getState().reportsReducer.searchBy
 
-    const searchUrl = `/upcoming-task/subtask/report-task-type-summary?startDate=${startDate}&endDate=${endDate}&projectName=${project}`
+    let searchUrl = `/upcoming-task/subtask/report-task-type-summary?startDate=${startDate}&endDate=${endDate}`
+
+    // Single project or multi project
+    if (project) {
+        if (Array.isArray(project)) {
+            project.forEach(item => {
+                searchUrl += `&project=${item}`
+            })
+        } else {
+            searchUrl += `&project=${project}`
+        }
+    }
 
     const { searchBy } = getState().reportsReducer
 
@@ -229,7 +252,18 @@ export const searchBySubTaskSummary = (values) => (dispatch, getState) => {
 
     const { startDate, endDate, project } = getState().reportsReducer.searchBy
 
-    const searchUrl = `/upcoming-task/subtask/report-subtask-summary?startDate=${startDate}&endDate=${endDate}&projectName=${project}`
+    let searchUrl = `/upcoming-task/subtask/report-subtask-summary?startDate=${startDate}&endDate=${endDate}`
+
+    // Single project or multi project
+    if (project) {
+        if (Array.isArray(project)) {
+            project.forEach(item => {
+                searchUrl += `&project=${item}`
+            })
+        } else {
+            searchUrl += `&project=${project}`
+        }
+    }
 
     const { searchBy } = getState().reportsReducer
 
@@ -326,7 +360,7 @@ export const changeSearchField = (val, fieldName = "startDate") => (dispatch, ge
         }
     })
 
-
+    // For task type summary
     if (fieldName == "project") {
         dispatch(reportTaskStatusByDate())
     } else {

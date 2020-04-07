@@ -26,10 +26,22 @@ export const _TaskTypeSummaryChart = (props) => {
                         <Label value="Task Type" offset={0} position="top" />
                     </YAxis>
                     <Tooltip />
-                    <Legend />
-                    <Bar dataKey="estHour" fill="#A64CA6">
+                    
+                    <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
+
+                    <Bar dataKey="estHour" fill="#A64CA6" name="Est. Hour">
                         <LabelList dataKey="estHour" position="right" />
                     </Bar>
+
+                    <Bar
+                        style={{ cursor: 'pointer' }}
+                        dataKey="myCount" fill="#82ca9d"
+                        name="Task"
+                        onClick={(e) => console.log(e.myCount)}
+                    >
+                        <LabelList dataKey="myCount" position="right" />
+                    </Bar>
+
                 </BarChart>
             }
         </div>

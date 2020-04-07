@@ -27,6 +27,7 @@ export const UserSummaryDetailsReport = (props) => {
                     <tr>
                         <th style={{width: '60px'}}>SL</th>
                         <th>User Name</th>
+                        <th>Task</th>
                         <th>Est. Hour</th>
                     </tr>
                 </thead>
@@ -38,6 +39,7 @@ export const UserSummaryDetailsReport = (props) => {
                             <tr key={index}>
                                 <td>{ ++index }</td>
                                 <td>{item.userName}</td>
+                                <td style={{ textAlign: 'right' }}>{item.myCount}</td>
                                 <td style={{ textAlign: 'right' }}>{item.estHour}</td>
                             </tr>
                         ))
@@ -45,6 +47,7 @@ export const UserSummaryDetailsReport = (props) => {
 
                     <tr>
                         <td colSpan="2" style={{ textAlign: 'right' }}>Total = </td>
+                        <td style={{ textAlign: 'right' }}>{reports.userSummary.totalTask}</td>
                         <td style={{ textAlign: 'right' }}>{reports.userSummary.totalEst}</td>
                     </tr>
                 </tbody>

@@ -30,7 +30,8 @@ export const SubTaskSummaryDetailsReport = (props) => {
                     <tr>
                         <th style={{width: '60px'}}>SL</th>
                         <th>SubTask Name</th>
-                        <th>Est. Hour</th>
+                        <th style={{ width: '250px'}}>Task</th>
+                        <th style={{ width: '250px'}}>Est. Hour</th>
                     </tr>
                 </thead>
 
@@ -41,6 +42,7 @@ export const SubTaskSummaryDetailsReport = (props) => {
                             <tr key={index}>
                                 <td>{++index}</td>
                                 <td>{item.subTask}</td>
+                                <td style={{ textAlign: 'right' }}>{item.myCount}</td>
                                 <td style={{ textAlign: 'right' }}>{item.estHour}</td>
                             </tr>
                         ))
@@ -48,6 +50,7 @@ export const SubTaskSummaryDetailsReport = (props) => {
 
                     <tr>
                         <td colSpan="2" style={{ textAlign: 'right' }}>Total = </td>
+                        <td style={{ textAlign: 'right' }}>{reports.subTaskSummary.totalTask}</td>
                         <td style={{ textAlign: 'right' }}>{reports.subTaskSummary.totalEst}</td>
                     </tr>
                 </tbody>

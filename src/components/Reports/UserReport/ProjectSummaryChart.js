@@ -14,26 +14,46 @@ export const ProjectSummaryChart = (props) => {
                 data.length > 0 &&
                 <BarChart
                     width={400}
-                    height={500}
+                    height={550}
                     data={data}
                     margin={{ top: 50, right: 30, left: 20, bottom: 5 }}
                     layout="horizontal"
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="projectName" interval={0} width={30} angle={-15}></XAxis>
+
+                    <XAxis
+                        dataKey="projectName"
+                        interval={0}
+                        width={30}
+                        height={80}
+                        angle={-45}
+                        textAnchor="end"
+                    />
 
                     <YAxis>
-                        <Label value="Project Name" offset={30} position="top" />
+                        <Label value="Project By Hour" offset={30} position="top" />
                     </YAxis>
 
                     <Tooltip />
-                    <Legend />
+                    
+                    <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
+
                     <Bar
-                        style={{ cursor: 'pointer'}}
+                        style={{ cursor: 'pointer' }}
                         dataKey="estHour" fill="#8884d8"
-                        onClick={ (e) => console.log(e.estHour)}
+                        name="Est. Hour"
+                        onClick={(e) => console.log(e.estHour)}
                     >
                         <LabelList dataKey="estHour" position="top" />
+                    </Bar>
+
+                    <Bar
+                        style={{ cursor: 'pointer' }}
+                        dataKey="myCount" fill="#82ca9d"
+                        name="Task"
+                        onClick={(e) => console.log(e.myCount)}
+                    >
+                        <LabelList dataKey="myCount" position="top" />
                     </Bar>
                 </BarChart>
             }

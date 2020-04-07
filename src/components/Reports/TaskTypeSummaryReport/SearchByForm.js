@@ -29,12 +29,12 @@ export const SearchByForm = (props) => {
             <Form layout="inline">
                 <Form.Item label="Select Project">
                     <Select
+                        mode="multiple"
                         defaultValue={ reports.searchBy.project }
                         style={{ width: 250 }}
                         showSearch
                         onChange={val => dispatch(changeSearchField(val, 'project'))}
                     >
-                        <Option value="all">All Project</Option>
                         {
                             projects.list.map((item, index) =>
                                 <Option value={item.name} key={index}>{item.name}</Option>

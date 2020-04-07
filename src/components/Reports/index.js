@@ -38,6 +38,7 @@ const { TabPane } = Tabs;
 
 
 class Reports extends Component {
+    
     componentDidMount() {
         this.props.dispatch(loadUser())
         this.props.dispatch(setDateRange())
@@ -60,7 +61,7 @@ class Reports extends Component {
                     <TabPane tab="User Summary" key="2">
                         {
                             reports.tabKey == 2 && 
-                            <UserSummaryReport { ...this.props } handleSubmit={this.handleSubmit}/>
+                            <UserSummaryReport { ...this.props } />
                         }
                     </TabPane>
 
