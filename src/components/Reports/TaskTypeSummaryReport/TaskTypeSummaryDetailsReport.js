@@ -19,9 +19,14 @@ export const TaskTypeSummaryDetailsReport = (props) => {
                 </div>
 
                 <div style={{ marginBottom: '-20px', marginTop: '5px' }}>
-                    {reports.taskTypeSummary.project &&
+                    { Array.isArray(reports.taskTypeSummary.project) &&
                         <h3>
-                            {reports.taskTypeSummary.project.map(item => item + ', ')}
+                            {reports.taskTypeSummary.project.join(", ")}
+                        </h3>
+                    }
+                    { ! Array.isArray(reports.taskTypeSummary.project) &&
+                        <h3>
+                            {reports.taskTypeSummary.project}
                         </h3>
                     }
                 </div>

@@ -51,7 +51,7 @@ export const ProjectSummaryDetailsReport = (props) => {
                                 <td>{++index}</td>
                                 <td>
                                     <b> {item.projectName} : </b>
-                                    { item.assignedUser.map( userName => userName + ", ")}
+                                    { item.assignedUser.join(", ")}
                                 </td>
                                 <td style={{ textAlign: 'right' }}>{item.myCount}</td>
                                 <td style={{ textAlign: 'right' }}>{item.estHour}</td>

@@ -18,11 +18,18 @@ export const UserSummaryDetailsReport = (props) => {
                 </div>
 
                 <div style={{ marginBottom: '-20px', marginTop: '5px'}}>
-                    {reports.userSummary.project &&
+                    { Array.isArray(reports.userSummary.project) &&
                         <h3>
-                            { reports.userSummary.project.map( item => item + ', ') }
+                            { reports.userSummary.project.join(", ") }
                         </h3>
                     }
+
+                    { ! Array.isArray(reports.userSummary.project) &&
+                        <h3>
+                            { reports.userSummary.project }
+                        </h3>
+                    }
+                    
                 </div>
                 <_UserSummaryChart {...props} />
             </div>

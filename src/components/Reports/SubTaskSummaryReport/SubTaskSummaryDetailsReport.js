@@ -20,12 +20,18 @@ export const SubTaskSummaryDetailsReport = (props) => {
                     </div>
 
                     <div style={{ marginBottom: '-20px', marginTop: '5px' }}>
-                        {reports.subTaskSummary.project &&
+                        { Array.isArray(reports.subTaskSummary.project) &&
                             <h3>
-                                {reports.subTaskSummary.project.map(item => item + ', ')}
+                                {reports.subTaskSummary.project.join(", ")}
+                            </h3>
+                        }
+                        { ! Array.isArray(reports.subTaskSummary.project) &&
+                            <h3>
+                                {reports.subTaskSummary.project}
                             </h3>
                         }
                     </div>
+
 
                     <SubTaskSummaryChart {...props} />
                 </Col>
