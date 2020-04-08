@@ -13,6 +13,7 @@ export const UserProjectDetailsReport = (props) => {
                 <thead>
                     <tr>
                         <th>Project Name</th>
+                        <th style={{ width: '12%'}}>Task</th>
                         <th style={{ width: '12%'}}>Est. Hour</th>
                     </tr>
                 </thead>
@@ -22,6 +23,7 @@ export const UserProjectDetailsReport = (props) => {
                         reportPersonal.data.projectData.result.map((item, index) => (
                             <tr key={index}>
                                 <td>{item.projectName}</td>
+                                <td style={{ textAlign: 'right' }}>{item.myCount}</td>
                                 <td style={{ textAlign: 'right' }}>{item.estHour}</td>
                             </tr>
                         ))
@@ -29,6 +31,7 @@ export const UserProjectDetailsReport = (props) => {
 
                     <tr>
                         <td colSpan="1" style={{ textAlign: 'right' }}>Total = </td>
+                        <td style={{ textAlign: 'right' }}>{reportPersonal.data.totalTask}</td>
                         <td style={{ textAlign: 'right' }}>{reportPersonal.data.totalEst}</td>
                     </tr>
                 </tbody>

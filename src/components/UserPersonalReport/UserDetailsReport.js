@@ -17,6 +17,36 @@ export const UserDetailsReport = (props) => {
     return (
         <Fragment>
 
+            <div>
+                {
+                    (reportPersonal.data.result.length > 0) &&
+                    <div>
+                        <span style={{ fontSize: '16pt', paddingRight: '10px' }}><b>{users.userInfo.name}</b></span>
+                        <span>
+                            &nbsp; From <i style={{ fontSize: '110%' }}>{reportPersonal.data.startDate}</i>
+                            &nbsp; To <i style={{ fontSize: '110%' }}>{reportPersonal.data.endDate}</i>
+                        </span>
+                        <div style={{ marginTop: '10px' }}>
+                            <span>
+                                Completed <b style={{ fontSize: '110%' }}>{reportPersonal.data.totalEst}</b> Hours
+                            </span>
+
+                            <span>
+                                &nbsp; by <b style={{ fontSize: '110%' }}>{reportPersonal.data.totalTask}</b> Tasks
+                            </span>
+
+                        </div>
+
+                        <div style={{ fontSize: '110%', marginTop: '5px' }}>
+                            Avg. Hour Per Task: <span style={{ fontWeight: 'bold' }}>{reportPersonal.data.avgTaskHour}</span>,
+                            &nbsp; Avg. Hour Per Day: <span style={{ fontWeight: 'bold' }}>{reportPersonal.data.avgHourPerDay}</span>
+                            &nbsp; & Avg. Task Per Day: <span style={{ fontWeight: 'bold' }}>{reportPersonal.data.avgTaskPerDay}</span>
+                        </div>
+
+                    </div>
+                }
+            </div>
+
             <Row gutter={24} className="no-print">
                 <Col span={8}>
                     <ProjectSummaryChart {...props}/>
