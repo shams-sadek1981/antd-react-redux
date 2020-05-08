@@ -25,6 +25,7 @@ export const NewModal = Form.create({ name: 'form_in_modal' })(
             const { getFieldDecorator } = form;
 
             const { dispatch, release, sprint, users, project } = this.props
+            
             return (
                 <Modal
                     visible={sprint.modal.modalVisible}

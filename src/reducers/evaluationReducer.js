@@ -13,11 +13,13 @@ const dateFormat = 'YYYY-MMM-DD';
 const initialState = {
     name: "Shams Sadik",
     searchBy: {
-        evaluationName: '2019-Q1',
+        evaluationName: '2020-Q1',
         startDate: moment(startDate, dateFormat),
         endDate: moment(endDate, dateFormat)
     },
-    evaluationResult: []
+    evaluationResult: {
+        users: []
+    }
 }
 
 const evaluationReducer = (state = initialState, action) => {

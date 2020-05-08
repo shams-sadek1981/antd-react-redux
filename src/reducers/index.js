@@ -16,6 +16,7 @@ import publicHolidayReducer from './publicHolidayReducer'
 import taskTypeReducer from './taskTypeReducer'
 import reportPersonalReducer from './reportPersonalReducer'
 import evaluationReducer from './evaluationReducer'
+import uploadReducer from './uploadReducer'
 
 const rootReducer = combineReducers({
     todoReducer,
@@ -33,7 +34,8 @@ const rootReducer = combineReducers({
     publicHolidayReducer,
     taskTypeReducer,
     reportPersonalReducer,
-    evaluationReducer
+    evaluationReducer,
+    uploadReducer
 })
 
 export default rootReducer

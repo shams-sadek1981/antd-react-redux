@@ -11,7 +11,7 @@ export const UserDetailsReport = (props) => {
     return (
         <Fragment>
 
-            { evaluationReducer.evaluationResult.map((item, index) => <PersonalReport item={item}/>) }
+            { evaluationReducer.evaluationResult.users.map((item, index) => <PersonalReport item={item}/>) }
 
             <div>
                 Date Between: { moment(evaluationReducer.searchBy.startDate).format("DD-MMM-YYYY") }
@@ -47,7 +47,7 @@ export const UserDetailsReport = (props) => {
 
                 <tbody>
                     {
-                        evaluationReducer.evaluationResult.map((item, index) => (
+                        evaluationReducer.evaluationResult.users.map((item, index) => (
                             <tr key={index}>
                                 <td>{ ++index}</td>
                                 <td>{ item.userName}</td>
