@@ -11,7 +11,7 @@ export const UserDetailsReport = (props) => {
     return (
         <Fragment>
 
-            { evaluationReducer.evaluationResult.users.map((item, index) => <PersonalReport item={item}/>) }
+            { evaluationReducer.evaluationResult.users.map((item, index) => <PersonalReport key={index} item={item}/>) }
 
             <div>
                 Date Between: { moment(evaluationReducer.searchBy.startDate).format("DD-MMM-YYYY") }

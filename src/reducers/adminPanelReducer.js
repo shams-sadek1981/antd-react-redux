@@ -94,7 +94,7 @@ const initialState = {
             to: '/admin-panel/evaluation',
             breadcrumb: ['Admin Panel','Evaluation'],
             iconType: 'bar-chart',
-            permission: 'menu_reports'
+            permission: 'menu_evaluation'
         },
         {
             keyNo:7,

@@ -34,6 +34,11 @@ export const changeBreadcrumb = () => {
     }
 }
 
+/**
+ * Menu Click
+ * 
+ * @param {*} selectedKeys 
+ */
 export const navMenuClick = (selectedKeys) => {
     return (dispatch, getState) => {
         dispatch({
@@ -46,6 +51,8 @@ export const navMenuClick = (selectedKeys) => {
         dispatch( changeBreadcrumb() )
     }
 }
+
+
 export const changeSelectedKeysByPath = (pathName) => {
     return (dispatch, getState) => {
         const homeLayout = getState().homeLayoutReducer
