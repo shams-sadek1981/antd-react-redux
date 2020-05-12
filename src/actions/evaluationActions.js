@@ -65,7 +65,7 @@ export const searchResult = () => (dispatch, getState) => {
     //     queryString +=  '&endDate=' + moment(endDate).format("YYYY-MMM-DD")
     // }
 
-    const searchUrl = `/evaluation/get-all-marks?${queryString}`
+    const searchUrl = `/download/evaluation/get-all-marks?${queryString}`
 
     get(searchUrl)
         .then(data => {
@@ -102,7 +102,7 @@ export const downloadPdfFile = () => (dispatch, getState) => {
      * Generate .pdf file
      * 
      */
-    const generatePdfUrl = `/evaluation/generate-all-emp-pdf?${queryString}`
+    const generatePdfUrl = `/download/evaluation/generate-all-emp-pdf?${queryString}`
 
     get(generatePdfUrl)
         .then(data => {
@@ -113,7 +113,7 @@ export const downloadPdfFile = () => (dispatch, getState) => {
             */
             setTimeout(function () {
 
-                const searchUrl = process.env.REACT_APP_HOST + `/evaluation/download-pdf-file?${queryString}`
+                const searchUrl = process.env.REACT_APP_HOST + `/download/evaluation/download-pdf-file?${queryString}`
 
                 axios({
                     url: searchUrl, //your url
@@ -167,7 +167,7 @@ export const downloadZipFile = () => (dispatch, getState) => {
      * Generate .pdf file
      * 
      */
-    const generatePdfUrl = `/evaluation/generate-personal-pdf-zip?${queryString}`
+    const generatePdfUrl = `/download/evaluation/generate-personal-pdf-zip?${queryString}`
 
     get(generatePdfUrl)
         .then(data => {
@@ -178,7 +178,7 @@ export const downloadZipFile = () => (dispatch, getState) => {
             */
             setTimeout(function () {
 
-                const searchUrl = process.env.REACT_APP_HOST + `/evaluation/download-pdf-users-zip?${queryString}`
+                const searchUrl = process.env.REACT_APP_HOST + `/download/evaluation/download-pdf-users-zip?${queryString}`
 
                 axios({
                     url: searchUrl, //your url

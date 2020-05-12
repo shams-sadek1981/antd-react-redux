@@ -10,8 +10,7 @@ import Cookies from 'universal-cookie';
 
 import { userLogin } from '../../actions/userActions'
 
-//-- initialize cookies
-const cookies = new Cookies();
+
 
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -22,24 +21,20 @@ const openNotificationWithIcon = (type, message, description) => {
 };
 
 
-const manageCookie = (values) => {
-    
-    const { email, password, remember } = values
-
-    if (remember) {
-        cookies.set('password', password, { path: '/login' });
-        cookies.set('email', email, { path: '/login' });
-        cookies.set('remember', remember, { path: '/login' });
-    }else{
-        cookies.remove('email', { path: '/login' });
-        cookies.remove('password', { path: '/login' });
-        cookies.remove('remember', { path: '/login' });
-    }
-}
-
-
 class LoginForm extends React.Component {
     
+    componentDidMount(){
+
+        /**
+         * Redirect admin panel if already has token
+         * 
+         */
+        if (localStorage.getItem('token')) {
+            this.props.history.push('/admin-panel')
+        }
+        
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
 
@@ -62,6 +57,10 @@ class LoginForm extends React.Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
+
+        //-- initialize cookies
+        const cookies = new Cookies();
+
         return (
             <Row>
                 <Col offset={9} span={6}>
@@ -69,8 +68,8 @@ class LoginForm extends React.Component {
                         <Form.Item>
                             {getFieldDecorator('email', {
                                 rules: [{ required: true, message: 'Please input your email!' }],
-                                initialValue: ''
-                                // initialValue: cookies.get('email')
+                                // initialValue: ''
+                                initialValue: cookies.get('email')
                             })(
                                 <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
                             )}
@@ -78,8 +77,8 @@ class LoginForm extends React.Component {
                         <Form.Item>
                             {getFieldDecorator('password', {
                                 rules: [{ required: true, message: 'Please input your Password!' }],
-                                initialValue: ''
-                                // initialValue: cookies.get('password')
+                                // initialValue: ''
+                                initialValue: cookies.get('password')
                             })(
                                 <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
                             )}
@@ -91,11 +90,11 @@ class LoginForm extends React.Component {
                             })(
                                 <Checkbox>Remember me</Checkbox>
                             )}
-                            <a className="login-form-forgot" href="">Forgot password</a>
+                            {/* <a className="login-form-forgot" href="">Forgot password</a> */}
                             <Button type="primary" htmlType="submit" className="login-form-button">
                                 Log in
                         </Button>
-                            Or <NavLink to="/signup">register now!</NavLink>
+                            {/* Or <NavLink to="/signup">register now!</NavLink> */}
                         </Form.Item>
                     </Form>
                 </Col>

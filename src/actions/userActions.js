@@ -32,23 +32,25 @@ const openNotificationWithIcon = (type, message, description) => {
     });
 };
 
-//-- initialize cookies
-const cookies = new Cookies();
+
 
 const manageCookie = (values) => {
 
     const { email, password, remember } = values
 
+    //-- initialize cookies
+    const cookies = new Cookies();
+
     if (remember) {
         cookies.set('password', password, { path: '/login' });
         cookies.set('email', email, { path: '/login' });
         cookies.set('remember', remember, { path: '/login' });
+    } else {
+        cookies.remove('email', { path: '/login' });
+        cookies.remove('password', { path: '/login' });
+        cookies.remove('remember', { path: '/login' });
     }
-    // else{
-    //     cookies.remove('email', { path: '/login' });
-    //     cookies.remove('password', { path: '/login' });
-    //     cookies.remove('remember', { path: '/login' });
-    // }
+
 }
 
 export const getPermissions = () => async (dispatch, getState) => {
@@ -85,20 +87,20 @@ export const getPermissions = () => async (dispatch, getState) => {
  * @param {*} userInfo 
  * @param {*} values 
  */
-export const userLogin = (history, userInfo, values) => async (dispatch, getState) => {
+export const userLogin = (history, userInfo, values) => (dispatch, getState) => {
 
-    await postWithoutToken('/users/login', userInfo)
-        .then(async data => {
+    postWithoutToken('/users/login', userInfo)
+        .then(data => {
 
             //-- set token in local storage
-            await localStorage.setItem('token', data.token)
+            localStorage.setItem('token', data.token)
 
             //-- manage cookie
-            await manageCookie(values)
+            manageCookie(values)
 
-
-            // await history.push('/admin-panel')
-            window.location.href = window.location.origin + '/admin-panel';
+            setTimeout(() => {
+                window.location.href = window.location.origin + '/admin-panel';
+            }, 1000);
 
         })
         .catch(err => openNotificationWithIcon('error', err.message, 'Your password or email is mismatch'))

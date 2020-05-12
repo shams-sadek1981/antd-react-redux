@@ -33,6 +33,8 @@ class HomeLayout extends Component {
     componentDidMount = () => {
         const runningPath = this.props.location.pathname
         this.props.dispatch(changeSelectedKeysByPath(runningPath))
+
+        
     }
 
     render() {

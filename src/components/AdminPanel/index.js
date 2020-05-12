@@ -45,7 +45,10 @@ class AdminPanel extends Component {
     logout = () => {
         // console.log('hi')
         localStorage.removeItem('token')
-        this.props.history.push('/login')
+        // this.props.history.push('/login')
+        setTimeout( function(){
+            window.location.href = window.location.origin + '/login';
+        },1000)
     }
 
     render() {
@@ -84,7 +87,7 @@ class AdminPanel extends Component {
                             }
 
                             <Menu.Item onClick={() => this.logout() }>
-                                <NavLink to="/login">
+                                <NavLink to="/">
                                     <Icon type='logout'/>
                                     <span>Logout</span>
                                 </NavLink>

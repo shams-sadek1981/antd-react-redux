@@ -46,7 +46,7 @@ class AdminDashboard extends Component {
 
         return (
             <div>
-                <h1 onClick={ () => this.props.dispatch(userSummaryLoading())}> User Summary </h1>
+                <h1> User Summary </h1>
                 <Chart
                     width={userWidth}
                     height={600}
