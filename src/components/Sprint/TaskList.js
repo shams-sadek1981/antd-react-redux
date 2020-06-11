@@ -27,7 +27,7 @@ export const TaskList = (props) => {
                     (handlePermission(props, 'upcoming_task_create')) &&
                     <span className="add-task">
                         <a onClick={() => dispatch(addNewTask(sprintName))} href="javascript:;">
-                            <Icon type="plus-circle" theme="twoTone" />
+                            <Icon type="plus-circle" theme="twoTone" /> Add New Task
                         </a>
                     </span>
                 }

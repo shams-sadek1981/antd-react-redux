@@ -84,6 +84,7 @@ const initialState = {
         EditInfo: {
             name: '',
             estHour: '',
+            timeLog: '',
             assignedUser: ''
         },
         startDate: null
