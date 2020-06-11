@@ -13,19 +13,17 @@ export const TASK_UPDATE_SUB_TASK = "TASK_UPDATE_SUB_TASK"
 export const TASK_TOGGLE_SUB_TASK_MODAL_VISIBLE = "TASK_TOGGLE_SUB_TASK_MODAL_VISIBLE"
 
 //-- Handle Subtask Submit
-export const handleSubTaskSubmit = (values) => {
-    return (dispatch, getState) => {
+export const handleSubTaskSubmit = (values) => (dispatch, getState) => {
 
-        const { subTaskModal } = getState().upcomingTaskReducer
-        const { okText } = subTaskModal
+    const { subTaskModal } = getState().upcomingTaskReducer
+    const { okText } = subTaskModal
 
-        if (okText == "Create") {
-            //-- Create New Task
-            dispatch(saveNewSubTask(values))
-        } else {
-            //-- Update Task
-            dispatch(updateSubTask(values))
-        }
+    if (okText == "Create") {
+        //-- Create New Task
+        dispatch(saveNewSubTask(values))
+    } else {
+        //-- Update Task
+        dispatch(updateSubTask(values))
     }
 }
 
@@ -154,7 +152,7 @@ export const editSubTask = (taskId, subTaskId) => {
                     ...subTaskModal,
                     modalTitle: 'Edit Subtask',
                     okText: 'Update',
-                    EditInfo: {...findSubTask, taskName: findTask.taskName },
+                    EditInfo: { ...findSubTask, taskName: findTask.taskName },
                     modalVisible: true,
                     taskId
                 }

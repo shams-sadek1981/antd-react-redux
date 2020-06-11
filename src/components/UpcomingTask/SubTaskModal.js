@@ -98,7 +98,7 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                         </Form.Item>
 
                         <Row gutter={24}>
-                            <Col span={18}>
+                            <Col span={14}>
                                 <Form.Item label="Select Subtask">
                                     {getFieldDecorator('name', {
                                         initialValue: upcomingTask.subTaskModal.EditInfo.name,
@@ -118,16 +118,28 @@ export const SubTaskModal = Form.create({ name: 'single_task_modal' })(
                                 </Form.Item>
                             </Col>
 
-                            <Col span={6} align="right">
+                            <Col span={5} align="right">
                                 <Form.Item label="Est Hour">
                                     {getFieldDecorator('estHour', {
                                         initialValue: upcomingTask.subTaskModal.EditInfo.estHour,
                                         rules: [{ required: true, message: 'Please input the Est. Hour!' }],
                                     })(
+                                        <InputNumber min={0} max={8} autoComplete="off" />
+                                    )}
+                                </Form.Item>
+                            </Col>
+
+                            <Col span={5} align="right">
+                                <Form.Item label="Time Log">
+                                    {getFieldDecorator('timeLog', {
+                                        initialValue: upcomingTask.subTaskModal.EditInfo.timeLog,
+                                        // rules: [{ required: true, message: 'Please input the time log!' }],
+                                    })(
                                         <InputNumber min={0} max={24} autoComplete="off" />
                                     )}
                                 </Form.Item>
                             </Col>
+
                         </Row>
 
 

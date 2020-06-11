@@ -15,6 +15,7 @@ export const UserProjectDetailsReport = (props) => {
                         <th>Project Name</th>
                         <th style={{ width: '12%'}}>Task</th>
                         <th style={{ width: '12%'}}>Est. Hour</th>
+                        <th style={{ width: '12%'}}>Time Log</th>
                     </tr>
                 </thead>
 
@@ -25,6 +26,7 @@ export const UserProjectDetailsReport = (props) => {
                                 <td>{item.projectName}</td>
                                 <td style={{ textAlign: 'right' }}>{item.myCount}</td>
                                 <td style={{ textAlign: 'right' }}>{item.estHour}</td>
+                                <td style={{ textAlign: 'right' }}>{item.timeLog}</td>
                             </tr>
                         ))
                     }
@@ -33,6 +35,7 @@ export const UserProjectDetailsReport = (props) => {
                         <td colSpan="1" style={{ textAlign: 'right' }}>Total = </td>
                         <td style={{ textAlign: 'right' }}>{reportPersonal.data.totalTask}</td>
                         <td style={{ textAlign: 'right' }}>{reportPersonal.data.totalEst}</td>
+                        <td style={{ textAlign: 'right' }}>{reportPersonal.data.efficiencyInfo.totalTimeLog}</td>
                     </tr>
                 </tbody>
 

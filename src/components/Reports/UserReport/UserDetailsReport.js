@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import moment from 'moment'
-import { Select, Form, DatePicker, Button, Divider, Row, Col } from 'antd';
+import { Select, Form, DatePicker, Button, Divider, Row, Col, Tag } from 'antd';
 
 import { UserProjectDetailsReport } from './UserProjectDetailsReport'
 import { UserTaskTypeDetailsReport } from './UserTaskTypeDetailsReport'
@@ -25,21 +25,53 @@ export const UserDetailsReport = (props) => {
                             &nbsp; From <i style={{ fontSize: '110%' }}>{reports.data.startDate}</i>
                             &nbsp; To <i style={{ fontSize: '110%' }}>{reports.data.endDate}</i>
                         </span>
+
+
                         <div style={{ marginTop: '10px' }}>
-                            <span>
-                                Completed <b style={{ fontSize: '110%' }}>{reports.data.totalEst}</b> Hours
-                            </span>
 
-                            <span>
-                                &nbsp; by <b style={{ fontSize: '110%' }}>{reports.data.totalTask}</b> Tasks
-                            </span>
+                            <Tag color="volcano" style={{ fontSize: '103%' }}>
+                                <b style={{ fontSize: '107%' }}>{reports.data.totalTask}</b> Tasks
+                            </Tag>
 
-                        </div>
+                            <Tag color="magenta" style={{ fontSize: '103%' }}>
+                                Est. <b style={{ fontSize: '107%' }}>{reports.data.totalEst}</b> Hours
+                            </Tag>
 
-                        <div style={{ fontSize: '110%', marginTop: '5px' }}>
-                            Avg. Hour Per Task: <span style={{ fontWeight: 'bold' }}>{reports.data.avgTaskHour}</span>,
-                            &nbsp; Avg. Hour Per Day: <span style={{ fontWeight: 'bold' }}>{reports.data.avgHourPerDay}</span>
-                            &nbsp; & Avg. Task Per Day: <span style={{ fontWeight: 'bold' }}>{reports.data.avgTaskPerDay}</span>
+                            <Tag color="geekblue" style={{ fontSize: '103%' }}>
+                                Timelog: <b style={{ fontSize: '107%' }}>{reports.data.efficiencyInfo.totalTimeLog}</b> Hours
+                                by <b>{reports.data.efficiencyInfo.totalTaskWithTimeLog}</b> Tasks
+                            </Tag>
+
+
+                            {/* ---------------- Efficiency > 50% --------------- */}
+                            {
+                                reports.data.efficiencyInfo.efficiency > 50 &&
+                                <Tag color="#87d068" style={{ fontSize: '103%' }}>
+                                    Efficiency: <b style={{ fontSize: '107%' }}>{reports.data.efficiencyInfo.efficiency}</b>%
+                                </Tag>
+                            }
+
+                            {/* ---------------- Efficiency < 50% --------------- */}
+                            {
+                                reports.data.efficiencyInfo.efficiency < 51 &&
+                                <Tag color="#f50" style={{ fontSize: '103%' }}>
+                                    Efficiency: <b style={{ fontSize: '107%' }}>{reports.data.efficiencyInfo.efficiency}</b>%
+                                </Tag>
+                            }
+
+
+                            <Tag color="purple" style={{ fontSize: '103%' }}>
+                                Avg. Hour Per Task: <span style={{ fontWeight: 'bold' }}>{reports.data.avgTaskHour}</span>
+                            </Tag>
+
+                            <Tag color="blue" style={{ fontSize: '103%' }}>
+                                Avg. Hour Per Day: <span style={{ fontWeight: 'bold' }}>{reports.data.avgHourPerDay}</span>
+                            </Tag>
+
+                            <Tag color="purple" style={{ fontSize: '103%' }}>
+                                Avg. Task Per Day: <span style={{ fontWeight: 'bold' }}>{reports.data.avgTaskPerDay}</span>
+                            </Tag>
+
                         </div>
 
                     </div>
@@ -84,6 +116,8 @@ export const UserDetailsReport = (props) => {
                         <th style={{ width: "100px" }}>Project</th>
                         <th style={{ width: "120px" }}>Task Type</th>
                         <th style={{ width: '70px' }}>Hour</th>
+                        <th style={{ width: '70px' }}>Log</th>
+
                     </tr>
                 </thead>
 
@@ -102,6 +136,7 @@ export const UserDetailsReport = (props) => {
                                 <td>{item.projectName}</td>
                                 <td>{item.taskType}</td>
                                 <td style={{ textAlign: 'right' }}>{item.estHour}</td>
+                                <td style={{ textAlign: 'right' }}>{item.timeLog}</td>
                             </tr>
                         ))
                     }
@@ -109,6 +144,7 @@ export const UserDetailsReport = (props) => {
                     <tr>
                         <td colSpan="5" style={{ textAlign: 'right' }}>Total = </td>
                         <td style={{ textAlign: 'right', fontWeight: 'bold' }}>{reports.data.totalEst}</td>
+                        <td style={{ textAlign: 'right' }}>{reports.data.efficiencyInfo.totalTimeLog}</td>
                     </tr>
                 </tbody>
             </table>

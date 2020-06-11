@@ -46,6 +46,15 @@ export const ProjectSummaryChart = (props) => {
                     >
                         <LabelList dataKey="estHour" position="top" />
                     </Bar>
+                    
+                    <Bar
+                        style={{ cursor: 'pointer' }}
+                        dataKey="timeLog" fill="#DEB887"
+                        name="Time Log"
+                        onClick={(e) => console.log(e.timeLog)}
+                    >
+                        <LabelList dataKey="timeLog" position="top" />
+                    </Bar>
 
                     <Bar
                         style={{ cursor: 'pointer' }}

@@ -26,6 +26,12 @@ const initialState = {
         },
         reportTaskStatus: {
             result: []
+        },
+        efficiencyInfo: {
+            efficiency: 0,
+            totalEstWithTimeLog: 0,
+            totalTaskWithTimeLog: 0,
+            totalTimeLog: 0
         }
     },
     userSummary: {
