@@ -30,6 +30,7 @@ import { ProjectSummaryReport } from './ProjectSummaryReport'
 import { TaskTypeSummaryReport } from './TaskTypeSummaryReport'
 import { SubTaskSummaryReport } from './SubTaskSummaryReport'
 import { TaskStatusReport } from './TaskStatusReport'
+import { SprintSummaryReport } from './SprintSummaryReport'
 
 import './style.less'
 
@@ -90,6 +91,13 @@ class Reports extends Component {
                         {
                             reports.tabKey == 6 &&
                             <TaskStatusReport { ...this.props }/>
+                        }
+                    </TabPane>
+
+                    <TabPane tab="Sprint" key="7">
+                        {
+                            reports.tabKey == 7 &&
+                            <SprintSummaryReport { ...this.props }/>
                         }
                     </TabPane>
                     

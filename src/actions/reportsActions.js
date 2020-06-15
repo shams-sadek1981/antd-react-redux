@@ -20,6 +20,9 @@ export const REPORTS_TASK_STATUS_BY_DATE = "REPORTS_TASK_STATUS_BY_DATE"
 export const REPORT_CHANGE_DATE = "REPORT_CHANGE_DATE"
 export const REPORT_TOGGLE_SPINNING = "REPORT_TOGGLE_SPINNING"
 
+export const REPORTS_SPRINT_SUMMARY = "REPORTS_SPRINT_SUMMARY"
+export const SPRINT_BARCHART_OPTION_TOGGLE = "SPRINT_BARCHART_OPTION_TOGGLE"
+
 
 const openNotificationWithIcon = (type, message, description) => {
     notification[type]({
@@ -245,7 +248,78 @@ export const searchByTaskTypeSummary = (values) => (dispatch, getState) => {
 }
 
 
-//-- Search By SubTask Summary
+/**
+ * Sprint Barchart Change value
+ * 
+ * @param {*} fieldName 
+ * @param {*} value 
+ */
+export const SprintBarchartOptionToggle = (fieldName, value) => (dispatch, getState) => {
+
+    const { chartBy } = getState().reportsReducer.sprintSummary
+
+    dispatch({
+        type: SPRINT_BARCHART_OPTION_TOGGLE,
+        payload: {
+            chartBy: {
+                ...chartBy,
+                [fieldName]: value
+            }
+        }
+    })
+}
+
+/**
+ * Search By Sprint
+ * 
+ * @param {*} values 
+ */
+export const searchBySprint = (values) => (dispatch, getState) => {
+
+    dispatch(toggleSpinning(true))
+
+    const { startDate, endDate, project } = getState().reportsReducer.searchBy
+
+    let searchUrl = `/sprint/report?startDate=${startDate}&endDate=${endDate}`
+
+    // Single project or multi project
+    if (project) {
+        if (Array.isArray(project)) {
+            project.forEach(item => {
+                searchUrl += `&project=${item}`
+            })
+        } else {
+            searchUrl += `&project=${project}`
+        }
+    }
+
+    const { searchBy } = getState().reportsReducer
+
+    return get(searchUrl)
+        .then(data => {
+            dispatch({
+                type: REPORTS_SPRINT_SUMMARY,
+                payload: {
+                    sprintSummary: data,
+                    searchBy: {
+                        ...searchBy,
+                        startDate,
+                        endDate
+                    }
+                }
+            })
+
+            dispatch(toggleSpinning(false))
+        })
+        .catch(err => console.log(err))
+}
+
+
+/**
+ * Search By SubTask Summary
+ * 
+ * @param {*} values 
+ */
 export const searchBySubTaskSummary = (values) => (dispatch, getState) => {
 
     dispatch(toggleSpinning(true))

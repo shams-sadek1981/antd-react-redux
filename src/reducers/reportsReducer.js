@@ -8,7 +8,9 @@ import {
     REPORTS_SET_DATE_RANGE,
     REPORTS_TASK_STATUS_BY_DATE,
     REPORT_CHANGE_DATE,
-    REPORT_TOGGLE_SPINNING
+    REPORT_TOGGLE_SPINNING,
+    REPORTS_SPRINT_SUMMARY,
+    SPRINT_BARCHART_OPTION_TOGGLE
 } from '../actions/reportsActions'
 
 //-- Initialize State
@@ -30,6 +32,9 @@ const initialState = {
             result: []
         },
         subTaskData: {
+            result: []
+        },
+        sprintData: {
             result: []
         },
         reportTaskStatus: {
@@ -54,6 +59,20 @@ const initialState = {
     subTaskSummary: {
         result: []
     },
+    sprintSummary: {
+        chartBy: {
+            efficiency: true,
+            estHour: true,
+            timeLog: true,
+            taskCount: true,
+            progress: true
+        },
+        result: [],
+        summary: {
+            totalTask: 0,
+            userDetails: []
+        }
+    },
     reportTaskStatus: {
         result: []
     }
@@ -74,7 +93,7 @@ const reportsReducer = (state = initialState, action) => {
                 searchBy: action.payload.searchBy,
                 data: action.payload.data
             })
-        
+
         case REPORTS_CHANGE_TAB_KEY:
             return Object.assign({}, state, {
                 tabKey: action.payload.tabKey,
@@ -102,6 +121,21 @@ const reportsReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 searchBy: action.payload.searchBy,
                 subTaskSummary: action.payload.subTaskSummary,
+            })
+
+        case REPORTS_SPRINT_SUMMARY:
+            return Object.assign({}, state, {
+                searchBy: action.payload.searchBy,
+                // sprintSummary: action.payload.sprintSummary,
+                sprintSummary: Object.assign({}, state.sprintSummary, action.payload.sprintSummary)
+            })
+
+        case SPRINT_BARCHART_OPTION_TOGGLE:
+            return Object.assign({}, state, {
+                sprintSummary: {
+                    ...state.sprintSummary,
+                    chartBy: action.payload.chartBy
+                }
             })
 
         case REPORTS_TASK_STATUS_BY_DATE:

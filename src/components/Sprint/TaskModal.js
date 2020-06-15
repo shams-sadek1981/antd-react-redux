@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import moment from 'moment'
 import {
-    Button, Modal, Form, Input, Radio, Icon, Select, DatePicker, Switch, Row, Col, Popconfirm
+    Button, Modal, Form, Input, Radio, Icon, Select, DatePicker, Switch, Row, Col, Popconfirm, Checkbox
 } from 'antd';
 
 import { handlePermission } from '../../functions'
@@ -40,9 +40,9 @@ export const TaskModal = Form.create({ name: 'form_in_modal' })(
              * 
              */
             let selectedProjectName = sprint.upcomingTaskModal.EditInfo.projectName
-            if (sprint.upcomingTaskModal.okText == "Create"){
-                if ( sprint.upcomingTaskModal.sprintProjects.length > 0) {
-                    
+            if (sprint.upcomingTaskModal.okText == "Create") {
+                if (sprint.upcomingTaskModal.sprintProjects.length > 0) {
+
                     // select first element from project list
                     selectedProjectName = sprint.upcomingTaskModal.sprintProjects[0]
                 }
@@ -55,7 +55,7 @@ export const TaskModal = Form.create({ name: 'form_in_modal' })(
              * 
              */
             let selectedAssignedBy = sprint.upcomingTaskModal.EditInfo.assignedBy
-            if (sprint.upcomingTaskModal.okText == "Create"){
+            if (sprint.upcomingTaskModal.okText == "Create") {
                 selectedAssignedBy = users.userInfo.name
             }
 
@@ -63,22 +63,22 @@ export const TaskModal = Form.create({ name: 'form_in_modal' })(
             return (
                 <Modal
                     visible={sprint.upcomingTaskModal.modalVisible}
-                    title={ modalTitle }
+                    title={modalTitle}
                     okText={sprint.upcomingTaskModal.okText}
                     onCancel={() => dispatch(toggleTaskModalVisible())}
                     footer={[
                         (handlePermission(this.props, 'upcoming_task_delete')) &&
                         sprint.upcomingTaskModal.okText != "Create" &&
                         <Popconfirm title="Are you sure to delete this task?"
-                                onConfirm={(e) => dispatch(deleteTask(sprint.upcomingTaskModal.EditInfo._id)) }
-                                okText="Yes" cancelText="No">
+                            onConfirm={(e) => dispatch(deleteTask(sprint.upcomingTaskModal.EditInfo._id))}
+                            okText="Yes" cancelText="No">
 
-                                <Button type="danger" key="back">
-                                    Delete
+                            <Button type="danger" key="back">
+                                Delete
                                 </Button>
                         </Popconfirm>,
-                        <Button key="submit" type="primary" onClick={ onCreate }>
-                            { sprint.upcomingTaskModal.okText }
+                        <Button key="submit" type="primary" onClick={onCreate}>
+                            {sprint.upcomingTaskModal.okText}
                         </Button>,
                     ]}
                 >
@@ -170,28 +170,43 @@ export const TaskModal = Form.create({ name: 'form_in_modal' })(
 
                         {
                             sprint.upcomingTaskModal.okText != "Create" &&
-                            <Form.Item label="Select Sprint">
-                                {getFieldDecorator('sprint', {
-                                    initialValue: sprint.upcomingTaskModal.EditInfo.sprint,
-                                    rules: [{ required: true, message: 'Please select sprint' }],
-                                })(
-                                    <Select
-                                        showSearch
-                                        // style={{ width: 200 }}
-                                        placeholder="Select a Sprint"
-                                    >
-                                        <Option value={null}>Select Sprint</Option>
-                                        {
-                                            sprint.sprintList.map((item, index) =>
-                                                <Option value={item.name} key={index}>
-                                                    <span style={{ color: 'blue' }}>{item.name}</span>
-                                                    <span style={{ paddingLeft: '5px' }}>{item.endDate}</span>
-                                                </Option>
-                                            )
-                                        }
-                                    </Select>
-                                )}
-                            </Form.Item>
+                            <Row gutter={24}>
+                                <Col span={16}>
+                                    <Form.Item label="Select Sprint">
+                                        {getFieldDecorator('sprint', {
+                                            initialValue: sprint.upcomingTaskModal.EditInfo.sprint,
+                                            rules: [{ required: true, message: 'Please select sprint' }],
+                                        })(
+                                            <Select
+                                                showSearch
+                                                // style={{ width: 200 }}
+                                                placeholder="Select a Sprint"
+                                            >
+                                                <Option value={null}>Select Sprint</Option>
+                                                {
+                                                    sprint.sprintList.map((item, index) =>
+                                                        <Option value={item.name} key={index}>
+                                                            <span style={{ color: 'blue' }}>{item.name}</span>
+                                                            <span style={{ paddingLeft: '5px' }}>{item.endDate}</span>
+                                                        </Option>
+                                                    )
+                                                }
+                                            </Select>
+                                        )}
+                                    </Form.Item>
+                                </Col>
+
+                                <Col span={8}>
+                                    <Form.Item label="&nbsp;">
+                                        {getFieldDecorator('sprintCopyTask', {
+                                            initialValue: sprint.upcomingTaskModal.EditInfo.sprintCopyTask,
+                                            // rules: [{ required: true, message: 'Please select sprint' }],
+                                        })(
+                                            <Checkbox>Copy Task</Checkbox>
+                                        )}
+                                    </Form.Item>
+                                </Col>
+                            </Row>
                         }
 
                         {

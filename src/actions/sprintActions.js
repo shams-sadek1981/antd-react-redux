@@ -685,6 +685,10 @@ export const saveNewTask = (values) => (dispatch, getState) => {
             // load task by search items
             dispatch(loadTaskBySearchItems())
 
+
+            // Refresh all tasks & all user result by Sprint name
+            dispatch(loadTaskBySprint(sprint))
+
         })
         .catch(err => openNotificationWithIcon('error', err.message, 'Already exists the task'))
 }

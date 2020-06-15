@@ -72,7 +72,8 @@ const initialState = {
             projectName: '',
             taskType: '',
             estHour: '',
-            assignedUser: ''
+            assignedUser: '',
+            sprintCopyTask: true
         }
     },
     subTaskModal: {

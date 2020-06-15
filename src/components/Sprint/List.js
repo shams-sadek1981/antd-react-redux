@@ -204,6 +204,7 @@ export const List = (props) => {
         }
     ];
 
+    // Add action column by permission
     if (handlePermission(props, 'sprint_delete') || handlePermission(props, 'sprint_edit') || handlePermission(props, 'sprint_complete')) {
         columns.push(actionColumn)
     }
