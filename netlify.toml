@@ -11,6 +11,7 @@
 # these settings.
 [context.master] # 'master' is a branch name
   #environment = { REACT_APP_HOST = "http://localhost:3000", REACT_APP_FRONTEND_URL = "https://adoring-curie-c2c113.netlify.com" }
+  environment = { CI = false }
 
 # The following redirect is intended for use with most SPAs that handle
 # routing internally.
