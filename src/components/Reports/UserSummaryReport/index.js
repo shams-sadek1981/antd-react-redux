@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 
-import { Form, Select, Row, Col, Divider, Tabs } from 'antd';
+import { Form, Select, Row, Col, Divider, Tabs, Spin } from 'antd';
 
 import { SearchByForm } from './SearchByForm'
 import { UserSummaryDetailsReport } from './UserSummaryDetailsReport'
@@ -13,7 +13,7 @@ export const UserSummaryReport = (props) => {
         <Fragment>
             <Row gutter={24}>
                 <Col span={24}>
-                    <SearchByForm {...props} handleSubmit={ handleSubmit } />
+                    <SearchByForm {...props} handleSubmit={handleSubmit} />
                 </Col>
             </Row>
 
@@ -21,7 +21,9 @@ export const UserSummaryReport = (props) => {
 
             <Row gutter={24} >
                 <Col span={24}>
-                    <UserSummaryDetailsReport {...props} />
+                    <Spin tip="Loading..." spinning={props.reports.spinning}>
+                        <UserSummaryDetailsReport {...props} />
+                    </Spin>
                 </Col>
             </Row>
         </Fragment>

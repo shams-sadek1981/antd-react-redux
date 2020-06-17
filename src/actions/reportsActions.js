@@ -102,6 +102,7 @@ export const searchBy = () => (dispatch, getState) => {
     // let { userName, startDate, endDate } = values
     // startDate = moment(startDate).format('YYYY-MMM-DD')
     // endDate = moment(endDate).format('YYYY-MMM-DD')
+    dispatch(toggleSpinning(true))
 
     const reportsReducer = getState().reportsReducer
     const { userName, startDate, endDate } = reportsReducer.searchBy
@@ -124,6 +125,9 @@ export const searchBy = () => (dispatch, getState) => {
                     }
                 }
             })
+
+            dispatch(toggleSpinning(false))
+
         })
         .catch(err => console.log(err))
 }
